@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Faktabasen Sverige</title>
+    <title>Faktabasen</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
     <style>
@@ -20,667 +20,185 @@
             --border: #e2d9c8;
             --shadow: 0 4px 32px rgba(15,28,46,0.10);
         }
-
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
         html { scroll-behavior: smooth; }
+        body { font-family: 'Source Serif 4', Georgia, serif; background: var(--cream); color: var(--text); line-height: 1.7; }
 
-        body {
-            font-family: 'Source Serif 4', Georgia, serif;
-            background: var(--cream);
-            color: var(--text);
-            line-height: 1.7;
-        }
-
-        /* ── HEADER ─────────────────────────────────── */
-        header {
-            background: var(--navy);
-            position: relative;
-            overflow: hidden;
-            padding: 0;
-        }
-
+        /* HEADER */
+        header { background: var(--navy); position: relative; overflow: hidden; padding: 0; }
         header::before {
-            content: '';
-            position: absolute;
-            inset: 0;
+            content: ''; position: absolute; inset: 0; pointer-events: none;
             background:
-                repeating-linear-gradient(
-                    0deg,
-                    transparent,
-                    transparent 39px,
-                    rgba(201,168,76,0.06) 39px,
-                    rgba(201,168,76,0.06) 40px
-                ),
-                repeating-linear-gradient(
-                    90deg,
-                    transparent,
-                    transparent 39px,
-                    rgba(201,168,76,0.06) 39px,
-                    rgba(201,168,76,0.06) 40px
-                );
-            pointer-events: none;
+                repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(201,168,76,0.06) 39px,rgba(201,168,76,0.06) 40px),
+                repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(201,168,76,0.06) 39px,rgba(201,168,76,0.06) 40px);
         }
+        .header-inner { max-width: 1000px; margin: 0 auto; padding: 56px 32px 48px; position: relative; display: flex; align-items: flex-end; gap: 24px; }
+        .header-emblem { width: 56px; height: 56px; border: 2px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-bottom: 4px; }
+        .header-emblem svg { width: 28px; height: 28px; }
+        .header-text h1 { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(2rem,5vw,3rem); font-weight: 900; color: var(--white); letter-spacing: -0.01em; line-height: 1.1; }
+        .header-text h1 span { color: var(--gold); }
+        .header-text p { color: rgba(255,255,255,0.5); font-size: 0.95rem; font-weight: 300; letter-spacing: 0.12em; text-transform: uppercase; margin-top: 6px; }
 
-        .header-inner {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 56px 32px 48px;
-            position: relative;
-            display: flex;
-            align-items: flex-end;
-            gap: 24px;
-        }
+        /* NAV */
+        nav { background: var(--navy-mid); border-bottom: 1px solid rgba(201,168,76,0.2); position: sticky; top: 0; z-index: 100; }
+        .nav-inner { max-width: 1000px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; }
+        .nav-links { display: flex; }
+        .nav-link { color: rgba(255,255,255,0.65); text-decoration: none; font-family: 'Source Serif 4', serif; font-size: 0.875rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; padding: 18px 20px; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; cursor: pointer; display: block; }
+        .nav-link:hover, .nav-link.active { color: var(--gold); border-bottom-color: var(--gold); }
+        .nav-panel-btn { color: rgba(255,255,255,0.3); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; padding: 8px 12px; border: 1px solid rgba(255,255,255,0.1); border-radius: 3px; transition: all 0.2s; user-select: none; }
+        .nav-panel-btn:hover { color: var(--gold); border-color: rgba(201,168,76,0.4); }
 
-        .header-emblem {
-            width: 56px;
-            height: 56px;
-            border: 2px solid var(--gold);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            margin-bottom: 4px;
-        }
-
-        .header-emblem svg {
-            width: 28px;
-            height: 28px;
-        }
-
-        .header-text h1 {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: clamp(2rem, 5vw, 3rem);
-            font-weight: 900;
-            color: var(--white);
-            letter-spacing: -0.01em;
-            line-height: 1.1;
-        }
-
-        .header-text h1 span {
-            color: var(--gold);
-        }
-
-        .header-text p {
-            color: rgba(255,255,255,0.5);
-            font-size: 0.95rem;
-            font-weight: 300;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            margin-top: 6px;
-        }
-
-        /* ── NAV ─────────────────────────────────────── */
-        nav {
-            background: var(--navy-mid);
-            border-bottom: 1px solid rgba(201,168,76,0.2);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .nav-inner {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 32px;
-            display: flex;
-            align-items: center;
-            gap: 0;
-        }
-
-        .nav-link {
-            color: rgba(255,255,255,0.65);
-            text-decoration: none;
-            font-family: 'Source Serif 4', serif;
-            font-size: 0.875rem;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            padding: 18px 20px;
-            border-bottom: 2px solid transparent;
-            transition: color 0.2s, border-color 0.2s;
-            cursor: pointer;
-            display: block;
-        }
-
-        .nav-link:hover, .nav-link.active {
-            color: var(--gold);
-            border-bottom-color: var(--gold);
-        }
-
-        /* ── PAGES ───────────────────────────────────── */
+        /* PAGES */
         .page { display: none; }
         .page.active { display: block; }
 
-        /* ── MAIN LAYOUT ─────────────────────────────── */
-        .container {
-            max-width: 1000px;
-            margin: 48px auto;
-            padding: 0 32px;
-            display: grid;
-            grid-template-columns: 1fr 280px;
-            gap: 32px;
-            align-items: start;
-        }
-
+        /* LAYOUT */
+        .container { max-width: 1000px; margin: 48px auto; padding: 0 32px; display: grid; grid-template-columns: 1fr 280px; gap: 32px; align-items: start; }
         .container.full { grid-template-columns: 1fr; }
 
-        /* ── ARTICLE CARD ────────────────────────────── */
-        .article-card {
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            padding: 48px;
-            box-shadow: var(--shadow);
-        }
+        /* ARTICLE CARD */
+        .article-card { background: var(--white); border: 1px solid var(--border); border-radius: 4px; padding: 48px; box-shadow: var(--shadow); }
+        .article-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .article-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+        .article-card h2 { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(1.6rem,3vw,2.2rem); font-weight: 700; color: var(--navy); line-height: 1.2; margin-bottom: 24px; }
+        .section-heading { font-family: 'Playfair Display', Georgia, serif; font-size: 1.25rem; font-weight: 700; color: var(--navy); margin: 36px 0 12px; padding-top: 28px; border-top: 1px solid var(--border); }
+        .article-card p { color: #374151; font-size: 1.05rem; line-height: 1.8; margin-bottom: 16px; }
+        .fact-list { list-style: none; margin: 16px 0 24px; display: flex; flex-direction: column; gap: 10px; }
+        .fact-list li { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; background: var(--cream); border-left: 3px solid var(--gold); border-radius: 0 4px 4px 0; font-size: 0.975rem; color: #374151; }
+        .fact-list li::before { content: '→'; color: var(--gold); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+        .source-block { margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 0.82rem; color: var(--text-muted); }
+        .source-block strong { color: var(--navy); font-weight: 600; }
+        .edit-request-btn { display: inline-flex; align-items: center; gap: 8px; margin-top: 20px; padding: 10px 20px; background: transparent; border: 1px solid var(--border); border-radius: 3px; color: var(--text-muted); font-family: 'Source Serif 4', serif; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
+        .edit-request-btn:hover { border-color: var(--gold); color: var(--navy); }
 
-        .article-label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--gold);
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .article-label::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border);
-        }
-
-        .article-card h2 {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: clamp(1.6rem, 3vw, 2.2rem);
-            font-weight: 700;
-            color: var(--navy);
-            line-height: 1.2;
-            margin-bottom: 24px;
-        }
-
-        .section-heading {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--navy);
-            margin: 36px 0 12px;
-            padding-top: 28px;
-            border-top: 1px solid var(--border);
-        }
-
-        .article-card p {
-            color: #374151;
-            font-size: 1.05rem;
-            line-height: 1.8;
-            margin-bottom: 16px;
-        }
-
-        .fact-list {
-            list-style: none;
-            margin: 16px 0 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .fact-list li {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            padding: 14px 16px;
-            background: var(--cream);
-            border-left: 3px solid var(--gold);
-            border-radius: 0 4px 4px 0;
-            font-size: 0.975rem;
-            color: #374151;
-        }
-
-        .fact-list li::before {
-            content: '→';
-            color: var(--gold);
-            font-weight: 700;
-            flex-shrink: 0;
-            margin-top: 1px;
-        }
-
-        .source-block {
-            margin-top: 36px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-            font-size: 0.82rem;
-            color: var(--text-muted);
-            letter-spacing: 0.02em;
-        }
-
-        .source-block strong {
-            color: var(--navy);
-            font-weight: 600;
-        }
-
-        /* ── SIDEBAR ─────────────────────────────────── */
+        /* SIDEBAR */
         .sidebar { display: flex; flex-direction: column; gap: 20px; }
-
-        .sidebar-card {
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            padding: 24px;
-            box-shadow: var(--shadow);
-        }
-
-        .sidebar-card h3 {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--navy);
-            margin-bottom: 14px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--border);
-        }
-
+        .sidebar-card { background: var(--white); border: 1px solid var(--border); border-radius: 4px; padding: 24px; box-shadow: var(--shadow); }
+        .sidebar-card h3 { font-family: 'Playfair Display', Georgia, serif; font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
         .sidebar-nav { list-style: none; display: flex; flex-direction: column; gap: 4px; }
-
-        .sidebar-nav li a {
-            display: block;
-            padding: 8px 10px;
-            color: #374151;
-            text-decoration: none;
-            font-size: 0.9rem;
-            border-radius: 3px;
-            transition: background 0.15s, color 0.15s;
-        }
-
-        .sidebar-nav li a:hover {
-            background: var(--cream);
-            color: var(--navy);
-        }
-
+        .sidebar-nav li a { display: block; padding: 8px 10px; color: #374151; text-decoration: none; font-size: 0.9rem; border-radius: 3px; transition: background 0.15s; }
+        .sidebar-nav li a:hover { background: var(--cream); color: var(--navy); }
         .tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
-
-        .tag {
-            display: inline-block;
-            padding: 4px 10px;
-            background: var(--cream);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            font-size: 0.78rem;
-            color: #374151;
-            cursor: pointer;
-            transition: border-color 0.15s, color 0.15s;
-        }
-
+        .tag { display: inline-block; padding: 4px 10px; background: var(--cream); border: 1px solid var(--border); border-radius: 20px; font-size: 0.78rem; color: #374151; cursor: pointer; transition: border-color 0.15s; }
         .tag:hover { border-color: var(--gold); color: var(--navy); }
 
-        /* ── HERO GRID (Hem) ─────────────────────────── */
-        .hero-section {
-            max-width: 1000px;
-            margin: 0 auto 0;
-            padding: 48px 32px 0;
-        }
+        /* HOME */
+        .hero-section { max-width: 1000px; margin: 0 auto; padding: 48px 32px 0; }
+        .section-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+        .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+        .card-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; max-width: 1000px; margin: 0 auto; padding: 0 32px 48px; }
+        .topic-card { background: var(--white); border: 1px solid var(--border); border-radius: 4px; padding: 28px 24px; cursor: pointer; transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s; box-shadow: var(--shadow); }
+        .topic-card:hover { box-shadow: 0 8px 40px rgba(15,28,46,0.14); transform: translateY(-2px); border-color: var(--gold); }
+        .topic-icon { width: 44px; height: 44px; background: var(--cream); border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; font-size: 1.2rem; }
+        .topic-card h3 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+        .topic-card p { font-size: 0.875rem; color: var(--text-muted); line-height: 1.6; }
+        .topic-card .read-more { display: inline-block; margin-top: 14px; font-size: 0.8rem; font-weight: 600; color: var(--gold); letter-spacing: 0.05em; text-transform: uppercase; }
 
-        .section-label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--gold);
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .section-label::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border);
-        }
-
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 32px 48px;
-        }
-
-        .topic-card {
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            padding: 28px 24px;
-            cursor: pointer;
-            transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
-            box-shadow: var(--shadow);
-        }
-
-        .topic-card:hover {
-            box-shadow: 0 8px 40px rgba(15,28,46,0.14);
-            transform: translateY(-2px);
-            border-color: var(--gold);
-        }
-
-        .topic-icon {
-            width: 44px;
-            height: 44px;
-            background: var(--cream);
-            border: 1px solid var(--border);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 16px;
-            font-size: 1.2rem;
-        }
-
-        .topic-card h3 {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: var(--navy);
-            margin-bottom: 8px;
-        }
-
-        .topic-card p {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            line-height: 1.6;
-        }
-
-        .topic-card .read-more {
-            display: inline-block;
-            margin-top: 14px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--gold);
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-        }
-
-        /* ── SEARCH ──────────────────────────────────── */
-        .search-bar {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 32px 32px 0;
-        }
-
-        .search-wrap {
-            display: flex;
-            gap: 0;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            overflow: hidden;
-            background: var(--white);
-            box-shadow: var(--shadow);
-        }
-
-        .search-wrap input {
-            flex: 1;
-            padding: 14px 20px;
-            border: none;
-            outline: none;
-            font-family: 'Source Serif 4', serif;
-            font-size: 1rem;
-            color: var(--text);
-            background: transparent;
-        }
-
+        /* SEARCH */
+        .search-bar { max-width: 1000px; margin: 0 auto; padding: 32px 32px 0; }
+        .search-wrap { display: flex; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; background: var(--white); box-shadow: var(--shadow); }
+        .search-wrap input { flex: 1; padding: 14px 20px; border: none; outline: none; font-family: 'Source Serif 4', serif; font-size: 1rem; color: var(--text); background: transparent; }
         .search-wrap input::placeholder { color: #9ca3af; }
-
-        .search-wrap button {
-            padding: 14px 24px;
-            background: var(--navy);
-            color: var(--white);
-            border: none;
-            cursor: pointer;
-            font-family: 'Source Serif 4', serif;
-            font-size: 0.875rem;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            transition: background 0.2s;
-        }
-
+        .search-wrap button { padding: 14px 24px; background: var(--navy); color: var(--white); border: none; cursor: pointer; font-family: 'Source Serif 4', serif; font-size: 0.875rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; transition: background 0.2s; }
         .search-wrap button:hover { background: var(--navy-light); }
 
-        /* ── HISTORIA PAGE ───────────────────────────── */
-        .timeline {
-            position: relative;
-            padding-left: 32px;
-        }
+        /* TIMELINE */
+        .timeline { position: relative; padding-left: 32px; }
+        .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--gold), var(--border)); }
+        .timeline-item { position: relative; margin-bottom: 36px; }
+        .timeline-item::before { content: ''; position: absolute; left: -28px; top: 6px; width: 12px; height: 12px; background: var(--gold); border-radius: 50%; border: 2px solid var(--white); box-shadow: 0 0 0 2px var(--gold); }
+        .timeline-year { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+        .timeline-item h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--navy); margin-bottom: 6px; }
+        .timeline-item p { font-size: 0.9rem; color: #374151; line-height: 1.7; }
 
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 8px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: linear-gradient(to bottom, var(--gold), var(--border));
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 36px;
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -28px;
-            top: 6px;
-            width: 12px;
-            height: 12px;
-            background: var(--gold);
-            border-radius: 50%;
-            border: 2px solid var(--white);
-            box-shadow: 0 0 0 2px var(--gold);
-        }
-
-        .timeline-year {
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--gold);
-            margin-bottom: 4px;
-        }
-
-        .timeline-item h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.1rem;
-            color: var(--navy);
-            margin-bottom: 6px;
-        }
-
-        .timeline-item p {
-            font-size: 0.9rem;
-            color: #374151;
-            line-height: 1.7;
-        }
-
-        /* ── KONTAKT PAGE ────────────────────────────── */
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 32px;
-        }
-
+        /* CONTACT FORM */
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
         .form-group { margin-bottom: 20px; }
-
-        .form-group label {
-            display: block;
-            font-size: 0.8rem;
-            font-weight: 600;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--navy);
-            margin-bottom: 6px;
-        }
-
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 12px 14px;
-            border: 1px solid var(--border);
-            border-radius: 3px;
-            font-family: 'Source Serif 4', serif;
-            font-size: 0.975rem;
-            color: var(--text);
-            background: var(--cream);
-            transition: border-color 0.2s, box-shadow 0.2s;
-            outline: none;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
-            border-color: var(--gold);
-            box-shadow: 0 0 0 3px rgba(201,168,76,0.12);
-            background: var(--white);
-        }
-
+        .form-group label { display: block; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--navy); margin-bottom: 6px; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 3px; font-family: 'Source Serif 4', serif; font-size: 0.975rem; color: var(--text); background: var(--cream); transition: border-color 0.2s, box-shadow 0.2s; outline: none; }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.12); background: var(--white); }
         .form-group textarea { resize: vertical; min-height: 120px; }
+        .btn-primary { padding: 14px 32px; background: var(--navy); color: var(--white); border: none; border-radius: 3px; font-family: 'Source Serif 4', serif; font-size: 0.875rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: background 0.2s, transform 0.15s; }
+        .btn-primary:hover { background: var(--navy-light); transform: translateY(-1px); }
+        .contact-info h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--navy); margin-bottom: 16px; }
+        .contact-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; font-size: 0.9rem; color: #374151; }
+        .contact-item .icon { width: 32px; height: 32px; background: var(--cream); border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
-        .btn-primary {
-            padding: 14px 32px;
-            background: var(--navy);
-            color: var(--white);
-            border: none;
-            border-radius: 3px;
-            font-family: 'Source Serif 4', serif;
-            font-size: 0.875rem;
-            font-weight: 600;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.15s;
-        }
+        /* MODAL */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(15,28,46,0.6); z-index: 500; display: none; align-items: center; justify-content: center; padding: 24px; backdrop-filter: blur(2px); }
+        .modal-overlay.open { display: flex; }
+        .modal { background: var(--white); border-radius: 6px; padding: 40px; max-width: 600px; width: 100%; box-shadow: 0 24px 80px rgba(0,0,0,0.25); position: relative; max-height: 90vh; overflow-y: auto; }
+        .modal h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--navy); margin-bottom: 8px; }
+        .modal p.sub { font-size: 0.875rem; color: var(--text-muted); margin-bottom: 28px; line-height: 1.6; }
+        .modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer; line-height: 1; padding: 4px; }
+        .modal-close:hover { color: var(--navy); }
 
-        .btn-primary:hover {
-            background: var(--navy-light);
-            transform: translateY(-1px);
-        }
+        /* OWNER PANEL */
+        .panel-overlay { position: fixed; inset: 0; background: var(--navy); z-index: 600; display: none; flex-direction: column; overflow-y: auto; }
+        .panel-overlay.open { display: flex; }
+        .panel-login { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 32px; gap: 0; }
+        .panel-login h2 { font-family: 'Playfair Display', serif; color: var(--white); font-size: 2rem; margin-bottom: 8px; }
+        .panel-login .sub { color: rgba(255,255,255,0.35); font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 40px; }
+        .panel-login input { width: 320px; max-width: 100%; padding: 14px 18px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; color: var(--white); font-family: 'Source Serif 4', serif; font-size: 1rem; outline: none; margin-bottom: 12px; letter-spacing: 0.04em; }
+        .panel-login input:focus { border-color: var(--gold); }
+        .panel-login input::placeholder { color: rgba(255,255,255,0.2); }
+        .panel-login .login-btn { width: 320px; max-width: 100%; padding: 14px; background: var(--gold); color: var(--navy); border: none; border-radius: 4px; font-family: 'Source Serif 4', serif; font-weight: 700; font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; margin-bottom: 10px; }
+        .panel-login .login-btn:hover { background: var(--gold-light); }
+        .panel-login .cancel-btn { background: none; border: none; color: rgba(255,255,255,0.3); font-family: 'Source Serif 4', serif; font-size: 0.8rem; cursor: pointer; text-decoration: underline; }
+        .panel-login .cancel-btn:hover { color: rgba(255,255,255,0.6); }
+        .login-error { color: #f87171; font-size: 0.85rem; margin-top: 4px; display: none; }
 
-        .contact-info h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.1rem;
-            color: var(--navy);
-            margin-bottom: 16px;
-        }
+        .panel-main { display: none; flex-direction: column; min-height: 100vh; }
+        .panel-main.visible { display: flex; }
+        .panel-header { background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(201,168,76,0.2); padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+        .panel-header h2 { font-family: 'Playfair Display', serif; color: var(--white); font-size: 1.3rem; }
+        .panel-header .owner-tag { color: var(--gold); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-top: 2px; }
+        .panel-close-btn { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.6); padding: 8px 18px; border-radius: 3px; cursor: pointer; font-family: 'Source Serif 4', serif; font-size: 0.8rem; letter-spacing: 0.05em; text-transform: uppercase; transition: all 0.2s; }
+        .panel-close-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.3); }
+        .panel-body { padding: 40px; flex: 1; max-width: 900px; width: 100%; margin: 0 auto; }
+        .panel-section { margin-bottom: 52px; }
+        .panel-section-title { font-size: 0.78rem; font-weight: 700; color: var(--gold); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .panel-empty { color: rgba(255,255,255,0.25); font-size: 0.875rem; font-style: italic; padding: 16px 0; }
 
-        .contact-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 16px;
-            font-size: 0.9rem;
-            color: #374151;
-        }
+        /* REQUEST CARDS */
+        .req-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); border-radius: 4px; padding: 22px 24px; margin-bottom: 14px; transition: border-color 0.2s; }
+        .req-card:hover { border-color: rgba(255,255,255,0.15); }
+        .req-card-meta { display: flex; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; align-items: center; }
+        .req-badge { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+        .badge-article { background: rgba(21,128,61,0.2); color: #4ade80; border: 1px solid rgba(74,222,128,0.25); }
+        .badge-edit { background: rgba(59,130,246,0.2); color: #93c5fd; border: 1px solid rgba(147,197,253,0.25); }
+        .badge-contact { background: rgba(245,158,11,0.2); color: #fcd34d; border: 1px solid rgba(252,211,77,0.25); }
+        .req-name { color: rgba(255,255,255,0.55); font-size: 0.82rem; }
+        .req-time { color: rgba(255,255,255,0.25); font-size: 0.78rem; margin-left: auto; }
+        .req-title { color: var(--white); font-family: 'Playfair Display', serif; font-size: 1.05rem; margin-bottom: 8px; }
+        .req-preview { color: rgba(255,255,255,0.45); font-size: 0.875rem; line-height: 1.65; margin-bottom: 16px; white-space: pre-wrap; overflow: hidden; max-height: 80px; }
+        .req-preview.expanded { max-height: none; }
+        .req-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn-accept { padding: 8px 18px; background: rgba(21,128,61,0.75); color: #fff; border: none; border-radius: 3px; font-family: 'Source Serif 4', serif; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; }
+        .btn-accept:hover { background: #15803d; }
+        .btn-deny { padding: 8px 18px; background: rgba(185,28,28,0.65); color: #fff; border: none; border-radius: 3px; font-family: 'Source Serif 4', serif; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; }
+        .btn-deny:hover { background: #b91c1c; }
+        .btn-expand { padding: 8px 14px; background: transparent; color: rgba(255,255,255,0.35); border: 1px solid rgba(255,255,255,0.1); border-radius: 3px; font-family: 'Source Serif 4', serif; font-size: 0.78rem; cursor: pointer; transition: all 0.2s; }
+        .btn-expand:hover { color: var(--white); border-color: rgba(255,255,255,0.3); }
+        .req-card.resolved { opacity: 0.38; pointer-events: none; }
+        .resolved-label { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.3); }
+        .badge-count { display: inline-block; background: var(--gold); color: var(--navy); font-size: 0.7rem; font-weight: 800; border-radius: 20px; padding: 1px 7px; margin-left: 8px; vertical-align: middle; }
 
-        .contact-item .icon {
-            width: 32px;
-            height: 32px;
-            background: var(--cream);
-            border: 1px solid var(--border);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            font-size: 0.9rem;
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            background: var(--navy);
-            color: var(--white);
-            padding: 14px 22px;
-            border-radius: 4px;
-            border-left: 4px solid var(--gold);
-            font-size: 0.9rem;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-            transform: translateY(80px);
-            opacity: 0;
-            transition: transform 0.3s, opacity 0.3s;
-            z-index: 999;
-        }
-
+        /* TOAST */
+        .toast { position: fixed; bottom: 24px; right: 24px; background: var(--navy); color: var(--white); padding: 14px 22px; border-radius: 4px; border-left: 4px solid var(--gold); font-size: 0.9rem; box-shadow: 0 8px 32px rgba(0,0,0,0.2); transform: translateY(80px); opacity: 0; transition: transform 0.3s, opacity 0.3s; z-index: 9999; max-width: 360px; line-height: 1.4; }
         .toast.show { transform: translateY(0); opacity: 1; }
 
-        /* ── FOOTER ──────────────────────────────────── */
-        footer {
-            background: var(--navy);
-            border-top: 1px solid rgba(201,168,76,0.2);
-            padding: 40px 32px;
-            margin-top: 64px;
-        }
-
-        .footer-inner {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 40px;
-        }
-
-        .footer-brand h2 {
-            font-family: 'Playfair Display', serif;
-            color: var(--white);
-            font-size: 1.2rem;
-            margin-bottom: 8px;
-        }
-
-        .footer-brand p {
-            color: rgba(255,255,255,0.4);
-            font-size: 0.85rem;
-            line-height: 1.6;
-        }
-
-        .footer-col h4 {
-            color: var(--gold);
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            margin-bottom: 14px;
-        }
-
-        .footer-col a {
-            display: block;
-            color: rgba(255,255,255,0.5);
-            text-decoration: none;
-            font-size: 0.875rem;
-            margin-bottom: 8px;
-            transition: color 0.15s;
-            cursor: pointer;
-        }
-
+        /* FOOTER */
+        footer { background: var(--navy); border-top: 1px solid rgba(201,168,76,0.2); padding: 40px 32px; margin-top: 64px; }
+        .footer-inner { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; }
+        .footer-brand h2 { font-family: 'Playfair Display', serif; color: var(--white); font-size: 1.2rem; margin-bottom: 8px; }
+        .footer-brand p { color: rgba(255,255,255,0.4); font-size: 0.85rem; line-height: 1.6; }
+        .footer-col h4 { color: var(--gold); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 14px; }
+        .footer-col a { display: block; color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.875rem; margin-bottom: 8px; transition: color 0.15s; cursor: pointer; }
         .footer-col a:hover { color: var(--gold); }
+        .footer-bottom { max-width: 1000px; margin: 32px auto 0; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: rgba(255,255,255,0.3); }
 
-        .footer-bottom {
-            max-width: 1000px;
-            margin: 32px auto 0;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.08);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.8rem;
-            color: rgba(255,255,255,0.3);
-        }
-
-        /* ── RESPONSIVE ──────────────────────────────── */
+        /* RESPONSIVE */
         @media (max-width: 768px) {
             .container { grid-template-columns: 1fr; }
             .card-grid { grid-template-columns: 1fr; }
@@ -689,18 +207,14 @@
             .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
             .article-card { padding: 28px 20px; }
             .header-inner { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .panel-body { padding: 24px 16px; }
+            .panel-header { padding: 16px 20px; }
         }
 
-        /* ── ANIMATIONS ──────────────────────────────── */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(16px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
         .page.active > * { animation: fadeUp 0.35s ease both; }
         .page.active > *:nth-child(2) { animation-delay: 0.05s; }
         .page.active > *:nth-child(3) { animation-delay: 0.1s; }
-        .page.active > *:nth-child(4) { animation-delay: 0.15s; }
     </style>
 </head>
 <body>
@@ -716,8 +230,8 @@
             </svg>
         </div>
         <div class="header-text">
-            <h1>Faktabasen <span>Sverige</span></h1>
-            <p>Kunskapsnav · Vetenskap &amp; Historia</p>
+            <h1><span>Faktabasen</span></h1>
+            <p>Grundad av Moltaz &amp; Vilgot · Vetenskap &amp; Historia</p>
         </div>
     </div>
 </header>
@@ -725,14 +239,17 @@
 <!-- NAV -->
 <nav>
     <div class="nav-inner">
-        <a class="nav-link active" onclick="showPage('hem', this)">Hem</a>
-        <a class="nav-link" onclick="showPage('vetenskap', this)">Vetenskap</a>
-        <a class="nav-link" onclick="showPage('historia', this)">Historia</a>
-        <a class="nav-link" onclick="showPage('kontakt', this)">Kontakt</a>
+        <div class="nav-links">
+            <a class="nav-link active" onclick="showPage('hem',this)">Hem</a>
+            <a class="nav-link" onclick="showPage('vetenskap',this)">Vetenskap</a>
+            <a class="nav-link" onclick="showPage('historia',this)">Historia</a>
+            <a class="nav-link" onclick="showPage('kontakt',this)">Kontakt</a>
+        </div>
+        <div class="nav-panel-btn" onclick="openPanel()">⚙ Panel</div>
     </div>
 </nav>
 
-<!-- ═══════════════════════════ HEM ═══════════════════════════ -->
+<!-- ════════ HEM ════════ -->
 <div id="hem" class="page active">
     <div class="search-bar">
         <div class="search-wrap">
@@ -740,64 +257,57 @@
             <button onclick="doSearch()">Sök</button>
         </div>
     </div>
-
-    <div class="hero-section">
-        <div class="section-label">Utvalda ämnen</div>
-    </div>
-
+    <div class="hero-section"><div class="section-label">Utvalda ämnen</div></div>
     <div class="card-grid">
-        <div class="topic-card" onclick="showPage('vetenskap', document.querySelectorAll('.nav-link')[1])">
+        <div class="topic-card" onclick="showPage('vetenskap',document.querySelectorAll('.nav-link')[1])">
             <div class="topic-icon">🔬</div>
             <h3>Artificiell Intelligens</h3>
             <p>Hur maskiner lär sig tänka – och vad det innebär för framtiden.</p>
             <span class="read-more">Läs mer →</span>
         </div>
-        <div class="topic-card" onclick="showPage('historia', document.querySelectorAll('.nav-link')[2])">
+        <div class="topic-card" onclick="showPage('historia',document.querySelectorAll('.nav-link')[2])">
             <div class="topic-icon">📜</div>
             <h3>Sveriges Historia</h3>
-            <p>Från vikingatiden till modernt välfärdssamhälle – en tidslinje.</p>
+            <p>Från vikingatiden till modernt välfärdssamhälle.</p>
             <span class="read-more">Läs mer →</span>
         </div>
-        <div class="topic-card" onclick="showPage('vetenskap', document.querySelectorAll('.nav-link')[1])">
+        <div class="topic-card" onclick="openSubmitModal()">
+            <div class="topic-icon">✍️</div>
+            <h3>Skicka in en artikel</h3>
+            <p>Har du expertkunskap? Bidra med en artikel till Faktabasen.</p>
+            <span class="read-more">Bidra nu →</span>
+        </div>
+        <div class="topic-card" onclick="showPage('vetenskap',document.querySelectorAll('.nav-link')[1])">
             <div class="topic-icon">⚗️</div>
             <h3>Maskininlärning</h3>
-            <p>Tekniken bakom AI – mönsterigenkänning och neural nätverk.</p>
+            <p>Tekniken bakom AI – mönsterigenkänning och neurala nätverk.</p>
             <span class="read-more">Läs mer →</span>
         </div>
-        <div class="topic-card" onclick="showPage('historia', document.querySelectorAll('.nav-link')[2])">
+        <div class="topic-card" onclick="showPage('historia',document.querySelectorAll('.nav-link')[2])">
             <div class="topic-icon">🏛️</div>
             <h3>Demokratins Rötter</h3>
             <p>Hur Sverige byggde en av världens starkaste demokratier.</p>
             <span class="read-more">Läs mer →</span>
         </div>
-        <div class="topic-card" onclick="showPage('vetenskap', document.querySelectorAll('.nav-link')[1])">
-            <div class="topic-icon">🌍</div>
-            <h3>Klimat &amp; Teknik</h3>
-            <p>Vetenskapliga fakta om klimatförändringen och tekniska lösningar.</p>
-            <span class="read-more">Läs mer →</span>
-        </div>
-        <div class="topic-card" onclick="showPage('kontakt', document.querySelectorAll('.nav-link')[3])">
+        <div class="topic-card" onclick="showPage('kontakt',document.querySelectorAll('.nav-link')[3])">
             <div class="topic-icon">✉️</div>
-            <h3>Bidra till Basen</h3>
-            <p>Har du expertkunskap? Kontakta oss och bli en del av projektet.</p>
+            <h3>Kontakta oss</h3>
+            <p>Frågor, samarbeten eller rättelser – hör av dig till redaktionen.</p>
             <span class="read-more">Kontakta oss →</span>
         </div>
     </div>
 </div>
 
-<!-- ═══════════════════════════ VETENSKAP ═══════════════════════════ -->
+<!-- ════════ VETENSKAP ════════ -->
 <div id="vetenskap" class="page">
     <div class="container">
         <div>
             <div class="article-card">
                 <div class="article-label">Vetenskap &amp; Teknik</div>
                 <h2>Artificiell intelligens – vad är det och hur fungerar det?</h2>
-
                 <p>Artificiell intelligens (AI) är ett område inom datavetenskap som fokuserar på att skapa system som kan utföra uppgifter som normalt kräver mänsklig intelligens. Detta inkluderar problemlösning, inlärning och språkförståelse.</p>
-
                 <div class="section-heading">Hur fungerar AI?</div>
-                <p>AI-system använder algoritmer och stora mängder data för att identifiera mönster. Maskininlärning är en vanlig metod där datorer lär sig genom erfarenhet istället för att programmeras med exakta instruktioner. Med djupinlärning kan system bearbeta komplex information – bilder, ljud och text – med remarkabel precision.</p>
-
+                <p>AI-system använder algoritmer och stora mängder data för att identifiera mönster. Maskininlärning är en vanlig metod där datorer lär sig genom erfarenhet istället för att programmeras med exakta instruktioner.</p>
                 <div class="section-heading">Fakta i korthet</div>
                 <ul class="fact-list">
                     <li>AI används brett inom sjukvård, transport och ekonomi</li>
@@ -806,16 +316,12 @@
                     <li>Generativ AI skapar text, bilder och kod från grunden</li>
                     <li>Etiska frågor om bias och integritet är centrala utmaningar</li>
                 </ul>
-
                 <div class="section-heading">Tillämpningar i Sverige</div>
-                <p>Sverige tillhör Europas ledande AI-nationer. Företag som Ericsson, Spotify och Klarna investerar kraftigt i AI-forskning. Karolinska Institutet använder maskininlärning för att förbättra cancerdiagnostik, medan SMHI tillämpar AI-modeller för mer precisa väderprognoser.</p>
-
-                <div class="source-block">
-                    <strong>Källor:</strong> Nationalencyklopedin, Vetenskapsrådet, EU-kommissionen, VINNOVA 2025
-                </div>
+                <p>Sverige tillhör Europas ledande AI-nationer. Företag som Ericsson, Spotify och Klarna investerar kraftigt i AI-forskning. Karolinska Institutet använder maskininlärning för att förbättra cancerdiagnostik.</p>
+                <div class="source-block"><strong>Källor:</strong> Nationalencyklopedin, Vetenskapsrådet, EU-kommissionen, VINNOVA 2025</div>
+                <button class="edit-request-btn" onclick="openEditModal('Artificiell intelligens – vad är det och hur fungerar det?')">✏ Föreslå en rättelse</button>
             </div>
         </div>
-
         <div class="sidebar">
             <div class="sidebar-card">
                 <h3>Relaterade artiklar</h3>
@@ -824,38 +330,31 @@
                     <li><a href="#" onclick="return false;">Neurala nätverk förklarade</a></li>
                     <li><a href="#" onclick="return false;">AI och etik</a></li>
                     <li><a href="#" onclick="return false;">Kvantdatorer &amp; framtiden</a></li>
-                    <li><a href="#" onclick="return false;">Robotik i industrin</a></li>
                 </ul>
             </div>
             <div class="sidebar-card">
                 <h3>Ämnesord</h3>
                 <div class="tag-list">
-                    <span class="tag">AI</span>
-                    <span class="tag">Maskininlärning</span>
-                    <span class="tag">Datavetenskap</span>
-                    <span class="tag">Algoritmer</span>
-                    <span class="tag">Deep Learning</span>
-                    <span class="tag">Etik</span>
-                    <span class="tag">Teknik</span>
+                    <span class="tag">AI</span><span class="tag">Maskininlärning</span><span class="tag">Datavetenskap</span><span class="tag">Algoritmer</span><span class="tag">Deep Learning</span><span class="tag">Etik</span>
                 </div>
             </div>
             <div class="sidebar-card">
-                <h3>Senast uppdaterad</h3>
-                <p style="font-size:0.875rem;color:#374151;">April 2026<br><span style="color:var(--text-muted);font-size:0.8rem;">Granskat av redaktionen</span></p>
+                <h3>Bidra</h3>
+                <p style="font-size:0.875rem;color:#374151;margin-bottom:14px;">Expert inom vetenskap? Skicka in en artikel för granskning.</p>
+                <button class="btn-primary" style="width:100%;padding:10px;" onclick="openSubmitModal()">Skicka in artikel</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- ═══════════════════════════ HISTORIA ═══════════════════════════ -->
+<!-- ════════ HISTORIA ════════ -->
 <div id="historia" class="page">
     <div class="container">
         <div>
             <div class="article-card">
                 <div class="article-label">Historia</div>
                 <h2>Sverige genom tiderna – en historisk tidslinje</h2>
-                <p>Från de första bosättningarna efter istiden till dagens moderna välfärdsstat har Sverige genomgått dramatiska förvandlingar. Här är några av de mest avgörande epokerna.</p>
-
+                <p>Från de första bosättningarna efter istiden till dagens moderna välfärdsstat har Sverige genomgått dramatiska förvandlingar.</p>
                 <div class="section-heading">Tidslinje</div>
                 <div class="timeline">
                     <div class="timeline-item">
@@ -871,12 +370,12 @@
                     <div class="timeline-item">
                         <div class="timeline-year">1611–1718</div>
                         <h3>Stormaktstiden</h3>
-                        <p>Sverige kontrollerade stora delar av Östersjökusten. Karl XII:s fälttåg markerade stormaktens dramatiska slut vid Fredriksten 1718.</p>
+                        <p>Sverige kontrollerade stora delar av Östersjökusten. Karl XII:s fälttåg markerade stormaktens dramatiska slut 1718.</p>
                     </div>
                     <div class="timeline-item">
                         <div class="timeline-year">1814</div>
                         <h3>Unionen med Norge</h3>
-                        <p>Sverige och Norge inträde i en personalunion som varade till 1905 då Norge valde självständighet i en fredlig uppgörelse.</p>
+                        <p>Sverige och Norge inträdde i en personalunion som varade till 1905 då Norge valde självständighet.</p>
                     </div>
                     <div class="timeline-item">
                         <div class="timeline-year">1932–1976</div>
@@ -886,16 +385,13 @@
                     <div class="timeline-item">
                         <div class="timeline-year">1995</div>
                         <h3>EU-inträde</h3>
-                        <p>Efter en folkomröstning gick Sverige med i Europeiska unionen. Landet valde dock att behålla kronan som valuta.</p>
+                        <p>Efter en folkomröstning gick Sverige med i Europeiska unionen. Landet valde att behålla kronan som valuta.</p>
                     </div>
                 </div>
-
-                <div class="source-block">
-                    <strong>Källor:</strong> Nationalencyklopedin, Riksarkivet, Historisk Tidskrift
-                </div>
+                <div class="source-block"><strong>Källor:</strong> Nationalencyklopedin, Riksarkivet, Historisk Tidskrift</div>
+                <button class="edit-request-btn" onclick="openEditModal('Sveriges historia – en historisk tidslinje')">✏ Föreslå en rättelse</button>
             </div>
         </div>
-
         <div class="sidebar">
             <div class="sidebar-card">
                 <h3>Epoker</h3>
@@ -910,36 +406,29 @@
             <div class="sidebar-card">
                 <h3>Ämnesord</h3>
                 <div class="tag-list">
-                    <span class="tag">Vikingar</span>
-                    <span class="tag">Stormaktstid</span>
-                    <span class="tag">Folkhemmet</span>
-                    <span class="tag">Gustav Vasa</span>
-                    <span class="tag">Välfärd</span>
-                    <span class="tag">EU</span>
+                    <span class="tag">Vikingar</span><span class="tag">Stormaktstid</span><span class="tag">Folkhemmet</span><span class="tag">Gustav Vasa</span><span class="tag">Välfärd</span><span class="tag">EU</span>
                 </div>
+            </div>
+            <div class="sidebar-card">
+                <h3>Bidra</h3>
+                <p style="font-size:0.875rem;color:#374151;margin-bottom:14px;">Är du historiker? Skicka in en artikel för granskning.</p>
+                <button class="btn-primary" style="width:100%;padding:10px;" onclick="openSubmitModal()">Skicka in artikel</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- ═══════════════════════════ KONTAKT ═══════════════════════════ -->
+<!-- ════════ KONTAKT ════════ -->
 <div id="kontakt" class="page">
     <div class="container full">
         <div class="article-card">
             <div class="article-label">Kontakt</div>
             <h2>Hör av dig till oss</h2>
-            <p style="margin-bottom:32px;">Har du frågor, vill bidra med expertkunskap eller rapportera ett fel i vårt innehåll? Fyll i formuläret nedan så återkommer vi inom två arbetsdagar.</p>
-
+            <p style="margin-bottom:32px;">Har du frågor, vill bidra med expertkunskap eller rapportera ett fel? Fyll i formuläret nedan så återkommer vi inom två arbetsdagar.</p>
             <div class="contact-grid">
                 <div>
-                    <div class="form-group">
-                        <label>Ditt namn</label>
-                        <input type="text" id="contactName" placeholder="Anna Svensson">
-                    </div>
-                    <div class="form-group">
-                        <label>E-postadress</label>
-                        <input type="email" id="contactEmail" placeholder="anna@exempel.se">
-                    </div>
+                    <div class="form-group"><label>Ditt namn</label><input type="text" id="contactName" placeholder="Anna Svensson"></div>
+                    <div class="form-group"><label>E-postadress</label><input type="email" id="contactEmail" placeholder="anna@exempel.se"></div>
                     <div class="form-group">
                         <label>Ämne</label>
                         <select id="contactSubject">
@@ -951,41 +440,33 @@
                             <option>Övrigt</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label>Meddelande</label>
-                        <textarea id="contactMessage" placeholder="Skriv ditt meddelande här…"></textarea>
-                    </div>
+                    <div class="form-group"><label>Meddelande</label><textarea id="contactMessage" placeholder="Skriv ditt meddelande här…"></textarea></div>
                     <button class="btn-primary" onclick="sendContact()">Skicka meddelande</button>
                 </div>
-
                 <div class="contact-info">
                     <h3>Kontaktuppgifter</h3>
                     <div class="contact-item">
                         <div class="icon">📧</div>
-                        <div>
-                            <strong>E-post</strong><br>
-                            <span style="color:var(--text-muted);">redaktion.faktabasen@protonmail.com</span>
+                        <div><strong>E-post</strong><br>
+                            <a href="mailto:redaktion.faktabasen@protonmail.com" style="color:var(--text-muted);text-decoration:none;font-size:0.9rem;">redaktion.faktabasen@protonmail.com</a>
                         </div>
                     </div>
                     <div class="contact-item">
-                        <div class="icon">🏛️</div>
-                        <div>
-                            <strong>Adress</strong><br>
-                            <span style="color:var(--text-muted);">Faktabasen Sverige<br>Kungsgatan 12, 111 35 Stockholm</span>
-                        </div>
+                        <div class="icon">👤</div>
+                        <div><strong>Grundare</strong><br><span style="color:var(--text-muted);">Moltaz &amp; Vilgot</span></div>
                     </div>
                     <div class="contact-item">
                         <div class="icon">🕐</div>
-                        <div>
-                            <strong>Svarstid</strong><br>
-                            <span style="color:var(--text-muted);">Måndag–fredag, 09:00–17:00</span>
-                        </div>
+                        <div><strong>Svarstid</strong><br><span style="color:var(--text-muted);">Måndag–fredag, 09:00–17:00</span></div>
                     </div>
                     <div style="margin-top:28px;padding:20px;background:var(--cream);border-radius:4px;border-left:3px solid var(--gold);">
                         <p style="font-size:0.875rem;color:#374151;margin:0;">
                             <strong style="color:var(--navy);">Vill du bli skribent?</strong><br>
                             Vi söker alltid experter inom vetenskap, historia och teknik. Hör av dig med en kort presentation och ämnesförslag.
                         </p>
+                    </div>
+                    <div style="margin-top:16px;">
+                        <button class="btn-primary" style="width:100%;" onclick="openSubmitModal()">✍ Skicka in en artikel</button>
                     </div>
                 </div>
             </div>
@@ -997,34 +478,120 @@
 <footer>
     <div class="footer-inner">
         <div class="footer-brand">
-            <h2>Faktabasen Sverige</h2>
-            <p>Ett oberoende kunskapsnav med fokus på vetenskap, historia och samhälle. Granskade artiklar skrivna av experter.</p>
+            <h2>Faktabasen</h2>
+            <p>Grundad av Moltaz &amp; Vilgot. Ett oberoende kunskapsnav med fokus på vetenskap, historia och samhälle. Granskade artiklar skrivna av experter.</p>
         </div>
         <div class="footer-col">
             <h4>Sidor</h4>
-            <a onclick="showPage('hem', document.querySelectorAll('.nav-link')[0])">Hem</a>
-            <a onclick="showPage('vetenskap', document.querySelectorAll('.nav-link')[1])">Vetenskap</a>
-            <a onclick="showPage('historia', document.querySelectorAll('.nav-link')[2])">Historia</a>
-            <a onclick="showPage('kontakt', document.querySelectorAll('.nav-link')[3])">Kontakt</a>
+            <a onclick="showPage('hem',document.querySelectorAll('.nav-link')[0])">Hem</a>
+            <a onclick="showPage('vetenskap',document.querySelectorAll('.nav-link')[1])">Vetenskap</a>
+            <a onclick="showPage('historia',document.querySelectorAll('.nav-link')[2])">Historia</a>
+            <a onclick="showPage('kontakt',document.querySelectorAll('.nav-link')[3])">Kontakt</a>
         </div>
         <div class="footer-col">
             <h4>Om oss</h4>
-            <a href="#" onclick="return false;">Redaktionen</a>
+            <a href="mailto:redaktion.faktabasen@protonmail.com">E-post</a>
             <a href="#" onclick="return false;">Källpolicy</a>
             <a href="#" onclick="return false;">Integritetspolicy</a>
-            <a href="#" onclick="return false;">Tillgänglighet</a>
+            <a onclick="openPanel()">Ägar-panel</a>
         </div>
     </div>
     <div class="footer-bottom">
-        <span>© 2026 Faktabasen Sverige. Alla rättigheter förbehållna.</span>
+        <span>© 2026 Faktabasen. Grundad av Moltaz &amp; Vilgot.</span>
         <span>Oberoende · Granskat · Pålitligt</span>
     </div>
 </footer>
+
+<!-- ══════ MODAL: SUBMIT ARTICLE ══════ -->
+<div class="modal-overlay" id="submitModal" onclick="closeModalOnBg(event,'submitModal')">
+    <div class="modal">
+        <button class="modal-close" onclick="closeModal('submitModal')">×</button>
+        <h3>Skicka in en artikel</h3>
+        <p class="sub">Din artikel granskas av redaktionen (Moltaz &amp; Vilgot) innan den publiceras. Du får svar via e-post.</p>
+        <div class="form-group"><label>Ditt namn</label><input type="text" id="subName" placeholder="Anna Svensson"></div>
+        <div class="form-group"><label>Din e-post</label><input type="email" id="subEmail" placeholder="anna@exempel.se"></div>
+        <div class="form-group"><label>Artikelns rubrik</label><input type="text" id="subTitle" placeholder="T.ex. Kvantfysik för nybörjare"></div>
+        <div class="form-group">
+            <label>Kategori</label>
+            <select id="subCategory">
+                <option value="">Välj kategori…</option>
+                <option>Vetenskap</option>
+                <option>Historia</option>
+                <option>Teknik</option>
+                <option>Samhälle</option>
+                <option>Annat</option>
+            </select>
+        </div>
+        <div class="form-group"><label>Artikeltext</label><textarea id="subContent" style="min-height:180px;" placeholder="Skriv din artikel här. Inkludera gärna källhänvisningar."></textarea></div>
+        <button class="btn-primary" onclick="submitArticle()">Skicka för granskning</button>
+    </div>
+</div>
+
+<!-- ══════ MODAL: EDIT REQUEST ══════ -->
+<div class="modal-overlay" id="editModal" onclick="closeModalOnBg(event,'editModal')">
+    <div class="modal">
+        <button class="modal-close" onclick="closeModal('editModal')">×</button>
+        <h3>Föreslå en rättelse</h3>
+        <p class="sub">Din rättelse skickas till redaktionen och granskas innan den godkänns. Du får svar via e-post.</p>
+        <div class="form-group"><label>Ditt namn</label><input type="text" id="editName" placeholder="Anna Svensson"></div>
+        <div class="form-group"><label>Din e-post</label><input type="email" id="editEmail" placeholder="anna@exempel.se"></div>
+        <div class="form-group"><label>Artikel</label><input type="text" id="editArticle" readonly style="opacity:0.7;cursor:default;"></div>
+        <div class="form-group"><label>Vad ska rättas?</label><textarea id="editWhat" placeholder="Beskriv vad som är fel och vad som bör stå istället…"></textarea></div>
+        <div class="form-group"><label>Källhänvisning (valfri)</label><input type="text" id="editSource" placeholder="T.ex. Nationalencyklopedin, Wikipedia…"></div>
+        <button class="btn-primary" onclick="submitEdit()">Skicka rättelse</button>
+    </div>
+</div>
+
+<!-- ══════ OWNER PANEL ══════ -->
+<div class="panel-overlay" id="ownerPanel">
+    <!-- LOGIN SCREEN -->
+    <div class="panel-login" id="panelLogin">
+        <h2>Ägar-panel</h2>
+        <p class="sub">Faktabasen · Moltaz &amp; Vilgot</p>
+        <input type="password" id="panelCodeInput" placeholder="Ange åtkomstkod…" onkeydown="if(event.key==='Enter')checkPanelCode()">
+        <button class="login-btn" onclick="checkPanelCode()">Logga in</button>
+        <p class="login-error" id="loginError">Fel kod – försök igen.</p>
+        <button class="cancel-btn" onclick="closePanel()">Avbryt</button>
+    </div>
+
+    <!-- PANEL MAIN -->
+    <div class="panel-main" id="panelMain">
+        <div class="panel-header">
+            <div>
+                <h2>Ägar-panel</h2>
+                <span class="owner-tag">Inloggad som Moltaz &amp; Vilgot</span>
+            </div>
+            <button class="panel-close-btn" onclick="closePanel()">✕ Stäng</button>
+        </div>
+        <div class="panel-body">
+
+            <div class="panel-section">
+                <div class="panel-section-title">📄 Inskickade artiklar <span class="badge-count" id="countArticles">0</span></div>
+                <div id="panelArticles"><div class="panel-empty">Inga inskickade artiklar ännu.</div></div>
+            </div>
+
+            <div class="panel-section">
+                <div class="panel-section-title">✏ Rättelseförslag <span class="badge-count" id="countEdits">0</span></div>
+                <div id="panelEdits"><div class="panel-empty">Inga rättelseförslag ännu.</div></div>
+            </div>
+
+            <div class="panel-section">
+                <div class="panel-section-title">✉ Kontaktmeddelanden <span class="badge-count" id="countContacts">0</span></div>
+                <div id="panelContacts"><div class="panel-empty">Inga kontaktmeddelanden ännu.</div></div>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
+    const PANEL_CODE = 'mZb6RdhHUQlyhmWUnQsJZHYwuzmntj';
+    const state = { articles: [], edits: [], contacts: [] };
+
+    // ── NAVIGATION
     function showPage(id, linkEl) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.nav-link').forEach(a => a.classList.remove('active'));
@@ -1033,48 +600,182 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    // ── TOAST
     function showToast(msg) {
         const t = document.getElementById('toast');
         t.textContent = msg;
         t.classList.add('show');
-        setTimeout(() => t.classList.remove('show'), 3500);
+        setTimeout(() => t.classList.remove('show'), 4200);
     }
 
+    // ── SEARCH
     function doSearch() {
         const q = document.getElementById('searchInput').value.trim();
         if (!q) { showToast('Ange ett sökord för att söka.'); return; }
-        const lower = q.toLowerCase();
-        if (lower.includes('ai') || lower.includes('intelligens') || lower.includes('maskin')) {
+        const l = q.toLowerCase();
+        if (l.includes('ai') || l.includes('intelligens') || l.includes('maskin') || l.includes('teknik')) {
             showPage('vetenskap', document.querySelectorAll('.nav-link')[1]);
-        } else if (lower.includes('historia') || lower.includes('viking') || lower.includes('sverige')) {
+        } else if (l.includes('historia') || l.includes('viking') || l.includes('sverige') || l.includes('stormakt')) {
             showPage('historia', document.querySelectorAll('.nav-link')[2]);
         } else {
-            showToast(`Inga resultat för "${q}". Prova "AI" eller "historia".`);
+            showToast(`Inga träffar för "${q}". Prova "AI" eller "historia".`);
         }
         document.getElementById('searchInput').value = '';
     }
-
     function handleSearch(e) { if (e.key === 'Enter') doSearch(); }
 
-    function sendContact() {
-        const name    = document.getElementById('contactName').value.trim();
-        const email   = document.getElementById('contactEmail').value.trim();
-        const subject = document.getElementById('contactSubject').value;
-        const message = document.getElementById('contactMessage').value.trim();
-
-        if (!name || !email || !subject || !message) {
-            showToast('Fyll i alla fält innan du skickar.'); return;
-        }
-        if (!email.includes('@')) {
-            showToast('Ange en giltig e-postadress.'); return;
-        }
-
-        showToast(`Tack, ${name}! Vi återkommer inom två arbetsdagar.`);
-        document.getElementById('contactName').value    = '';
-        document.getElementById('contactEmail').value   = '';
-        document.getElementById('contactSubject').value = '';
-        document.getElementById('contactMessage').value = '';
+    // ── MODALS
+    function openModal(id)  { document.getElementById(id).classList.add('open'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+    function closeModalOnBg(e, id) { if (e.target.id === id) closeModal(id); }
+    function openSubmitModal() { openModal('submitModal'); }
+    function openEditModal(title) {
+        document.getElementById('editArticle').value = title;
+        openModal('editModal');
     }
+
+    // ── SUBMIT ARTICLE
+    function submitArticle() {
+        const name     = v('subName'), email = v('subEmail'),
+              title    = v('subTitle'), category = v('subCategory'),
+              content  = v('subContent');
+        if (!name || !email || !title || !category || !content) { showToast('Fyll i alla fält.'); return; }
+        if (!email.includes('@')) { showToast('Ogiltig e-postadress.'); return; }
+
+        state.articles.push({ id: uid(), name, email, title, category, content, time: now(), status: 'pending' });
+        closeModal('submitModal');
+        clearFields(['subName','subEmail','subTitle','subContent']);
+        document.getElementById('subCategory').value = '';
+        showToast(`Tack ${name}! Din artikel är inskickad och väntar på granskning.`);
+    }
+
+    // ── SUBMIT EDIT
+    function submitEdit() {
+        const name = v('editName'), email = v('editEmail'),
+              article = v('editArticle'), what = v('editWhat'),
+              source = v('editSource');
+        if (!name || !email || !what) { showToast('Fyll i namn, e-post och rättelse.'); return; }
+        if (!email.includes('@')) { showToast('Ogiltig e-postadress.'); return; }
+
+        state.edits.push({ id: uid(), name, email, article, what, source, time: now(), status: 'pending' });
+        closeModal('editModal');
+        clearFields(['editName','editEmail','editWhat','editSource']);
+        showToast(`Tack ${name}! Ditt rättelseförslag har skickats för granskning.`);
+    }
+
+    // ── CONTACT
+    function sendContact() {
+        const name = v('contactName'), email = v('contactEmail'),
+              subject = v('contactSubject'), message = v('contactMessage');
+        if (!name || !email || !subject || !message) { showToast('Fyll i alla fält.'); return; }
+        if (!email.includes('@')) { showToast('Ogiltig e-postadress.'); return; }
+
+        state.contacts.push({ id: uid(), name, email, subject, message, time: now(), status: 'pending' });
+
+        // Open default mail client addressed to the owner
+        const body = encodeURIComponent(`Från: ${name} <${email}>\nÄmne: ${subject}\n\n${message}`);
+        const mailto = `mailto:redaktion.faktabasen@protonmail.com?subject=${encodeURIComponent('[Faktabasen] ' + subject)}&body=${body}`;
+        window.open(mailto, '_self');
+
+        showToast(`Tack ${name}! Vi återkommer inom två arbetsdagar.`);
+        clearFields(['contactName','contactEmail','contactMessage']);
+        document.getElementById('contactSubject').value = '';
+    }
+
+    // ── PANEL
+    function openPanel() {
+        document.getElementById('panelCodeInput').value = '';
+        document.getElementById('loginError').style.display = 'none';
+        document.getElementById('panelLogin').style.display  = 'flex';
+        document.getElementById('panelMain').classList.remove('visible');
+        document.getElementById('ownerPanel').classList.add('open');
+        setTimeout(() => document.getElementById('panelCodeInput').focus(), 200);
+    }
+    function closePanel() {
+        document.getElementById('ownerPanel').classList.remove('open');
+    }
+    function checkPanelCode() {
+        const val = document.getElementById('panelCodeInput').value;
+        if (val === PANEL_CODE) {
+            document.getElementById('panelLogin').style.display = 'none';
+            document.getElementById('panelMain').classList.add('visible');
+            renderPanel();
+        } else {
+            document.getElementById('loginError').style.display = 'block';
+            document.getElementById('panelCodeInput').value = '';
+            document.getElementById('panelCodeInput').focus();
+        }
+    }
+
+    // ── RENDER PANEL
+    function renderPanel() {
+        renderSection('panelArticles', state.articles, 'article');
+        renderSection('panelEdits',    state.edits,    'edit');
+        renderSection('panelContacts', state.contacts, 'contact');
+        document.getElementById('countArticles').textContent = pending(state.articles);
+        document.getElementById('countEdits').textContent    = pending(state.edits);
+        document.getElementById('countContacts').textContent = pending(state.contacts);
+    }
+    function pending(arr) { return arr.filter(r => r.status === 'pending').length; }
+
+    function renderSection(id, items, type) {
+        const el = document.getElementById(id);
+        if (!items.length) { el.innerHTML = '<div class="panel-empty">Inga poster ännu.</div>'; return; }
+        // Show pending first, then resolved
+        const sorted = [...items].sort((a,b) => (a.status==='pending'?0:1) - (b.status==='pending'?0:1));
+        el.innerHTML = sorted.map(item => buildCard(item, type)).join('');
+    }
+
+    function buildCard(item, type) {
+        const resolved = item.status !== 'pending';
+        let badge = '', title = '', preview = '';
+        if (type === 'article') {
+            badge = '<span class="req-badge badge-article">Ny artikel</span>';
+            title = item.title;
+            preview = `Kategori: ${item.category}\n\n${item.content}`;
+        } else if (type === 'edit') {
+            badge = '<span class="req-badge badge-edit">Rättelse</span>';
+            title = `Rättelse: ${item.article}`;
+            preview = item.what + (item.source ? `\n\nKälla: ${item.source}` : '');
+        } else {
+            badge = '<span class="req-badge badge-contact">Kontakt</span>';
+            title = item.subject;
+            preview = `${item.message}`;
+        }
+        const actions = resolved
+            ? `<span class="resolved-label">${item.status === 'accepted' ? '✓ Godkänd' : '✗ Nekad'}</span>`
+            : `<button class="btn-accept" onclick="resolve('${type}',${item.id},'accepted')">✓ Godkänn</button>
+               <button class="btn-deny"   onclick="resolve('${type}',${item.id},'denied')">✗ Neka</button>`;
+        return `
+        <div class="req-card ${resolved?'resolved':''}" id="rc-${type}-${item.id}">
+            <div class="req-card-meta">${badge}<span class="req-name">👤 ${esc(item.name)} · ${esc(item.email)}</span><span class="req-time">${item.time}</span></div>
+            <div class="req-title">${esc(title)}</div>
+            <div class="req-preview" id="rp-${type}-${item.id}">${esc(preview)}</div>
+            <div class="req-actions">
+                ${actions}
+                <button class="btn-expand" onclick="toggleExp('${type}',${item.id})">Visa mer</button>
+            </div>
+        </div>`;
+    }
+
+    function resolve(type, id, decision) {
+        const list = type === 'article' ? state.articles : type === 'edit' ? state.edits : state.contacts;
+        const item = list.find(r => r.id === id);
+        if (item) { item.status = decision; renderPanel(); }
+        showToast(decision === 'accepted' ? '✓ Begäran godkänd.' : '✗ Begäran nekad.');
+    }
+
+    function toggleExp(type, id) {
+        const el = document.getElementById(`rp-${type}-${id}`);
+        if (el) el.classList.toggle('expanded');
+    }
+
+    // ── HELPERS
+    function v(id)  { return document.getElementById(id).value.trim(); }
+    function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    function uid()  { return Date.now() + Math.floor(Math.random()*1000); }
+    function now()  { return new Date().toLocaleString('sv-SE'); }
+    function clearFields(ids) { ids.forEach(id => document.getElementById(id).value = ''); }
 </script>
 </body>
 </html>
