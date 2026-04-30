@@ -4,109 +4,1077 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faktabasen Sverige</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --navy: #0f1c2e;
+            --navy-mid: #1a2e46;
+            --navy-light: #243d5c;
+            --gold: #c9a84c;
+            --gold-light: #e8c97a;
+            --cream: #f8f5ef;
+            --text: #1a1a2e;
+            --text-muted: #6b7280;
+            --white: #ffffff;
+            --border: #e2d9c8;
+            --shadow: 0 4px 32px rgba(15,28,46,0.10);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background-color: #f4f6f8;
-            color: #222;
+            font-family: 'Source Serif 4', Georgia, serif;
+            background: var(--cream);
+            color: var(--text);
+            line-height: 1.7;
         }
 
+        /* ── HEADER ─────────────────────────────────── */
         header {
-            background-color: #1e2a38;
-            color: white;
-            padding: 20px;
-            text-align: center;
+            background: var(--navy);
+            position: relative;
+            overflow: hidden;
+            padding: 0;
         }
 
+        header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 39px,
+                    rgba(201,168,76,0.06) 39px,
+                    rgba(201,168,76,0.06) 40px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 39px,
+                    rgba(201,168,76,0.06) 39px,
+                    rgba(201,168,76,0.06) 40px
+                );
+            pointer-events: none;
+        }
+
+        .header-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 56px 32px 48px;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            gap: 24px;
+        }
+
+        .header-emblem {
+            width: 56px;
+            height: 56px;
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-bottom: 4px;
+        }
+
+        .header-emblem svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .header-text h1 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 900;
+            color: var(--white);
+            letter-spacing: -0.01em;
+            line-height: 1.1;
+        }
+
+        .header-text h1 span {
+            color: var(--gold);
+        }
+
+        .header-text p {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.95rem;
+            font-weight: 300;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-top: 6px;
+        }
+
+        /* ── NAV ─────────────────────────────────────── */
         nav {
-            background-color: #2d3e50;
-            padding: 10px;
-            text-align: center;
+            background: var(--navy-mid);
+            border-bottom: 1px solid rgba(201,168,76,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        nav a {
-            color: white;
-            margin: 0 15px;
+        .nav-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+
+        .nav-link {
+            color: rgba(255,255,255,0.65);
             text-decoration: none;
-            font-weight: bold;
+            font-family: 'Source Serif 4', serif;
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            padding: 18px 20px;
+            border-bottom: 2px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+            cursor: pointer;
+            display: block;
         }
 
-        nav a:hover {
-            text-decoration: underline;
+        .nav-link:hover, .nav-link.active {
+            color: var(--gold);
+            border-bottom-color: var(--gold);
         }
 
-        main {
-            max-width: 900px;
-            margin: 30px auto;
-            background: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        /* ── PAGES ───────────────────────────────────── */
+        .page { display: none; }
+        .page.active { display: block; }
+
+        /* ── MAIN LAYOUT ─────────────────────────────── */
+        .container {
+            max-width: 1000px;
+            margin: 48px auto;
+            padding: 0 32px;
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 32px;
+            align-items: start;
         }
 
-        h1, h2 {
-            color: #1e2a38;
+        .container.full { grid-template-columns: 1fr; }
+
+        /* ── ARTICLE CARD ────────────────────────────── */
+        .article-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 48px;
+            box-shadow: var(--shadow);
         }
 
+        .article-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .article-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .article-card h2 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.2;
+            margin-bottom: 24px;
+        }
+
+        .section-heading {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin: 36px 0 12px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+        }
+
+        .article-card p {
+            color: #374151;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        .fact-list {
+            list-style: none;
+            margin: 16px 0 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .fact-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 16px;
+            background: var(--cream);
+            border-left: 3px solid var(--gold);
+            border-radius: 0 4px 4px 0;
+            font-size: 0.975rem;
+            color: #374151;
+        }
+
+        .fact-list li::before {
+            content: '→';
+            color: var(--gold);
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .source-block {
+            margin-top: 36px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            letter-spacing: 0.02em;
+        }
+
+        .source-block strong {
+            color: var(--navy);
+            font-weight: 600;
+        }
+
+        /* ── SIDEBAR ─────────────────────────────────── */
+        .sidebar { display: flex; flex-direction: column; gap: 20px; }
+
+        .sidebar-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .sidebar-card h3 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-nav { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+
+        .sidebar-nav li a {
+            display: block;
+            padding: 8px 10px;
+            color: #374151;
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-radius: 3px;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .sidebar-nav li a:hover {
+            background: var(--cream);
+            color: var(--navy);
+        }
+
+        .tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            background: var(--cream);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 0.78rem;
+            color: #374151;
+            cursor: pointer;
+            transition: border-color 0.15s, color 0.15s;
+        }
+
+        .tag:hover { border-color: var(--gold); color: var(--navy); }
+
+        /* ── HERO GRID (Hem) ─────────────────────────── */
+        .hero-section {
+            max-width: 1000px;
+            margin: 0 auto 0;
+            padding: 48px 32px 0;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 32px 48px;
+        }
+
+        .topic-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 28px 24px;
+            cursor: pointer;
+            transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+            box-shadow: var(--shadow);
+        }
+
+        .topic-card:hover {
+            box-shadow: 0 8px 40px rgba(15,28,46,0.14);
+            transform: translateY(-2px);
+            border-color: var(--gold);
+        }
+
+        .topic-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--cream);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            font-size: 1.2rem;
+        }
+
+        .topic-card h3 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        .topic-card p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .topic-card .read-more {
+            display: inline-block;
+            margin-top: 14px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--gold);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        /* ── SEARCH ──────────────────────────────────── */
+        .search-bar {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 32px 32px 0;
+        }
+
+        .search-wrap {
+            display: flex;
+            gap: 0;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            background: var(--white);
+            box-shadow: var(--shadow);
+        }
+
+        .search-wrap input {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            outline: none;
+            font-family: 'Source Serif 4', serif;
+            font-size: 1rem;
+            color: var(--text);
+            background: transparent;
+        }
+
+        .search-wrap input::placeholder { color: #9ca3af; }
+
+        .search-wrap button {
+            padding: 14px 24px;
+            background: var(--navy);
+            color: var(--white);
+            border: none;
+            cursor: pointer;
+            font-family: 'Source Serif 4', serif;
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: background 0.2s;
+        }
+
+        .search-wrap button:hover { background: var(--navy-light); }
+
+        /* ── HISTORIA PAGE ───────────────────────────── */
+        .timeline {
+            position: relative;
+            padding-left: 32px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--gold), var(--border));
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 36px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -28px;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            background: var(--gold);
+            border-radius: 50%;
+            border: 2px solid var(--white);
+            box-shadow: 0 0 0 2px var(--gold);
+        }
+
+        .timeline-year {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 4px;
+        }
+
+        .timeline-item h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            color: var(--navy);
+            margin-bottom: 6px;
+        }
+
+        .timeline-item p {
+            font-size: 0.9rem;
+            color: #374151;
+            line-height: 1.7;
+        }
+
+        /* ── KONTAKT PAGE ────────────────────────────── */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .form-group { margin-bottom: 20px; }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--navy);
+            margin-bottom: 6px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            font-family: 'Source Serif 4', serif;
+            font-size: 0.975rem;
+            color: var(--text);
+            background: var(--cream);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201,168,76,0.12);
+            background: var(--white);
+        }
+
+        .form-group textarea { resize: vertical; min-height: 120px; }
+
+        .btn-primary {
+            padding: 14px 32px;
+            background: var(--navy);
+            color: var(--white);
+            border: none;
+            border-radius: 3px;
+            font-family: 'Source Serif 4', serif;
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+        }
+
+        .btn-primary:hover {
+            background: var(--navy-light);
+            transform: translateY(-1px);
+        }
+
+        .contact-info h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            color: var(--navy);
+            margin-bottom: 16px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-size: 0.9rem;
+            color: #374151;
+        }
+
+        .contact-item .icon {
+            width: 32px;
+            height: 32px;
+            background: var(--cream);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 0.9rem;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--navy);
+            color: var(--white);
+            padding: 14px 22px;
+            border-radius: 4px;
+            border-left: 4px solid var(--gold);
+            font-size: 0.9rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            transform: translateY(80px);
+            opacity: 0;
+            transition: transform 0.3s, opacity 0.3s;
+            z-index: 999;
+        }
+
+        .toast.show { transform: translateY(0); opacity: 1; }
+
+        /* ── FOOTER ──────────────────────────────────── */
         footer {
-            text-align: center;
-            padding: 15px;
-            background-color: #1e2a38;
-            color: white;
-            margin-top: 30px;
+            background: var(--navy);
+            border-top: 1px solid rgba(201,168,76,0.2);
+            padding: 40px 32px;
+            margin-top: 64px;
         }
 
-        .source {
-            font-size: 0.9em;
-            color: gray;
+        .footer-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 40px;
         }
+
+        .footer-brand h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--white);
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .footer-brand p {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+
+        .footer-col h4 {
+            color: var(--gold);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .footer-col a {
+            display: block;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            font-size: 0.875rem;
+            margin-bottom: 8px;
+            transition: color 0.15s;
+            cursor: pointer;
+        }
+
+        .footer-col a:hover { color: var(--gold); }
+
+        .footer-bottom {
+            max-width: 1000px;
+            margin: 32px auto 0;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.3);
+        }
+
+        /* ── RESPONSIVE ──────────────────────────────── */
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; }
+            .card-grid { grid-template-columns: 1fr; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .footer-inner { grid-template-columns: 1fr; gap: 24px; }
+            .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+            .article-card { padding: 28px 20px; }
+            .header-inner { flex-direction: column; align-items: flex-start; gap: 12px; }
+        }
+
+        /* ── ANIMATIONS ──────────────────────────────── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .page.active > * { animation: fadeUp 0.35s ease both; }
+        .page.active > *:nth-child(2) { animation-delay: 0.05s; }
+        .page.active > *:nth-child(3) { animation-delay: 0.1s; }
+        .page.active > *:nth-child(4) { animation-delay: 0.15s; }
     </style>
 </head>
 <body>
 
+<!-- HEADER -->
 <header>
-    <h1>Faktabasen Sverige</h1>
-    <p>Pålitlig information och fakta</p>
+    <div class="header-inner">
+        <div class="header-emblem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                <path d="M2 17l10 5 10-5"/>
+                <path d="M2 12l10 5 10-5"/>
+            </svg>
+        </div>
+        <div class="header-text">
+            <h1>Faktabasen <span>Sverige</span></h1>
+            <p>Kunskapsnav · Vetenskap &amp; Historia</p>
+        </div>
+    </div>
 </header>
 
+<!-- NAV -->
 <nav>
-    <a href="#">Hem</a>
-    <a href="#">Vetenskap</a>
-    <a href="#">Historia</a>
-    <a href="#">Kontakt</a>
+    <div class="nav-inner">
+        <a class="nav-link active" onclick="showPage('hem', this)">Hem</a>
+        <a class="nav-link" onclick="showPage('vetenskap', this)">Vetenskap</a>
+        <a class="nav-link" onclick="showPage('historia', this)">Historia</a>
+        <a class="nav-link" onclick="showPage('kontakt', this)">Kontakt</a>
+    </div>
 </nav>
 
-<main>
-    <h2>Vad är artificiell intelligens?</h2>
-    <p>
-        Artificiell intelligens (AI) är ett område inom datavetenskap som fokuserar på att skapa system
-        som kan utföra uppgifter som normalt kräver mänsklig intelligens. Detta inkluderar
-        problemlösning, inlärning och språkförståelse.
-    </p>
+<!-- ═══════════════════════════ HEM ═══════════════════════════ -->
+<div id="hem" class="page active">
+    <div class="search-bar">
+        <div class="search-wrap">
+            <input type="text" id="searchInput" placeholder="Sök i faktabasen…" onkeydown="handleSearch(event)">
+            <button onclick="doSearch()">Sök</button>
+        </div>
+    </div>
 
-    <h2>Hur fungerar AI?</h2>
-    <p>
-        AI-system använder ofta algoritmer och stora mängder data för att identifiera mönster.
-        Maskininlärning är en vanlig metod där datorer lär sig genom erfarenhet istället för
-        att programmeras med exakta instruktioner.
-    </p>
+    <div class="hero-section">
+        <div class="section-label">Utvalda ämnen</div>
+    </div>
 
-    <h2>Fakta i korthet</h2>
-    <ul>
-        <li>AI används inom sjukvård, transport och ekonomi</li>
-        <li>Maskininlärning är en del av AI</li>
-        <li>AI kan analysera stora datamängder snabbt</li>
-    </ul>
+    <div class="card-grid">
+        <div class="topic-card" onclick="showPage('vetenskap', document.querySelectorAll('.nav-link')[1])">
+            <div class="topic-icon">🔬</div>
+            <h3>Artificiell Intelligens</h3>
+            <p>Hur maskiner lär sig tänka – och vad det innebär för framtiden.</p>
+            <span class="read-more">Läs mer →</span>
+        </div>
+        <div class="topic-card" onclick="showPage('historia', document.querySelectorAll('.nav-link')[2])">
+            <div class="topic-icon">📜</div>
+            <h3>Sveriges Historia</h3>
+            <p>Från vikingatiden till modernt välfärdssamhälle – en tidslinje.</p>
+            <span class="read-more">Läs mer →</span>
+        </div>
+        <div class="topic-card" onclick="showPage('vetenskap', document.querySelectorAll('.nav-link')[1])">
+            <div class="topic-icon">⚗️</div>
+            <h3>Maskininlärning</h3>
+            <p>Tekniken bakom AI – mönsterigenkänning och neural nätverk.</p>
+            <span class="read-more">Läs mer →</span>
+        </div>
+        <div class="topic-card" onclick="showPage('historia', document.querySelectorAll('.nav-link')[2])">
+            <div class="topic-icon">🏛️</div>
+            <h3>Demokratins Rötter</h3>
+            <p>Hur Sverige byggde en av världens starkaste demokratier.</p>
+            <span class="read-more">Läs mer →</span>
+        </div>
+        <div class="topic-card" onclick="showPage('vetenskap', document.querySelectorAll('.nav-link')[1])">
+            <div class="topic-icon">🌍</div>
+            <h3>Klimat &amp; Teknik</h3>
+            <p>Vetenskapliga fakta om klimatförändringen och tekniska lösningar.</p>
+            <span class="read-more">Läs mer →</span>
+        </div>
+        <div class="topic-card" onclick="showPage('kontakt', document.querySelectorAll('.nav-link')[3])">
+            <div class="topic-icon">✉️</div>
+            <h3>Bidra till Basen</h3>
+            <p>Har du expertkunskap? Kontakta oss och bli en del av projektet.</p>
+            <span class="read-more">Kontakta oss →</span>
+        </div>
+    </div>
+</div>
 
-    <p class="source">
-        Källor: Nationalencyklopedin, Vetenskapsrådet, EU-kommissionen
-    </p>
-</main>
+<!-- ═══════════════════════════ VETENSKAP ═══════════════════════════ -->
+<div id="vetenskap" class="page">
+    <div class="container">
+        <div>
+            <div class="article-card">
+                <div class="article-label">Vetenskap &amp; Teknik</div>
+                <h2>Artificiell intelligens – vad är det och hur fungerar det?</h2>
 
+                <p>Artificiell intelligens (AI) är ett område inom datavetenskap som fokuserar på att skapa system som kan utföra uppgifter som normalt kräver mänsklig intelligens. Detta inkluderar problemlösning, inlärning och språkförståelse.</p>
+
+                <div class="section-heading">Hur fungerar AI?</div>
+                <p>AI-system använder algoritmer och stora mängder data för att identifiera mönster. Maskininlärning är en vanlig metod där datorer lär sig genom erfarenhet istället för att programmeras med exakta instruktioner. Med djupinlärning kan system bearbeta komplex information – bilder, ljud och text – med remarkabel precision.</p>
+
+                <div class="section-heading">Fakta i korthet</div>
+                <ul class="fact-list">
+                    <li>AI används brett inom sjukvård, transport och ekonomi</li>
+                    <li>Maskininlärning är en delmängd av AI – inte synonymt</li>
+                    <li>AI kan analysera miljardtals datapunkter på sekunder</li>
+                    <li>Generativ AI skapar text, bilder och kod från grunden</li>
+                    <li>Etiska frågor om bias och integritet är centrala utmaningar</li>
+                </ul>
+
+                <div class="section-heading">Tillämpningar i Sverige</div>
+                <p>Sverige tillhör Europas ledande AI-nationer. Företag som Ericsson, Spotify och Klarna investerar kraftigt i AI-forskning. Karolinska Institutet använder maskininlärning för att förbättra cancerdiagnostik, medan SMHI tillämpar AI-modeller för mer precisa väderprognoser.</p>
+
+                <div class="source-block">
+                    <strong>Källor:</strong> Nationalencyklopedin, Vetenskapsrådet, EU-kommissionen, VINNOVA 2025
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="sidebar-card">
+                <h3>Relaterade artiklar</h3>
+                <ul class="sidebar-nav">
+                    <li><a href="#" onclick="return false;">Maskininlärning – en introduktion</a></li>
+                    <li><a href="#" onclick="return false;">Neurala nätverk förklarade</a></li>
+                    <li><a href="#" onclick="return false;">AI och etik</a></li>
+                    <li><a href="#" onclick="return false;">Kvantdatorer &amp; framtiden</a></li>
+                    <li><a href="#" onclick="return false;">Robotik i industrin</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-card">
+                <h3>Ämnesord</h3>
+                <div class="tag-list">
+                    <span class="tag">AI</span>
+                    <span class="tag">Maskininlärning</span>
+                    <span class="tag">Datavetenskap</span>
+                    <span class="tag">Algoritmer</span>
+                    <span class="tag">Deep Learning</span>
+                    <span class="tag">Etik</span>
+                    <span class="tag">Teknik</span>
+                </div>
+            </div>
+            <div class="sidebar-card">
+                <h3>Senast uppdaterad</h3>
+                <p style="font-size:0.875rem;color:#374151;">April 2026<br><span style="color:var(--text-muted);font-size:0.8rem;">Granskat av redaktionen</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════ HISTORIA ═══════════════════════════ -->
+<div id="historia" class="page">
+    <div class="container">
+        <div>
+            <div class="article-card">
+                <div class="article-label">Historia</div>
+                <h2>Sverige genom tiderna – en historisk tidslinje</h2>
+                <p>Från de första bosättningarna efter istiden till dagens moderna välfärdsstat har Sverige genomgått dramatiska förvandlingar. Här är några av de mest avgörande epokerna.</p>
+
+                <div class="section-heading">Tidslinje</div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-year">ca 800–1050 e.Kr.</div>
+                        <h3>Vikingatiden</h3>
+                        <p>Svenska vikingar grundlade handelsrutter österut mot Konstantinopel och Bagdad. Birka på Björkö var ett av Nordens viktigaste handelscentra.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">1397</div>
+                        <h3>Kalmarunionen</h3>
+                        <p>Sverige, Danmark och Norge förenades under en krona. Unionen varade formellt till 1523 då Gustav Vasa bröt sig loss och grundade det moderna Sverige.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">1611–1718</div>
+                        <h3>Stormaktstiden</h3>
+                        <p>Sverige kontrollerade stora delar av Östersjökusten. Karl XII:s fälttåg markerade stormaktens dramatiska slut vid Fredriksten 1718.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">1814</div>
+                        <h3>Unionen med Norge</h3>
+                        <p>Sverige och Norge inträde i en personalunion som varade till 1905 då Norge valde självständighet i en fredlig uppgörelse.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">1932–1976</div>
+                        <h3>Folkhemmet byggs</h3>
+                        <p>Socialdemokraterna lade grunden till den svenska välfärdsmodellen – allmän sjukförsäkring, folkpension och gratis utbildning för alla.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">1995</div>
+                        <h3>EU-inträde</h3>
+                        <p>Efter en folkomröstning gick Sverige med i Europeiska unionen. Landet valde dock att behålla kronan som valuta.</p>
+                    </div>
+                </div>
+
+                <div class="source-block">
+                    <strong>Källor:</strong> Nationalencyklopedin, Riksarkivet, Historisk Tidskrift
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="sidebar-card">
+                <h3>Epoker</h3>
+                <ul class="sidebar-nav">
+                    <li><a href="#" onclick="return false;">Förhistorisk tid</a></li>
+                    <li><a href="#" onclick="return false;">Medeltiden</a></li>
+                    <li><a href="#" onclick="return false;">Stormaktstiden</a></li>
+                    <li><a href="#" onclick="return false;">1800-talet</a></li>
+                    <li><a href="#" onclick="return false;">Modern tid</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-card">
+                <h3>Ämnesord</h3>
+                <div class="tag-list">
+                    <span class="tag">Vikingar</span>
+                    <span class="tag">Stormaktstid</span>
+                    <span class="tag">Folkhemmet</span>
+                    <span class="tag">Gustav Vasa</span>
+                    <span class="tag">Välfärd</span>
+                    <span class="tag">EU</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════ KONTAKT ═══════════════════════════ -->
+<div id="kontakt" class="page">
+    <div class="container full">
+        <div class="article-card">
+            <div class="article-label">Kontakt</div>
+            <h2>Hör av dig till oss</h2>
+            <p style="margin-bottom:32px;">Har du frågor, vill bidra med expertkunskap eller rapportera ett fel i vårt innehåll? Fyll i formuläret nedan så återkommer vi inom två arbetsdagar.</p>
+
+            <div class="contact-grid">
+                <div>
+                    <div class="form-group">
+                        <label>Ditt namn</label>
+                        <input type="text" id="contactName" placeholder="Anna Svensson">
+                    </div>
+                    <div class="form-group">
+                        <label>E-postadress</label>
+                        <input type="email" id="contactEmail" placeholder="anna@exempel.se">
+                    </div>
+                    <div class="form-group">
+                        <label>Ämne</label>
+                        <select id="contactSubject">
+                            <option value="">Välj ett ämne…</option>
+                            <option>Fråga om innehåll</option>
+                            <option>Bidra med kunskap</option>
+                            <option>Rapportera felaktig information</option>
+                            <option>Samarbete</option>
+                            <option>Övrigt</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Meddelande</label>
+                        <textarea id="contactMessage" placeholder="Skriv ditt meddelande här…"></textarea>
+                    </div>
+                    <button class="btn-primary" onclick="sendContact()">Skicka meddelande</button>
+                </div>
+
+                <div class="contact-info">
+                    <h3>Kontaktuppgifter</h3>
+                    <div class="contact-item">
+                        <div class="icon">📧</div>
+                        <div>
+                            <strong>E-post</strong><br>
+                            <span style="color:var(--text-muted);">redaktion@faktabasen.se</span>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon">🏛️</div>
+                        <div>
+                            <strong>Adress</strong><br>
+                            <span style="color:var(--text-muted);">Faktabasen Sverige<br>Kungsgatan 12, 111 35 Stockholm</span>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon">🕐</div>
+                        <div>
+                            <strong>Svarstid</strong><br>
+                            <span style="color:var(--text-muted);">Måndag–fredag, 09:00–17:00</span>
+                        </div>
+                    </div>
+                    <div style="margin-top:28px;padding:20px;background:var(--cream);border-radius:4px;border-left:3px solid var(--gold);">
+                        <p style="font-size:0.875rem;color:#374151;margin:0;">
+                            <strong style="color:var(--navy);">Vill du bli skribent?</strong><br>
+                            Vi söker alltid experter inom vetenskap, historia och teknik. Hör av dig med en kort presentation och ämnesförslag.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
 <footer>
-    <p>© 2026 Faktabasen Sverige</p>
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <h2>Faktabasen Sverige</h2>
+            <p>Ett oberoende kunskapsnav med fokus på vetenskap, historia och samhälle. Granskade artiklar skrivna av experter.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Sidor</h4>
+            <a onclick="showPage('hem', document.querySelectorAll('.nav-link')[0])">Hem</a>
+            <a onclick="showPage('vetenskap', document.querySelectorAll('.nav-link')[1])">Vetenskap</a>
+            <a onclick="showPage('historia', document.querySelectorAll('.nav-link')[2])">Historia</a>
+            <a onclick="showPage('kontakt', document.querySelectorAll('.nav-link')[3])">Kontakt</a>
+        </div>
+        <div class="footer-col">
+            <h4>Om oss</h4>
+            <a href="#" onclick="return false;">Redaktionen</a>
+            <a href="#" onclick="return false;">Källpolicy</a>
+            <a href="#" onclick="return false;">Integritetspolicy</a>
+            <a href="#" onclick="return false;">Tillgänglighet</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>© 2026 Faktabasen Sverige. Alla rättigheter förbehållna.</span>
+        <span>Oberoende · Granskat · Pålitligt</span>
+    </div>
 </footer>
 
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+    function showPage(id, linkEl) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-link').forEach(a => a.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        if (linkEl) linkEl.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+    function doSearch() {
+        const q = document.getElementById('searchInput').value.trim();
+        if (!q) { showToast('Ange ett sökord för att söka.'); return; }
+        const lower = q.toLowerCase();
+        if (lower.includes('ai') || lower.includes('intelligens') || lower.includes('maskin')) {
+            showPage('vetenskap', document.querySelectorAll('.nav-link')[1]);
+        } else if (lower.includes('historia') || lower.includes('viking') || lower.includes('sverige')) {
+            showPage('historia', document.querySelectorAll('.nav-link')[2]);
+        } else {
+            showToast(`Inga resultat för "${q}". Prova "AI" eller "historia".`);
+        }
+        document.getElementById('searchInput').value = '';
+    }
+
+    function handleSearch(e) { if (e.key === 'Enter') doSearch(); }
+
+    function sendContact() {
+        const name    = document.getElementById('contactName').value.trim();
+        const email   = document.getElementById('contactEmail').value.trim();
+        const subject = document.getElementById('contactSubject').value;
+        const message = document.getElementById('contactMessage').value.trim();
+
+        if (!name || !email || !subject || !message) {
+            showToast('Fyll i alla fält innan du skickar.'); return;
+        }
+        if (!email.includes('@')) {
+            showToast('Ange en giltig e-postadress.'); return;
+        }
+
+        showToast(`Tack, ${name}! Vi återkommer inom två arbetsdagar.`);
+        document.getElementById('contactName').value    = '';
+        document.getElementById('contactEmail').value   = '';
+        document.getElementById('contactSubject').value = '';
+        document.getElementById('contactMessage').value = '';
+    }
+</script>
 </body>
 </html>
