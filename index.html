@@ -1,255 +1,463 @@
 <!DOCTYPE html>
-<html lang="sv">
+<html lang="sv" data-theme="light" data-font="medium" data-font-family="serif">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Faktabasen</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
-:root{
-  --navy:#0f1c2e;--navy-mid:#1a2e46;--navy-light:#243d5c;
-  --gold:#c9a84c;--gold-light:#e8c97a;
-  --cream:#f8f5ef;--text:#1a1a2e;--muted:#6b7280;
-  --white:#fff;--border:#e2d9c8;
+/* ═══════════════════════════════════════════════
+   CSS VARIABLES – LIGHT + DARK THEMES
+═══════════════════════════════════════════════ */
+:root {
+  --navy:#0f1c2e; --navy-mid:#1a2e46; --navy-light:#243d5c;
+  --gold:#c9a84c; --gold-light:#e8c97a; --gold-dim:#9a7835;
+  --cream:#f8f5ef; --cream-dark:#ede9df;
+  --text:#1a1a2e; --muted:#6b7280; --muted-light:#9ca3af;
+  --white:#fff; --border:#e2d9c8; --border-light:#ede9df;
   --shadow:0 4px 32px rgba(15,28,46,.10);
+  --shadow-lg:0 12px 48px rgba(15,28,46,.16);
+  --card-bg:#fff;
+  --page-bg:#f8f5ef;
+  --nav-bg:#1a2e46;
+  --header-bg:#0f1c2e;
+  --input-bg:#f8f5ef;
+  --sidebar-bg:#fff;
+  --progress-h:3px;
+  --radius:6px;
+  --transition:.22s ease;
 }
+[data-theme="dark"] {
+  --cream:#0d1520; --cream-dark:#111d2b;
+  --text:#e8e4d9; --muted:#8a9ab0; --muted-light:#5a6a7e;
+  --white:#162030; --border:#1e3048; --border-light:#1a2a3e;
+  --shadow:0 4px 32px rgba(0,0,0,.4);
+  --shadow-lg:0 12px 48px rgba(0,0,0,.5);
+  --card-bg:#162030;
+  --page-bg:#0d1520;
+  --nav-bg:#0a1622;
+  --header-bg:#060e18;
+  --input-bg:#111d2b;
+  --sidebar-bg:#162030;
+}
+[data-font="small"]  { --base-size:15px; }
+[data-font="medium"] { --base-size:17px; }
+[data-font="large"]  { --base-size:20px; }
+[data-font="xl"]     { --base-size:23px; }
+[data-font-family="serif"]  { --body-font:'Source Serif 4',Georgia,serif; --display-font:'Playfair Display',Georgia,serif; }
+[data-font-family="sans"]   { --body-font:'DM Sans',system-ui,sans-serif; --display-font:'DM Sans',system-ui,sans-serif; }
+[data-font-family="crimson"]{ --body-font:'Crimson Pro',Georgia,serif; --display-font:'Playfair Display',Georgia,serif; }
+
+/* ═══════════════════════════════════════════════
+   BASE RESET
+═══════════════════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'Source Serif 4',Georgia,serif;background:var(--cream);color:var(--text);line-height:1.7}
+html{scroll-behavior:smooth;font-size:var(--base-size,17px)}
+body{font-family:var(--body-font,'Source Serif 4',Georgia,serif);background:var(--page-bg);color:var(--text);line-height:1.75;transition:background var(--transition),color var(--transition)}
 
-/* ── HEADER */
-header{background:var(--navy);position:relative;overflow:hidden}
+/* ═══════════════════════════════════════════════
+   READING PROGRESS BAR
+═══════════════════════════════════════════════ */
+#progressBar{position:fixed;top:0;left:0;height:var(--progress-h);width:0%;background:linear-gradient(90deg,var(--gold),var(--gold-light));z-index:9999;transition:width .1s linear;border-radius:0 2px 2px 0}
+
+/* ═══════════════════════════════════════════════
+   HEADER
+═══════════════════════════════════════════════ */
+header{background:var(--header-bg);position:relative;overflow:hidden;transition:background var(--transition)}
 header::before{content:'';position:absolute;inset:0;pointer-events:none;
-  background:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(201,168,76,.06) 39px,rgba(201,168,76,.06) 40px),
-             repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(201,168,76,.06) 39px,rgba(201,168,76,.06) 40px)}
-.header-inner{max-width:1000px;margin:0 auto;padding:56px 32px 48px;position:relative;display:flex;align-items:flex-end;gap:24px}
-.header-emblem{width:56px;height:56px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-bottom:4px}
-.header-emblem svg{width:28px;height:28px}
-.header-text h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3rem);font-weight:900;color:var(--white);letter-spacing:-.01em;line-height:1.1}
+  background:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(201,168,76,.05) 39px,rgba(201,168,76,.05) 40px),
+             repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(201,168,76,.05) 39px,rgba(201,168,76,.05) 40px)}
+header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.3),transparent)}
+.header-inner{max-width:1060px;margin:0 auto;padding:48px 32px 42px;position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:24px}
+.header-left{display:flex;align-items:flex-end;gap:20px}
+.header-emblem{width:54px;height:54px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;animation:pulseGold 4s ease-in-out infinite}
+@keyframes pulseGold{0%,100%{box-shadow:0 0 0 0 rgba(201,168,76,.3)}50%{box-shadow:0 0 0 8px rgba(201,168,76,0)}}
+.header-emblem svg{width:26px;height:26px}
+.header-text h1{font-family:var(--display-font);font-size:clamp(1.9rem,5vw,2.9rem);font-weight:900;color:var(--white);letter-spacing:-.02em;line-height:1.05}
 .header-text h1 span{color:var(--gold)}
-.header-text p{color:rgba(255,255,255,.45);font-size:.95rem;font-weight:300;letter-spacing:.12em;text-transform:uppercase;margin-top:6px}
+.header-text p{color:rgba(255,255,255,.38);font-size:.8rem;font-weight:300;letter-spacing:.16em;text-transform:uppercase;margin-top:7px}
+.header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+#liveClock{color:var(--gold);font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:500;letter-spacing:.08em}
+#liveDate{color:rgba(255,255,255,.28);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase}
+.weather-badge{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:4px 12px;font-size:.78rem;color:rgba(255,255,255,.55)}
 
-/* ── NAV */
-nav{background:var(--navy-mid);border-bottom:1px solid rgba(201,168,76,.2);position:sticky;top:0;z-index:100}
-.nav-inner{max-width:1000px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between}
-.nav-links{display:flex}
-.nav-link{color:rgba(255,255,255,.65);text-decoration:none;font-family:'Source Serif 4',serif;font-size:.875rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:18px 20px;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;cursor:pointer;display:block}
+/* ═══════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════ */
+nav{background:var(--nav-bg);border-bottom:1px solid rgba(201,168,76,.18);position:sticky;top:0;z-index:200;transition:background var(--transition)}
+.nav-inner{max-width:1060px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between}
+.nav-links{display:flex;overflow-x:auto;scrollbar-width:none}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-link{color:rgba(255,255,255,.55);text-decoration:none;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:17px 18px;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;cursor:pointer;display:block;white-space:nowrap}
 .nav-link:hover,.nav-link.active{color:var(--gold);border-bottom-color:var(--gold)}
-.nav-panel-btn{color:rgba(255,255,255,.3);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;padding:8px 12px;border:1px solid rgba(255,255,255,.12);border-radius:3px;transition:all .2s;user-select:none;background:none}
-.nav-panel-btn:hover{color:var(--gold);border-color:rgba(201,168,76,.4)}
+.nav-actions{display:flex;gap:6px;align-items:center;flex-shrink:0}
+.nav-btn{background:none;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.45);width:34px;height:34px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.95rem;transition:all .2s;flex-shrink:0}
+.nav-btn:hover{color:var(--gold);border-color:rgba(201,168,76,.4);background:rgba(201,168,76,.08)}
+.nav-btn.active-btn{color:var(--gold);border-color:rgba(201,168,76,.5);background:rgba(201,168,76,.1)}
 
-/* ── PAGES */
-.page{display:none}
-.page.active{display:block}
+/* ═══════════════════════════════════════════════
+   PAGES
+═══════════════════════════════════════════════ */
+.page{display:none;min-height:60vh}
+.page.active{display:block;animation:fadeUp .38s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 
-/* ── LAYOUT */
-.container{max-width:1000px;margin:48px auto;padding:0 32px;display:grid;grid-template-columns:1fr 280px;gap:32px;align-items:start}
+/* ═══════════════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════════════ */
+.container{max-width:1060px;margin:44px auto;padding:0 32px;display:grid;grid-template-columns:1fr 276px;gap:28px;align-items:start}
 .container.full{grid-template-columns:1fr}
 
-/* ── ARTICLE CARD */
-.article-card{background:var(--white);border:1px solid var(--border);border-radius:4px;padding:48px;box-shadow:var(--shadow)}
-.article-label{font-size:.75rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+/* ═══════════════════════════════════════════════
+   ARTICLE CARD
+═══════════════════════════════════════════════ */
+.article-card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:44px;box-shadow:var(--shadow);transition:background var(--transition),border-color var(--transition)}
+.article-label{font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:10px}
 .article-label::after{content:'';flex:1;height:1px;background:var(--border)}
-.article-card h2{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;color:var(--navy);line-height:1.2;margin-bottom:6px}
-.reading-time{font-size:.78rem;color:var(--muted);margin-bottom:24px;letter-spacing:.04em}
-.section-heading{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--navy);margin:36px 0 12px;padding-top:28px;border-top:1px solid var(--border)}
-.article-card p{color:#374151;font-size:1.05rem;line-height:1.8;margin-bottom:16px}
-.fact-list{list-style:none;margin:16px 0 24px;display:flex;flex-direction:column;gap:10px}
-.fact-list li{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:var(--cream);border-left:3px solid var(--gold);border-radius:0 4px 4px 0;font-size:.975rem;color:#374151}
+.article-card h2{font-family:var(--display-font);font-size:clamp(1.5rem,3vw,2.1rem);font-weight:700;color:var(--text);line-height:1.18;margin-bottom:8px;transition:color var(--transition)}
+.article-meta{display:flex;align-items:center;gap:16px;margin-bottom:22px;flex-wrap:wrap}
+.meta-item{font-size:.75rem;color:var(--muted);display:flex;align-items:center;gap:5px}
+.section-heading{font-family:var(--display-font);font-size:1.2rem;font-weight:700;color:var(--text);margin:32px 0 10px;padding-top:24px;border-top:1px solid var(--border);transition:color var(--transition)}
+.article-card p{color:var(--text);opacity:.85;font-size:1rem;line-height:1.85;margin-bottom:14px;transition:color var(--transition)}
+.fact-list{list-style:none;margin:14px 0 22px;display:flex;flex-direction:column;gap:9px}
+.fact-list li{display:flex;align-items:flex-start;gap:12px;padding:13px 16px;background:var(--cream-dark);border-left:3px solid var(--gold);border-radius:0 4px 4px 0;font-size:.95rem;color:var(--text);opacity:.85;transition:background var(--transition)}
 .fact-list li::before{content:'→';color:var(--gold);font-weight:700;flex-shrink:0;margin-top:1px}
-.source-block{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);font-size:.82rem;color:var(--muted)}
-.source-block strong{color:var(--navy);font-weight:600}
-.edit-request-btn{display:inline-flex;align-items:center;gap:8px;margin-top:20px;padding:10px 20px;background:transparent;border:1px solid var(--border);border-radius:3px;color:var(--muted);font-family:'Source Serif 4',serif;font-size:.82rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:border-color .2s,color .2s}
-.edit-request-btn:hover{border-color:var(--gold);color:var(--navy)}
+.source-block{margin-top:32px;padding-top:18px;border-top:1px solid var(--border);font-size:.8rem;color:var(--muted)}
+.source-block strong{color:var(--text);font-weight:600}
+.article-actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;align-items:center}
+.edit-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;background:transparent;border:1px solid var(--border);border-radius:4px;color:var(--muted);font-family:var(--body-font);font-size:.78rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.edit-btn:hover{border-color:var(--gold);color:var(--text)}
+.bookmark-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;background:transparent;border:1px solid var(--border);border-radius:4px;color:var(--muted);font-size:.78rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:all .2s;font-family:var(--body-font)}
+.bookmark-btn.bookmarked{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.07)}
+.share-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;background:transparent;border:1px solid var(--border);border-radius:4px;color:var(--muted);font-size:.78rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:all .2s;font-family:var(--body-font)}
+.share-btn:hover{border-color:var(--gold);color:var(--text)}
+.print-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;background:transparent;border:1px solid var(--border);border-radius:4px;color:var(--muted);font-size:.78rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:all .2s;font-family:var(--body-font)}
+.print-btn:hover{border-color:var(--gold);color:var(--text)}
 
-/* ── SIDEBAR */
-.sidebar{display:flex;flex-direction:column;gap:20px}
-.sidebar-card{background:var(--white);border:1px solid var(--border);border-radius:4px;padding:24px;box-shadow:var(--shadow)}
-.sidebar-card h3{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
-.sidebar-nav{list-style:none;display:flex;flex-direction:column;gap:4px}
-.sidebar-nav li a{display:block;padding:8px 10px;color:#374151;text-decoration:none;font-size:.9rem;border-radius:3px;transition:background .15s}
-.sidebar-nav li a:hover{background:var(--cream);color:var(--navy)}
+/* STAR RATING */
+.rating-row{display:flex;align-items:center;gap:10px;margin-top:6px}
+.rating-row span{font-size:.78rem;color:var(--muted);letter-spacing:.04em}
+.stars{display:flex;gap:3px}
+.star{font-size:1.15rem;cursor:pointer;transition:transform .15s;color:var(--border);line-height:1}
+.star:hover,.star.lit{color:var(--gold);transform:scale(1.15)}
+
+/* ═══════════════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════════════ */
+.sidebar{display:flex;flex-direction:column;gap:18px}
+.sidebar-card{background:var(--sidebar-bg);border:1px solid var(--border);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);transition:background var(--transition),border-color var(--transition)}
+.sidebar-card h3{font-family:var(--display-font);font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.sidebar-nav{list-style:none;display:flex;flex-direction:column;gap:3px}
+.sidebar-nav li a{display:block;padding:7px 9px;color:var(--muted);text-decoration:none;font-size:.875rem;border-radius:4px;transition:background .15s,color .15s}
+.sidebar-nav li a:hover{background:var(--cream-dark);color:var(--text)}
 .tag-list{display:flex;flex-wrap:wrap;gap:6px}
-.tag{display:inline-block;padding:4px 10px;background:var(--cream);border:1px solid var(--border);border-radius:20px;font-size:.78rem;color:#374151;cursor:pointer;transition:border-color .15s}
-.tag:hover{border-color:var(--gold);color:var(--navy)}
+.tag{display:inline-block;padding:4px 10px;background:var(--cream-dark);border:1px solid var(--border);border-radius:20px;font-size:.74rem;color:var(--muted);cursor:pointer;transition:all .15s}
+.tag:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.07)}
+.trending-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border-light);cursor:pointer;transition:color .15s}
+.trending-item:last-child{border-bottom:none}
+.trending-num{font-size:.7rem;font-weight:700;color:var(--gold);width:18px;flex-shrink:0}
+.trending-title{font-size:.85rem;color:var(--text);line-height:1.3;opacity:.8}
+.trending-item:hover .trending-title{opacity:1;color:var(--gold)}
 
-/* ── HOME */
-.hero-section{max-width:1000px;margin:0 auto;padding:48px 32px 0}
-.section-label{font-size:.75rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:24px;display:flex;align-items:center;gap:12px}
+/* ═══════════════════════════════════════════════
+   HOME
+═══════════════════════════════════════════════ */
+.hero-section{max-width:1060px;margin:0 auto;padding:44px 32px 0}
+.section-label{font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:22px;display:flex;align-items:center;gap:12px;font-family:'DM Sans',sans-serif}
 .section-label::after{content:'';flex:1;height:1px;background:var(--border)}
-.card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1000px;margin:0 auto;padding:0 32px 48px}
-.topic-card{background:var(--white);border:1px solid var(--border);border-radius:4px;padding:28px 24px;cursor:pointer;transition:box-shadow .2s,transform .2s,border-color .2s;box-shadow:var(--shadow)}
-.topic-card:hover{box-shadow:0 8px 40px rgba(15,28,46,.14);transform:translateY(-2px);border-color:var(--gold)}
-.topic-icon{width:44px;height:44px;background:var(--cream);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:1.2rem}
-.topic-card h3{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:8px}
-.topic-card p{font-size:.875rem;color:var(--muted);line-height:1.6}
-.topic-card .read-more{display:inline-block;margin-top:14px;font-size:.8rem;font-weight:600;color:var(--gold);letter-spacing:.05em;text-transform:uppercase}
-/* Dynamic topic cards */
-.topic-card-dynamic{background:var(--white);border:1px solid var(--border);border-radius:4px;padding:28px 24px;box-shadow:var(--shadow);transition:box-shadow .2s,transform .2s,border-color .2s;cursor:pointer}
-.topic-card-dynamic:hover{box-shadow:0 8px 40px rgba(15,28,46,.14);transform:translateY(-2px);border-color:var(--gold)}
+.card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:1060px;margin:0 auto;padding:0 32px 44px}
+.topic-card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:26px 22px;cursor:pointer;transition:box-shadow .22s,transform .22s,border-color .22s,background var(--transition);box-shadow:var(--shadow)}
+.topic-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-3px);border-color:var(--gold)}
+.topic-icon{width:42px;height:42px;background:var(--cream-dark);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:1.15rem;transition:background var(--transition)}
+.topic-card h3{font-family:var(--display-font);font-size:1rem;font-weight:700;color:var(--text);margin-bottom:6px;transition:color var(--transition)}
+.topic-card p{font-size:.83rem;color:var(--muted);line-height:1.55}
+.topic-card .read-more{display:inline-block;margin-top:12px;font-size:.75rem;font-weight:700;color:var(--gold);letter-spacing:.06em;text-transform:uppercase;font-family:'DM Sans',sans-serif}
 
-/* ── SEARCH */
-.search-bar{max-width:1000px;margin:0 auto;padding:32px 32px 0}
-.search-wrap{display:flex;border:1px solid var(--border);border-radius:4px;overflow:hidden;background:var(--white);box-shadow:var(--shadow)}
-.search-wrap input{flex:1;padding:14px 20px;border:none;outline:none;font-family:'Source Serif 4',serif;font-size:1rem;color:var(--text);background:transparent}
-.search-wrap input::placeholder{color:#9ca3af}
-.search-wrap button{padding:14px 24px;background:var(--navy);color:var(--white);border:none;cursor:pointer;font-family:'Source Serif 4',serif;font-size:.875rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;transition:background .2s;flex-shrink:0}
+/* FEATURED BANNER */
+.featured-banner{max-width:1060px;margin:0 auto;padding:0 32px 18px}
+.featured-inner{background:linear-gradient(135deg,var(--navy-mid),var(--navy));border:1px solid rgba(201,168,76,.25);border-radius:var(--radius);padding:32px 40px;display:flex;align-items:center;gap:28px;position:relative;overflow:hidden}
+.featured-inner::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(201,168,76,.12),transparent 70%);pointer-events:none}
+.featured-badge{font-size:.68rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);border-radius:20px;padding:3px 12px;margin-bottom:10px;display:inline-block;font-family:'DM Sans',sans-serif}
+.featured-inner h2{font-family:var(--display-font);font-size:1.5rem;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.2}
+.featured-inner p{color:rgba(255,255,255,.5);font-size:.88rem;line-height:1.6;max-width:480px}
+.featured-cta{margin-top:16px;display:inline-flex;align-items:center;gap:8px;padding:10px 22px;background:var(--gold);color:var(--navy);border:none;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:background .2s,transform .15s}
+.featured-cta:hover{background:var(--gold-light);transform:translateY(-1px)}
+
+/* STATS BAR */
+.stats-bar{max-width:1060px;margin:0 auto;padding:0 32px 36px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.stat-card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;text-align:center;transition:background var(--transition),border-color var(--transition)}
+.stat-num{font-family:var(--display-font);font-size:1.8rem;font-weight:900;color:var(--gold);line-height:1}
+.stat-label{font-size:.72rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:5px;font-family:'DM Sans',sans-serif}
+
+/* ═══════════════════════════════════════════════
+   SEARCH
+═══════════════════════════════════════════════ */
+.search-bar{max-width:1060px;margin:0 auto;padding:28px 32px 0}
+.search-wrap{display:flex;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--card-bg);box-shadow:var(--shadow);transition:background var(--transition),border-color var(--transition)}
+.search-wrap input{flex:1;padding:14px 20px;border:none;outline:none;font-family:var(--body-font);font-size:1rem;color:var(--text);background:transparent;transition:color var(--transition)}
+.search-wrap input::placeholder{color:var(--muted-light)}
+.search-wrap button{padding:14px 22px;background:var(--navy);color:var(--white);border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;transition:background .2s;flex-shrink:0}
 .search-wrap button:hover{background:var(--navy-light)}
+.search-history{max-width:1060px;margin:0 auto;padding:8px 32px 0;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.search-history-label{font-size:.72rem;color:var(--muted);font-family:'DM Sans',sans-serif}
+.search-chip{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;background:var(--cream-dark);border:1px solid var(--border);border-radius:20px;font-size:.75rem;color:var(--muted);cursor:pointer;transition:all .15s}
+.search-chip:hover{border-color:var(--gold);color:var(--gold)}
+.search-chip .chip-x{opacity:.5;font-size:.8rem}
+.search-chip .chip-x:hover{opacity:1;color:var(--text)}
 
-/* ── ÄMNEN PAGE */
-.amnen-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;max-width:1000px;margin:32px auto;padding:0 32px 48px}
-.amne-card{background:var(--white);border:1px solid var(--border);border-radius:4px;padding:28px;box-shadow:var(--shadow);transition:box-shadow .2s,transform .2s,border-color .2s}
-.amne-card:hover{box-shadow:0 8px 40px rgba(15,28,46,.12);transform:translateY(-2px);border-color:var(--gold)}
-.amne-icon{font-size:2rem;margin-bottom:12px}
-.amne-card h3{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:6px}
-.amne-card p{font-size:.875rem;color:var(--muted);line-height:1.6;margin-bottom:12px}
+/* ═══════════════════════════════════════════════
+   BOOKMARKS PAGE
+═══════════════════════════════════════════════ */
+.bookmarks-empty{text-align:center;padding:80px 32px;color:var(--muted)}
+.bookmarks-empty .empty-icon{font-size:3rem;margin-bottom:16px}
+.bookmarks-empty p{font-size:.95rem}
+.bookmark-list{max-width:1060px;margin:0 auto;padding:32px 32px;display:flex;flex-direction:column;gap:14px}
+.bm-card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:22px 26px;display:flex;justify-content:space-between;align-items:center;gap:16px;box-shadow:var(--shadow);cursor:pointer;transition:all .2s}
+.bm-card:hover{border-color:var(--gold);transform:translateY(-1px)}
+.bm-info h4{font-family:var(--display-font);font-size:1.05rem;color:var(--text);margin-bottom:4px}
+.bm-info p{font-size:.82rem;color:var(--muted)}
+.bm-remove{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.1rem;padding:4px;transition:color .15s}
+.bm-remove:hover{color:#ef4444}
+
+/* ═══════════════════════════════════════════════
+   ÄMNEN
+═══════════════════════════════════════════════ */
+.amnen-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:18px;max-width:1060px;margin:28px auto;padding:0 32px 44px}
+.amne-card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow);transition:all .22s}
+.amne-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px);border-color:var(--gold)}
+.amne-icon{font-size:1.9rem;margin-bottom:10px;display:block}
+.amne-card h3{font-family:var(--display-font);font-size:1.05rem;color:var(--text);margin-bottom:5px}
+.amne-card p{font-size:.85rem;color:var(--muted);line-height:1.55;margin-bottom:10px}
 .amne-tags{display:flex;flex-wrap:wrap;gap:5px}
-.amne-tag{font-size:.72rem;padding:2px 8px;background:var(--cream);border:1px solid var(--border);border-radius:20px;color:var(--muted)}
+.amne-tag{font-size:.7rem;padding:2px 8px;background:var(--cream-dark);border:1px solid var(--border);border-radius:20px;color:var(--muted)}
+.amne-status{margin-top:10px;font-size:.75rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;font-family:'DM Sans',sans-serif}
+.status-live{color:var(--gold)}
+.status-soon{color:var(--muted)}
 
-/* ── TIMELINE */
+/* ═══════════════════════════════════════════════
+   TIMELINE
+═══════════════════════════════════════════════ */
 .timeline{position:relative;padding-left:32px}
 .timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--gold),var(--border))}
-.timeline-item{position:relative;margin-bottom:36px}
-.timeline-item::before{content:'';position:absolute;left:-28px;top:6px;width:12px;height:12px;background:var(--gold);border-radius:50%;border:2px solid var(--white);box-shadow:0 0 0 2px var(--gold)}
-.timeline-year{font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
-.timeline-item h3{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:6px}
-.timeline-item p{font-size:.9rem;color:#374151;line-height:1.7}
+.timeline-item{position:relative;margin-bottom:32px}
+.timeline-item::before{content:'';position:absolute;left:-28px;top:6px;width:12px;height:12px;background:var(--gold);border-radius:50%;border:2px solid var(--page-bg);box-shadow:0 0 0 2px var(--gold);transition:background var(--transition)}
+.timeline-year{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:3px;font-family:'DM Sans',sans-serif}
+.timeline-item h3{font-family:var(--display-font);font-size:1.05rem;color:var(--text);margin-bottom:5px}
+.timeline-item p{font-size:.88rem;color:var(--muted);line-height:1.7}
 
-/* ── CONTACT */
-.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
-.form-group{margin-bottom:20px}
-.form-group label{display:block;font-size:.8rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);margin-bottom:6px}
-.form-group input,.form-group textarea,.form-group select{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:3px;font-family:'Source Serif 4',serif;font-size:.975rem;color:var(--text);background:var(--cream);transition:border-color .2s,box-shadow .2s;outline:none}
-.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.12);background:var(--white)}
-.form-group textarea{resize:vertical;min-height:120px}
-.btn-primary{padding:14px 32px;background:var(--navy);color:var(--white);border:none;border-radius:3px;font-family:'Source Serif 4',serif;font-size:.875rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .2s,transform .15s}
+/* ═══════════════════════════════════════════════
+   CONTACT
+═══════════════════════════════════════════════ */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-size:.76rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text);margin-bottom:6px;opacity:.7;font-family:'DM Sans',sans-serif}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:4px;font-family:var(--body-font);font-size:.95rem;color:var(--text);background:var(--input-bg);transition:all .2s;outline:none}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.12)}
+.form-group textarea{resize:vertical;min-height:110px}
+.btn-primary{padding:13px 30px;background:var(--navy);color:var(--white);border:none;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .2s}
 .btn-primary:hover{background:var(--navy-light);transform:translateY(-1px)}
-.contact-info h3{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:16px}
-.contact-item{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;font-size:.9rem;color:#374151}
-.contact-item .icon{width:32px;height:32px;background:var(--cream);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.contact-info h3{font-family:var(--display-font);font-size:1.05rem;color:var(--text);margin-bottom:14px}
+.contact-item{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;font-size:.88rem;color:var(--muted)}
+.contact-item .icon{width:30px;height:30px;background:var(--cream-dark);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.85rem;transition:background var(--transition)}
 
-/* ── MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(15,28,46,.65);z-index:500;display:none;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px)}
+/* ═══════════════════════════════════════════════
+   MODAL
+═══════════════════════════════════════════════ */
+.modal-overlay{position:fixed;inset:0;background:rgba(10,18,30,.72);z-index:500;display:none;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(4px)}
 .modal-overlay.open{display:flex}
-.modal{background:var(--white);border-radius:6px;padding:40px;max-width:600px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,.25);position:relative;max-height:90vh;overflow-y:auto}
-.modal h3{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--navy);margin-bottom:8px}
-.modal p.sub{font-size:.875rem;color:var(--muted);margin-bottom:28px;line-height:1.6}
-.modal-close{position:absolute;top:16px;right:20px;background:none;border:none;font-size:1.5rem;color:var(--muted);cursor:pointer;line-height:1;padding:4px}
-.modal-close:hover{color:var(--navy)}
+.modal{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:38px;max-width:600px;width:100%;box-shadow:var(--shadow-lg);position:relative;max-height:90vh;overflow-y:auto;transition:background var(--transition)}
+.modal h3{font-family:var(--display-font);font-size:1.35rem;color:var(--text);margin-bottom:6px}
+.modal p.sub{font-size:.85rem;color:var(--muted);margin-bottom:24px;line-height:1.6}
+.modal-close{position:absolute;top:16px;right:18px;background:none;border:none;font-size:1.4rem;color:var(--muted);cursor:pointer;padding:4px;transition:color .15s}
+.modal-close:hover{color:var(--text)}
 
-/* ── PANEL */
+/* ═══════════════════════════════════════════════
+   SETTINGS PANEL
+═══════════════════════════════════════════════ */
+.settings-overlay{position:fixed;top:0;right:0;bottom:0;width:min(420px,100vw);background:var(--card-bg);border-left:1px solid var(--border);z-index:400;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);box-shadow:-8px 0 40px rgba(0,0,0,.18);overflow-y:auto;display:flex;flex-direction:column}
+.settings-overlay.open{transform:translateX(0)}
+.settings-header{padding:24px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:var(--card-bg);position:sticky;top:0;z-index:1}
+.settings-header h3{font-family:var(--display-font);font-size:1.15rem;color:var(--text)}
+.settings-close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.3rem;transition:color .15s}
+.settings-close:hover{color:var(--text)}
+.settings-body{padding:24px 28px;flex:1;display:flex;flex-direction:column;gap:28px}
+.settings-section{}
+.settings-section-title{font-size:.68rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;font-family:'DM Sans',sans-serif}
+.setting-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border-light);gap:16px}
+.setting-row:last-child{border-bottom:none}
+.setting-label{font-size:.88rem;color:var(--text);font-weight:500}
+.setting-desc{font-size:.75rem;color:var(--muted);margin-top:2px}
+/* Toggle switch */
+.toggle-wrap{position:relative;width:44px;height:24px;flex-shrink:0}
+.toggle-wrap input{opacity:0;width:0;height:0;position:absolute}
+.toggle-slider{position:absolute;inset:0;background:var(--border);border-radius:24px;cursor:pointer;transition:.25s}
+.toggle-slider::before{content:'';position:absolute;height:18px;width:18px;left:3px;bottom:3px;background:white;border-radius:50%;transition:.25s}
+.toggle-wrap input:checked+.toggle-slider{background:var(--gold)}
+.toggle-wrap input:checked+.toggle-slider::before{transform:translateX(20px)}
+/* Button group */
+.btn-group{display:flex;gap:5px;flex-wrap:wrap}
+.btn-opt{padding:6px 12px;background:var(--cream-dark);border:1px solid var(--border);border-radius:4px;font-size:.78rem;color:var(--muted);cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;font-weight:500}
+.btn-opt.active,.btn-opt:hover{background:rgba(201,168,76,.12);border-color:var(--gold);color:var(--gold)}
+/* Accent color swatches */
+.color-swatches{display:flex;gap:8px}
+.swatch{width:26px;height:26px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:transform .15s,border-color .15s}
+.swatch:hover,.swatch.active{transform:scale(1.15);border-color:var(--text)}
+/* Range slider */
+.range-wrap{display:flex;align-items:center;gap:10px;width:180px}
+.range-wrap input[type=range]{flex:1;accent-color:var(--gold)}
+.range-val{font-size:.8rem;color:var(--muted);width:30px;text-align:right;font-family:'DM Sans',sans-serif}
+
+/* ═══════════════════════════════════════════════
+   OWNER PANEL
+═══════════════════════════════════════════════ */
 .panel-overlay{position:fixed;inset:0;background:var(--navy);z-index:600;display:none;flex-direction:column;overflow-y:auto}
 .panel-overlay.open{display:flex}
 .panel-login{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:32px;gap:0}
-.panel-login h2{font-family:'Playfair Display',serif;color:var(--white);font-size:2rem;margin-bottom:8px}
-.panel-login .sub{color:rgba(255,255,255,.3);font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:36px}
-.panel-login input{width:320px;max-width:100%;padding:14px 18px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:4px;color:var(--white);font-family:'Source Serif 4',serif;font-size:1rem;outline:none;margin-bottom:10px;letter-spacing:.04em}
+.panel-login h2{font-family:'Playfair Display',serif;color:#fff;font-size:2rem;margin-bottom:6px}
+.panel-login .sub{color:rgba(255,255,255,.3);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:36px;font-family:'DM Sans',sans-serif}
+.panel-login input{width:320px;max-width:100%;padding:13px 18px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:4px;color:#fff;font-family:'DM Sans',sans-serif;font-size:1rem;outline:none;margin-bottom:10px;letter-spacing:.04em}
 .panel-login input:focus{border-color:var(--gold)}
 .panel-login input::placeholder{color:rgba(255,255,255,.2)}
-.login-btn{width:320px;max-width:100%;padding:14px;background:var(--gold);color:var(--navy);border:none;border-radius:4px;font-family:'Source Serif 4',serif;font-weight:700;font-size:.9rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .2s;margin-bottom:10px}
+.login-btn{width:320px;max-width:100%;padding:13px;background:var(--gold);color:var(--navy);border:none;border-radius:4px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.88rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:background .2s;margin-bottom:10px}
 .login-btn:hover{background:var(--gold-light)}
-.cancel-btn{background:none;border:none;color:rgba(255,255,255,.28);font-family:'Source Serif 4',serif;font-size:.8rem;cursor:pointer;text-decoration:underline;margin-top:4px}
-.cancel-btn:hover{color:rgba(255,255,255,.55)}
-.login-error{color:#f87171;font-size:.85rem;margin-top:2px;display:none}
+.cancel-btn{background:none;border:none;color:rgba(255,255,255,.28);font-family:'DM Sans',sans-serif;font-size:.8rem;cursor:pointer;text-decoration:underline}
+.cancel-btn:hover{color:rgba(255,255,255,.6)}
+.login-error{color:#f87171;font-size:.83rem;margin-top:2px;display:none}
 .panel-main{display:none;flex-direction:column;min-height:100vh}
 .panel-main.visible{display:flex}
-.panel-header{background:rgba(0,0,0,.3);border-bottom:1px solid rgba(201,168,76,.2);padding:20px 40px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.panel-header h2{font-family:'Playfair Display',serif;color:var(--white);font-size:1.3rem}
-.panel-header .owner-tag{color:var(--gold);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;display:block;margin-top:2px}
-.panel-close-btn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.55);padding:8px 18px;border-radius:3px;cursor:pointer;font-family:'Source Serif 4',serif;font-size:.8rem;letter-spacing:.05em;text-transform:uppercase;transition:all .2s}
-.panel-close-btn:hover{color:var(--white);border-color:rgba(255,255,255,.3)}
-.panel-body{padding:40px;flex:1;max-width:900px;width:100%;margin:0 auto}
-.panel-section{margin-bottom:52px}
-.panel-section-title{font-size:.78rem;font-weight:700;color:var(--gold);letter-spacing:.14em;text-transform:uppercase;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.08)}
-.panel-empty{color:rgba(255,255,255,.25);font-size:.875rem;font-style:italic;padding:16px 0}
-.badge-count{display:inline-block;background:var(--gold);color:var(--navy);font-size:.7rem;font-weight:800;border-radius:20px;padding:1px 7px;margin-left:8px;vertical-align:middle}
-/* Request cards */
-.req-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:4px;padding:22px 24px;margin-bottom:14px;transition:border-color .2s}
-.req-card:hover{border-color:rgba(255,255,255,.15)}
-.req-card-meta{display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap;align-items:center}
-.req-badge{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:20px}
-.badge-article{background:rgba(21,128,61,.2);color:#4ade80;border:1px solid rgba(74,222,128,.25)}
-.badge-edit{background:rgba(59,130,246,.2);color:#93c5fd;border:1px solid rgba(147,197,253,.25)}
-.badge-contact{background:rgba(245,158,11,.2);color:#fcd34d;border:1px solid rgba(252,211,77,.25)}
-.req-name{color:rgba(255,255,255,.5);font-size:.82rem}
-.req-time{color:rgba(255,255,255,.22);font-size:.78rem;margin-left:auto}
-.req-title{color:var(--white);font-family:'Playfair Display',serif;font-size:1.05rem;margin-bottom:8px}
-.req-preview{color:rgba(255,255,255,.42);font-size:.875rem;line-height:1.65;margin-bottom:16px;white-space:pre-wrap;overflow:hidden;max-height:72px;position:relative}
-.req-preview.expanded{max-height:none}
-.req-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-/* Accept = mark as done only (no real server action) */
-.btn-accept{padding:8px 18px;background:rgba(21,128,61,.75);color:#fff;border:none;border-radius:3px;font-family:'Source Serif 4',serif;font-size:.78rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:background .2s}
-.btn-accept:hover{background:#15803d}
-.btn-deny{padding:8px 18px;background:rgba(185,28,28,.65);color:#fff;border:none;border-radius:3px;font-family:'Source Serif 4',serif;font-size:.78rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:background .2s}
-.btn-deny:hover{background:#b91c1c}
-.btn-expand{padding:8px 14px;background:transparent;color:rgba(255,255,255,.32);border:1px solid rgba(255,255,255,.1);border-radius:3px;font-family:'Source Serif 4',serif;font-size:.78rem;cursor:pointer;transition:all .2s}
-.btn-expand:hover{color:var(--white);border-color:rgba(255,255,255,.3)}
-.req-card.resolved{opacity:.35;pointer-events:none}
-.resolved-label{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:20px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.3)}
-/* Panel note */
-.panel-note{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);border-radius:4px;padding:14px 18px;margin-bottom:32px;font-size:.82rem;color:rgba(255,255,255,.6);line-height:1.6}
+.panel-header{background:rgba(0,0,0,.3);border-bottom:1px solid rgba(201,168,76,.18);padding:18px 40px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.panel-header h2{font-family:'Playfair Display',serif;color:#fff;font-size:1.2rem}
+.panel-header .owner-tag{color:var(--gold);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;display:block;margin-top:2px;font-family:'DM Sans',sans-serif}
+.panel-close-btn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);color:rgba(255,255,255,.5);padding:7px 16px;border-radius:3px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;transition:all .2s}
+.panel-close-btn:hover{color:#fff;border-color:rgba(255,255,255,.3)}
+.panel-tabs{background:rgba(0,0,0,.2);border-bottom:1px solid rgba(255,255,255,.06);padding:0 40px;display:flex;gap:0;flex-shrink:0}
+.panel-tab{padding:13px 18px;color:rgba(255,255,255,.4);font-size:.78rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.panel-tab:hover{color:rgba(255,255,255,.7)}
+.panel-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.panel-body{padding:32px 40px;flex:1;max-width:920px;width:100%;margin:0 auto}
+.panel-tab-content{display:none}
+.panel-tab-content.active{display:block}
+.panel-section-title{font-size:.72rem;font-weight:700;color:var(--gold);letter-spacing:.16em;text-transform:uppercase;margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.07);font-family:'DM Sans',sans-serif}
+.panel-empty{color:rgba(255,255,255,.22);font-size:.875rem;font-style:italic;padding:20px 0}
+.panel-note{background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.22);border-radius:4px;padding:12px 16px;margin-bottom:24px;font-size:.8rem;color:rgba(255,255,255,.55);line-height:1.6}
 .panel-note strong{color:var(--gold)}
+.badge-count{display:inline-block;background:var(--gold);color:var(--navy);font-size:.66rem;font-weight:800;border-radius:20px;padding:1px 7px;margin-left:6px;vertical-align:middle;font-family:'DM Sans',sans-serif}
+/* Panel stats */
+.panel-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px}
+.ps-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:4px;padding:18px;text-align:center}
+.ps-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--gold)}
+.ps-label{font-size:.7rem;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-top:4px;font-family:'DM Sans',sans-serif}
+/* Request cards */
+.req-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:4px;padding:20px 22px;margin-bottom:12px;transition:border-color .2s}
+.req-card:hover{border-color:rgba(255,255,255,.14)}
+.req-card-meta{display:flex;gap:10px;margin-bottom:9px;flex-wrap:wrap;align-items:center}
+.req-badge{font-size:.67rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:2px 9px;border-radius:20px;font-family:'DM Sans',sans-serif}
+.badge-article{background:rgba(21,128,61,.2);color:#4ade80;border:1px solid rgba(74,222,128,.22)}
+.badge-edit{background:rgba(59,130,246,.2);color:#93c5fd;border:1px solid rgba(147,197,253,.22)}
+.badge-contact{background:rgba(245,158,11,.2);color:#fcd34d;border:1px solid rgba(252,211,77,.22)}
+.req-name{color:rgba(255,255,255,.45);font-size:.8rem;font-family:'DM Sans',sans-serif}
+.req-time{color:rgba(255,255,255,.2);font-size:.75rem;margin-left:auto;font-family:'DM Sans',sans-serif}
+.req-title{color:#fff;font-family:'Playfair Display',serif;font-size:1rem;margin-bottom:6px}
+.req-preview{color:rgba(255,255,255,.38);font-size:.85rem;line-height:1.6;margin-bottom:14px;white-space:pre-wrap;overflow:hidden;max-height:68px;position:relative}
+.req-preview.expanded{max-height:none}
+.req-actions{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.btn-accept{padding:7px 16px;background:rgba(21,128,61,.75);color:#fff;border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:background .2s}
+.btn-accept:hover{background:#15803d}
+.btn-deny{padding:7px 16px;background:rgba(185,28,28,.65);color:#fff;border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:background .2s}
+.btn-deny:hover{background:#b91c1c}
+.btn-expand{padding:7px 12px;background:transparent;color:rgba(255,255,255,.3);border:1px solid rgba(255,255,255,.09);border-radius:3px;font-family:'DM Sans',sans-serif;font-size:.75rem;cursor:pointer;transition:all .2s}
+.btn-expand:hover{color:#fff;border-color:rgba(255,255,255,.28)}
+.req-card.resolved{opacity:.32;pointer-events:none}
+.resolved-label{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.28);font-family:'DM Sans',sans-serif}
 
-/* ── TOAST */
-.toast{position:fixed;bottom:24px;right:24px;background:var(--navy);color:var(--white);padding:14px 22px;border-radius:4px;border-left:4px solid var(--gold);font-size:.9rem;box-shadow:0 8px 32px rgba(0,0,0,.2);transform:translateY(80px);opacity:0;transition:transform .3s,opacity .3s;z-index:9999;max-width:360px;line-height:1.4}
+/* ═══════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════ */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--navy);color:#fff;padding:13px 20px;border-radius:var(--radius);border-left:4px solid var(--gold);font-size:.88rem;box-shadow:var(--shadow-lg);transform:translateY(80px);opacity:0;transition:transform .3s,opacity .3s;z-index:9999;max-width:340px;line-height:1.4;font-family:'DM Sans',sans-serif}
 .toast.show{transform:translateY(0);opacity:1}
 
-/* ── BACK TO TOP */
-.back-top{position:fixed;bottom:24px;left:24px;width:40px;height:40px;background:var(--navy);border:1px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:200;opacity:0;transform:translateY(12px);transition:opacity .3s,transform .3s;color:var(--gold);font-size:1.1rem}
+/* ═══════════════════════════════════════════════
+   BACK TO TOP
+═══════════════════════════════════════════════ */
+.back-top{position:fixed;bottom:24px;left:24px;width:38px;height:38px;background:var(--navy);border:1px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:200;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s,background .2s;color:var(--gold);font-size:1rem}
 .back-top.visible{opacity:1;transform:translateY(0)}
 .back-top:hover{background:var(--navy-light)}
 
-/* ── FOOTER */
-footer{background:var(--navy);border-top:1px solid rgba(201,168,76,.2);padding:40px 32px;margin-top:64px}
-.footer-inner{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px}
-.footer-brand h2{font-family:'Playfair Display',serif;color:var(--white);font-size:1.2rem;margin-bottom:8px}
-.footer-brand p{color:rgba(255,255,255,.38);font-size:.85rem;line-height:1.6}
-.footer-col h4{color:var(--gold);font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px}
-.footer-col a{display:block;color:rgba(255,255,255,.48);text-decoration:none;font-size:.875rem;margin-bottom:8px;transition:color .15s;cursor:pointer}
+/* ═══════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════ */
+footer{background:var(--header-bg);border-top:1px solid rgba(201,168,76,.18);padding:44px 32px;margin-top:60px;transition:background var(--transition)}
+.footer-inner{max-width:1060px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px}
+.footer-brand h2{font-family:'Playfair Display',serif;color:#fff;font-size:1.15rem;margin-bottom:8px}
+.footer-brand p{color:rgba(255,255,255,.32);font-size:.82rem;line-height:1.65}
+.footer-col h4{color:var(--gold);font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px;font-family:'DM Sans',sans-serif}
+.footer-col a{display:block;color:rgba(255,255,255,.42);text-decoration:none;font-size:.85rem;margin-bottom:7px;transition:color .15s;cursor:pointer}
 .footer-col a:hover{color:var(--gold)}
-.footer-bottom{max-width:1000px;margin:32px auto 0;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center;font-size:.8rem;color:rgba(255,255,255,.28)}
+.footer-bottom{max-width:1060px;margin:28px auto 0;padding-top:18px;border-top:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;align-items:center;font-size:.76rem;color:rgba(255,255,255,.24);font-family:'DM Sans',sans-serif;flex-wrap:wrap;gap:8px}
 
-/* ── ANIMATIONS */
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.page.active>*{animation:fadeUp .35s ease both}
-.page.active>*:nth-child(2){animation-delay:.05s}
-.page.active>*:nth-child(3){animation-delay:.1s}
-.page.active>*:nth-child(4){animation-delay:.15s}
+/* ═══════════════════════════════════════════════
+   PRINT STYLES
+═══════════════════════════════════════════════ */
+@media print{
+  nav,header .header-right,.nav-actions,.article-actions,.sidebar,.settings-overlay,.panel-overlay,.modal-overlay,.back-top,.toast,footer,#progressBar{display:none!important}
+  body{background:#fff;color:#000;font-size:12pt}
+  .container{grid-template-columns:1fr;max-width:100%}
+  .article-card{border:none;box-shadow:none;padding:0}
+}
 
-/* ── RESPONSIVE */
-@media(max-width:768px){
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
+@media(max-width:900px){
   .container{grid-template-columns:1fr}
-  .card-grid,.amnen-grid{grid-template-columns:1fr}
+  .card-grid,.stats-bar{grid-template-columns:repeat(2,1fr)}
+  .amnen-grid{grid-template-columns:1fr}
+  .footer-inner{grid-template-columns:1fr 1fr;gap:24px}
   .contact-grid{grid-template-columns:1fr}
-  .footer-inner{grid-template-columns:1fr;gap:24px}
-  .footer-bottom{flex-direction:column;gap:8px;text-align:center}
-  .article-card{padding:28px 20px}
-  .header-inner{flex-direction:column;align-items:flex-start;gap:12px}
+  .header-right{display:none}
+  .featured-inner{flex-direction:column}
+}
+@media(max-width:600px){
+  .card-grid,.stats-bar{grid-template-columns:1fr}
+  .footer-inner{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;text-align:center}
+  .article-card{padding:24px 18px}
+  .panel-tabs{padding:0 16px}
   .panel-body{padding:24px 16px}
-  .panel-header{padding:16px 20px}
-  .nav-panel-btn{font-size:.65rem;padding:6px 8px}
+  .panel-header{padding:14px 16px}
+  .nav-link{padding:16px 13px;font-size:.72rem}
 }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
+<!-- READING PROGRESS BAR -->
+<div id="progressBar"></div>
+
+<!-- ═══════════ HEADER ═══════════ -->
 <header>
   <div class="header-inner">
-    <div class="header-emblem">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
-      </svg>
+    <div class="header-left">
+      <div class="header-emblem">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <div class="header-text">
+        <h1><span>Faktabasen</span></h1>
+        <p>Grundad av Moltaz &amp; Vilgot · Vetenskap &amp; Historia</p>
+      </div>
     </div>
-    <div class="header-text">
-      <h1><span>Faktabasen</span></h1>
-      <p>Grundad av Moltaz &amp; Vilgot · Vetenskap &amp; Historia</p>
+    <div class="header-right">
+      <div id="liveClock">00:00:00</div>
+      <div id="liveDate"></div>
+      <div class="weather-badge">📍 Kristianstad · 🌤 Klart</div>
     </div>
   </div>
 </header>
 
-<!-- NAV -->
+<!-- ═══════════ NAV ═══════════ -->
 <nav>
   <div class="nav-inner">
     <div class="nav-links">
@@ -257,58 +465,84 @@ footer{background:var(--navy);border-top:1px solid rgba(201,168,76,.2);padding:4
       <a class="nav-link" onclick="showPage('vetenskap',this)">Vetenskap</a>
       <a class="nav-link" onclick="showPage('historia',this)">Historia</a>
       <a class="nav-link" onclick="showPage('amnen',this)">Ämnen</a>
+      <a class="nav-link" onclick="showPage('bokmärken',this)">🔖 Bokmärken</a>
       <a class="nav-link" onclick="showPage('kontakt',this)">Kontakt</a>
     </div>
-    <button class="nav-panel-btn" onclick="openPanel()">⚙ Panel</button>
+    <div class="nav-actions">
+      <button class="nav-btn" id="darkBtn" onclick="toggleDark()" title="Mörkt läge">🌙</button>
+      <button class="nav-btn" onclick="openSubmitModal()" title="Skicka in artikel">✍</button>
+      <button class="nav-btn" onclick="openSettings()" title="Inställningar">⚙</button>
+      <button class="nav-btn" onclick="openPanel()" title="Ägar-panel">🔐</button>
+    </div>
   </div>
 </nav>
+
+<!-- ═══════════════════════════════
+     PAGES
+════════════════════════════════ -->
 
 <!-- ════ HEM ════ -->
 <div id="hem" class="page active">
   <div class="search-bar">
     <div class="search-wrap">
-      <input type="text" id="searchInput" placeholder="Sök i faktabasen…" onkeydown="handleSearch(event)">
+      <input type="text" id="searchInput" placeholder="Sök i faktabasen… (prova AI, vikingar, klimat)" onkeydown="handleSearch(event)">
       <button onclick="doSearch()">Sök</button>
     </div>
   </div>
-  <div class="hero-section"><div class="section-label">Utvalda ämnen</div></div>
+  <div id="searchHistory" class="search-history" style="display:none"></div>
+
+  <div class="hero-section"><div class="section-label">Veckans toppnyhet</div></div>
+  <div class="featured-banner">
+    <div class="featured-inner">
+      <div>
+        <span class="featured-badge">Redaktörens val</span>
+        <h2>Artificiell intelligens förändrar Sverige</h2>
+        <p>Från Karolinska till Spotify – hur AI-revolutionen påverkar nästan alla sektorer i det svenska samhället just nu.</p>
+        <button class="featured-cta" onclick="showPage('vetenskap',document.querySelectorAll('.nav-link')[1])">Läs artikeln →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-section" style="padding-top:28px"><div class="section-label">Utvalda ämnen</div></div>
   <div class="card-grid">
     <div class="topic-card" onclick="showPage('vetenskap',document.querySelectorAll('.nav-link')[1])">
-      <div class="topic-icon">🔬</div>
-      <h3>Artificiell Intelligens</h3>
-      <p>Hur maskiner lär sig tänka – och vad det innebär för framtiden.</p>
+      <div class="topic-icon">🔬</div><h3>Artificiell Intelligens</h3>
+      <p>Hur maskiner lär sig tänka och vad det innebär för framtiden.</p>
       <span class="read-more">Läs mer →</span>
     </div>
     <div class="topic-card" onclick="showPage('historia',document.querySelectorAll('.nav-link')[2])">
-      <div class="topic-icon">📜</div>
-      <h3>Sveriges Historia</h3>
-      <p>Från vikingatiden till modernt välfärdssamhälle.</p>
+      <div class="topic-icon">📜</div><h3>Sveriges Historia</h3>
+      <p>Från vikingatid och stormaktstid till modernt välfärdssamhälle.</p>
       <span class="read-more">Läs mer →</span>
     </div>
     <div class="topic-card" onclick="openSubmitModal()">
-      <div class="topic-icon">✍️</div>
-      <h3>Skicka in en artikel</h3>
-      <p>Har du expertkunskap? Bidra till Faktabasen.</p>
+      <div class="topic-icon">✍️</div><h3>Skicka in artikel</h3>
+      <p>Har du expertkunskap? Bidra med en artikel till Faktabasen.</p>
       <span class="read-more">Bidra nu →</span>
     </div>
     <div class="topic-card" onclick="showPage('amnen',document.querySelectorAll('.nav-link')[3])">
-      <div class="topic-icon">📚</div>
-      <h3>Alla ämnen</h3>
-      <p>Utforska hela samlingen av ämnen i faktabasen.</p>
+      <div class="topic-icon">📚</div><h3>Alla ämnen</h3>
+      <p>Utforska hela samlingen av ämnen och artiklar.</p>
       <span class="read-more">Se alla →</span>
     </div>
-    <div class="topic-card" onclick="showPage('historia',document.querySelectorAll('.nav-link')[2])">
-      <div class="topic-icon">🏛️</div>
-      <h3>Demokratins Rötter</h3>
-      <p>Hur Sverige byggde en av världens starkaste demokratier.</p>
-      <span class="read-more">Läs mer →</span>
+    <div class="topic-card" onclick="showPage('bokmärken',document.querySelectorAll('.nav-link')[4])">
+      <div class="topic-icon">🔖</div><h3>Dina bokmärken</h3>
+      <p>Spara artiklar och återkom till dem när du vill.</p>
+      <span class="read-more">Öppna →</span>
     </div>
-    <div class="topic-card" onclick="showPage('kontakt',document.querySelectorAll('.nav-link')[4])">
-      <div class="topic-icon">✉️</div>
-      <h3>Kontakta oss</h3>
+    <div class="topic-card" onclick="showPage('kontakt',document.querySelectorAll('.nav-link')[5])">
+      <div class="topic-icon">✉️</div><h3>Kontakta oss</h3>
       <p>Frågor, samarbeten eller rättelser – hör av dig.</p>
-      <span class="read-more">Kontakta oss →</span>
+      <span class="read-more">Kontakt →</span>
     </div>
+  </div>
+
+  <div class="hero-section" style="padding-top:0"><div class="section-label">Faktabasen i siffror</div></div>
+  <div class="stats-bar">
+    <div class="stat-card"><div class="stat-num" id="statArticles">2</div><div class="stat-label">Publicerade artiklar</div></div>
+    <div class="stat-card"><div class="stat-num">8</div><div class="stat-label">Ämnesområden</div></div>
+    <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">Grundare</div></div>
+    <div class="stat-card"><div class="stat-num" id="statVisits">1</div><div class="stat-label">Besök idag</div></div>
   </div>
 </div>
 
@@ -319,10 +553,14 @@ footer{background:var(--navy);border-top:1px solid rgba(201,168,76,.2);padding:4
       <div class="article-card">
         <div class="article-label">Vetenskap &amp; Teknik</div>
         <h2>Artificiell intelligens – vad är det och hur fungerar det?</h2>
-        <p class="reading-time">⏱ Ca 3 min läsning</p>
+        <div class="article-meta">
+          <span class="meta-item">⏱ Ca 3 min läsning</span>
+          <span class="meta-item">📅 April 2026</span>
+          <span class="meta-item">✍ Redaktionen</span>
+        </div>
         <p>Artificiell intelligens (AI) är ett område inom datavetenskap som fokuserar på att skapa system som kan utföra uppgifter som normalt kräver mänsklig intelligens. Detta inkluderar problemlösning, inlärning och språkförståelse.</p>
         <div class="section-heading">Hur fungerar AI?</div>
-        <p>AI-system använder algoritmer och stora mängder data för att identifiera mönster. Maskininlärning är en vanlig metod där datorer lär sig genom erfarenhet istället för att programmeras med exakta instruktioner.</p>
+        <p>AI-system använder algoritmer och stora mängder data för att identifiera mönster. Maskininlärning är en vanlig metod där datorer lär sig genom erfarenhet istället för att programmeras med exakta instruktioner. Med djupinlärning kan system bearbeta komplex information med remarkabel precision.</p>
         <div class="section-heading">Fakta i korthet</div>
         <ul class="fact-list">
           <li>AI används brett inom sjukvård, transport och ekonomi</li>
@@ -334,10 +572,32 @@ footer{background:var(--navy);border-top:1px solid rgba(201,168,76,.2);padding:4
         <div class="section-heading">Tillämpningar i Sverige</div>
         <p>Sverige tillhör Europas ledande AI-nationer. Företag som Ericsson, Spotify och Klarna investerar kraftigt i AI-forskning. Karolinska Institutet använder maskininlärning för att förbättra cancerdiagnostik.</p>
         <div class="source-block"><strong>Källor:</strong> Nationalencyklopedin, Vetenskapsrådet, EU-kommissionen, VINNOVA 2025</div>
-        <button class="edit-request-btn" onclick="openEditModal('Artificiell intelligens – vad är det och hur fungerar det?')">✏ Föreslå en rättelse</button>
+        <div class="article-actions">
+          <button class="edit-btn" onclick="openEditModal('Artificiell intelligens')">✏ Föreslå rättelse</button>
+          <button class="bookmark-btn" id="bm-vetenskap" onclick="toggleBookmark('vetenskap','Artificiell intelligens','Vetenskap &amp; Teknik')">🔖 Bokmärk</button>
+          <button class="share-btn" onclick="shareArticle('Artificiell intelligens')">↗ Dela</button>
+          <button class="print-btn" onclick="window.print()">🖨 Skriv ut</button>
+        </div>
+        <div class="rating-row">
+          <span>Betygsätt artikeln:</span>
+          <div class="stars" id="stars-vetenskap">
+            <span class="star" onclick="rateArticle('vetenskap',1)" title="1">★</span>
+            <span class="star" onclick="rateArticle('vetenskap',2)" title="2">★</span>
+            <span class="star" onclick="rateArticle('vetenskap',3)" title="3">★</span>
+            <span class="star" onclick="rateArticle('vetenskap',4)" title="4">★</span>
+            <span class="star" onclick="rateArticle('vetenskap',5)" title="5">★</span>
+          </div>
+          <span id="rating-label-vetenskap" style="font-size:.78rem;color:var(--muted)"></span>
+        </div>
       </div>
     </div>
     <div class="sidebar">
+      <div class="sidebar-card">
+        <h3>Populärt just nu</h3>
+        <div class="trending-item" onclick="showPage('historia',document.querySelectorAll('.nav-link')[2])"><span class="trending-num">1</span><span class="trending-title">Sveriges Historia</span></div>
+        <div class="trending-item" onclick="showPage('vetenskap',document.querySelectorAll('.nav-link')[1])"><span class="trending-num">2</span><span class="trending-title">Artificiell Intelligens</span></div>
+        <div class="trending-item" onclick="showPage('amnen',document.querySelectorAll('.nav-link')[3])"><span class="trending-num">3</span><span class="trending-title">Klimat &amp; Miljö</span></div>
+      </div>
       <div class="sidebar-card">
         <h3>Relaterade artiklar</h3>
         <ul class="sidebar-nav">
@@ -349,13 +609,11 @@ footer{background:var(--navy);border-top:1px solid rgba(201,168,76,.2);padding:4
       </div>
       <div class="sidebar-card">
         <h3>Ämnesord</h3>
-        <div class="tag-list">
-          <span class="tag">AI</span><span class="tag">Maskininlärning</span><span class="tag">Datavetenskap</span><span class="tag">Algoritmer</span><span class="tag">Deep Learning</span><span class="tag">Etik</span>
-        </div>
+        <div class="tag-list"><span class="tag">AI</span><span class="tag">Maskininlärning</span><span class="tag">Datavetenskap</span><span class="tag">Algoritmer</span><span class="tag">Deep Learning</span><span class="tag">Etik</span></div>
       </div>
       <div class="sidebar-card">
         <h3>Bidra</h3>
-        <p style="font-size:.875rem;color:#374151;margin-bottom:14px">Expert inom vetenskap? Skicka in en artikel för granskning.</p>
+        <p style="font-size:.85rem;color:var(--muted);margin-bottom:12px">Expert inom vetenskap? Skicka in en artikel för granskning.</p>
         <button class="btn-primary" style="width:100%;padding:10px" onclick="openSubmitModal()">Skicka in artikel</button>
       </div>
     </div>
@@ -369,22 +627,48 @@ footer{background:var(--navy);border-top:1px solid rgba(201,168,76,.2);padding:4
       <div class="article-card">
         <div class="article-label">Historia</div>
         <h2>Sverige genom tiderna – en historisk tidslinje</h2>
-        <p class="reading-time">⏱ Ca 4 min läsning</p>
+        <div class="article-meta">
+          <span class="meta-item">⏱ Ca 4 min läsning</span>
+          <span class="meta-item">📅 Mars 2026</span>
+          <span class="meta-item">✍ Redaktionen</span>
+        </div>
         <p>Från de första bosättningarna efter istiden till dagens moderna välfärdsstat har Sverige genomgått dramatiska förvandlingar.</p>
         <div class="section-heading">Tidslinje</div>
         <div class="timeline">
           <div class="timeline-item"><div class="timeline-year">ca 800–1050 e.Kr.</div><h3>Vikingatiden</h3><p>Svenska vikingar grundlade handelsrutter österut mot Konstantinopel och Bagdad. Birka på Björkö var ett av Nordens viktigaste handelscentra.</p></div>
-          <div class="timeline-item"><div class="timeline-year">1397</div><h3>Kalmarunionen</h3><p>Sverige, Danmark och Norge förenades under en krona. Unionen varade formellt till 1523 då Gustav Vasa bröt sig loss och grundade det moderna Sverige.</p></div>
+          <div class="timeline-item"><div class="timeline-year">1397</div><h3>Kalmarunionen</h3><p>Sverige, Danmark och Norge förenades under en krona. Unionen varade formellt till 1523 då Gustav Vasa bröt sig loss.</p></div>
           <div class="timeline-item"><div class="timeline-year">1611–1718</div><h3>Stormaktstiden</h3><p>Sverige kontrollerade stora delar av Östersjökusten. Karl XII:s fälttåg markerade stormaktens dramatiska slut 1718.</p></div>
-          <div class="timeline-item"><div class="timeline-year">1814</div><h3>Unionen med Norge</h3><p>Sverige och Norge inträdde i en personalunion som varade till 1905 då Norge valde självständighet.</p></div>
-          <div class="timeline-item"><div class="timeline-year">1932–1976</div><h3>Folkhemmet byggs</h3><p>Socialdemokraterna lade grunden till den svenska välfärdsmodellen – allmän sjukförsäkring, folkpension och gratis utbildning för alla.</p></div>
-          <div class="timeline-item"><div class="timeline-year">1995</div><h3>EU-inträde</h3><p>Efter en folkomröstning gick Sverige med i Europeiska unionen. Landet valde att behålla kronan som valuta.</p></div>
+          <div class="timeline-item"><div class="timeline-year">1814</div><h3>Unionen med Norge</h3><p>Sverige och Norge inträdde i en personalunion som varade till 1905.</p></div>
+          <div class="timeline-item"><div class="timeline-year">1932–1976</div><h3>Folkhemmet byggs</h3><p>Socialdemokraterna lade grunden till den svenska välfärdsmodellen – allmän sjukförsäkring, folkpension och gratis utbildning.</p></div>
+          <div class="timeline-item"><div class="timeline-year">1995</div><h3>EU-inträde</h3><p>Efter folkomröstning gick Sverige med i EU och behöll kronan som valuta.</p></div>
         </div>
         <div class="source-block"><strong>Källor:</strong> Nationalencyklopedin, Riksarkivet, Historisk Tidskrift</div>
-        <button class="edit-request-btn" onclick="openEditModal('Sveriges historia – en historisk tidslinje')">✏ Föreslå en rättelse</button>
+        <div class="article-actions">
+          <button class="edit-btn" onclick="openEditModal('Sveriges historia')">✏ Föreslå rättelse</button>
+          <button class="bookmark-btn" id="bm-historia" onclick="toggleBookmark('historia','Sveriges historia','Historia')">🔖 Bokmärk</button>
+          <button class="share-btn" onclick="shareArticle('Sveriges historia')">↗ Dela</button>
+          <button class="print-btn" onclick="window.print()">🖨 Skriv ut</button>
+        </div>
+        <div class="rating-row">
+          <span>Betygsätt artikeln:</span>
+          <div class="stars" id="stars-historia">
+            <span class="star" onclick="rateArticle('historia',1)">★</span>
+            <span class="star" onclick="rateArticle('historia',2)">★</span>
+            <span class="star" onclick="rateArticle('historia',3)">★</span>
+            <span class="star" onclick="rateArticle('historia',4)">★</span>
+            <span class="star" onclick="rateArticle('historia',5)">★</span>
+          </div>
+          <span id="rating-label-historia" style="font-size:.78rem;color:var(--muted)"></span>
+        </div>
       </div>
     </div>
     <div class="sidebar">
+      <div class="sidebar-card">
+        <h3>Populärt just nu</h3>
+        <div class="trending-item" onclick="showPage('vetenskap',document.querySelectorAll('.nav-link')[1])"><span class="trending-num">1</span><span class="trending-title">Artificiell Intelligens</span></div>
+        <div class="trending-item" onclick="showPage('historia',document.querySelectorAll('.nav-link')[2])"><span class="trending-num">2</span><span class="trending-title">Vikingatiden</span></div>
+        <div class="trending-item"><span class="trending-num">3</span><span class="trending-title">Stormaktstiden</span></div>
+      </div>
       <div class="sidebar-card">
         <h3>Epoker</h3>
         <ul class="sidebar-nav">
@@ -397,14 +681,7 @@ footer{background:var(--navy);border-top:1px solid rgba(201,168,76,.2);padding:4
       </div>
       <div class="sidebar-card">
         <h3>Ämnesord</h3>
-        <div class="tag-list">
-          <span class="tag">Vikingar</span><span class="tag">Stormaktstid</span><span class="tag">Folkhemmet</span><span class="tag">Gustav Vasa</span><span class="tag">Välfärd</span><span class="tag">EU</span>
-        </div>
-      </div>
-      <div class="sidebar-card">
-        <h3>Bidra</h3>
-        <p style="font-size:.875rem;color:#374151;margin-bottom:14px">Är du historiker? Skicka in en artikel för granskning.</p>
-        <button class="btn-primary" style="width:100%;padding:10px" onclick="openSubmitModal()">Skicka in artikel</button>
+        <div class="tag-list"><span class="tag">Vikingar</span><span class="tag">Stormaktstid</span><span class="tag">Folkhemmet</span><span class="tag">Gustav Vasa</span><span class="tag">Välfärd</span><span class="tag">EU</span></div>
       </div>
     </div>
   </div>
@@ -412,13 +689,19 @@ footer{background:var(--navy);border-top:1px solid rgba(201,168,76,.2);padding:4
 
 <!-- ════ ÄMNEN ════ -->
 <div id="amnen" class="page">
-  <div style="max-width:1000px;margin:48px auto 0;padding:0 32px">
+  <div style="max-width:1060px;margin:44px auto 0;padding:0 32px">
     <div class="section-label">Alla ämnen</div>
-    <p style="color:var(--muted);font-size:.95rem;margin-bottom:8px">Klicka på ett ämne för att lära dig mer. Nya ämnen läggs till löpande av redaktionen.</p>
+    <p style="color:var(--muted);font-size:.92rem;margin-bottom:4px">Klicka på ett ämne för att lära dig mer. Redaktionen lägger löpande till nya artiklar.</p>
   </div>
-  <div class="amnen-grid" id="amnenGrid">
-    <!-- Rendered by JS from AMNEN array below -->
+  <div class="amnen-grid" id="amnenGrid"></div>
+</div>
+
+<!-- ════ BOKMÄRKEN ════ -->
+<div id="bokmärken" class="page">
+  <div style="max-width:1060px;margin:44px auto 0;padding:0 32px">
+    <div class="section-label">Dina bokmärken</div>
   </div>
+  <div id="bookmarkContent"></div>
 </div>
 
 <!-- ════ KONTAKT ════ -->
@@ -427,7 +710,7 @@ footer{background:var(--navy);border-top:1px solid rgba(201,168,76,.2);padding:4
     <div class="article-card">
       <div class="article-label">Kontakt</div>
       <h2>Hör av dig till oss</h2>
-      <p style="margin-bottom:32px">Har du frågor, vill bidra med expertkunskap eller rapportera ett fel? Fyll i formuläret nedan. Ditt meddelande öppnas direkt i din e-postklient adresserat till oss.</p>
+      <p style="margin-bottom:28px">Har du frågor, vill bidra eller rapportera ett fel? Formuläret öppnar din e-postklient direkt mot vår ProtonMail-adress.</p>
       <div class="contact-grid">
         <div>
           <div class="form-group"><label>Ditt namn</label><input type="text" id="contactName" placeholder="Anna Svensson"></div>
@@ -435,12 +718,9 @@ footer{background:var(--navy);border-top:1px solid rgba(201,168,76,.2);padding:4
           <div class="form-group">
             <label>Ämne</label>
             <select id="contactSubject">
-              <option value="">Välj ett ämne…</option>
-              <option>Fråga om innehåll</option>
-              <option>Bidra med kunskap</option>
-              <option>Rapportera felaktig information</option>
-              <option>Samarbete</option>
-              <option>Övrigt</option>
+              <option value="">Välj ämne…</option>
+              <option>Fråga om innehåll</option><option>Bidra med kunskap</option>
+              <option>Rapportera felaktighet</option><option>Samarbete</option><option>Övrigt</option>
             </select>
           </div>
           <div class="form-group"><label>Meddelande</label><textarea id="contactMessage" placeholder="Skriv ditt meddelande här…"></textarea></div>
@@ -448,29 +728,13 @@ footer{background:var(--navy);border-top:1px solid rgba(201,168,76,.2);padding:4
         </div>
         <div class="contact-info">
           <h3>Kontaktuppgifter</h3>
-          <div class="contact-item">
-            <div class="icon">📧</div>
-            <div><strong>E-post</strong><br>
-              <a href="mailto:redaktion.faktabasen@protonmail.com" style="color:var(--muted);text-decoration:none;font-size:.88rem;word-break:break-all">redaktion.faktabasen@protonmail.com</a>
-            </div>
+          <div class="contact-item"><div class="icon">📧</div><div><strong>E-post (ProtonMail)</strong><br><a href="mailto:redaktion.faktabasen@protonmail.com" style="color:var(--muted);font-size:.85rem;word-break:break-all;text-decoration:none">redaktion.faktabasen@protonmail.com</a></div></div>
+          <div class="contact-item"><div class="icon">👤</div><div><strong>Grundare</strong><br><span style="color:var(--muted)">Moltaz &amp; Vilgot</span></div></div>
+          <div class="contact-item"><div class="icon">🕐</div><div><strong>Svarstid</strong><br><span style="color:var(--muted)">Mån–fre, 09:00–17:00</span></div></div>
+          <div style="margin-top:20px;padding:18px;background:var(--cream-dark);border-radius:4px;border-left:3px solid var(--gold)">
+            <p style="font-size:.85rem;color:var(--text);margin:0;opacity:.85"><strong>Vill du bli skribent?</strong><br>Vi söker experter inom vetenskap, historia och teknik.</p>
           </div>
-          <div class="contact-item">
-            <div class="icon">👤</div>
-            <div><strong>Grundare</strong><br><span style="color:var(--muted)">Moltaz &amp; Vilgot</span></div>
-          </div>
-          <div class="contact-item">
-            <div class="icon">🕐</div>
-            <div><strong>Svarstid</strong><br><span style="color:var(--muted)">Måndag–fredag, 09:00–17:00</span></div>
-          </div>
-          <div style="margin-top:24px;padding:18px;background:var(--cream);border-radius:4px;border-left:3px solid var(--gold)">
-            <p style="font-size:.875rem;color:#374151;margin:0">
-              <strong style="color:var(--navy)">Vill du bli skribent?</strong><br>
-              Vi söker alltid experter inom vetenskap, historia och teknik. Hör av dig med en kort presentation och ämnesförslag.
-            </p>
-          </div>
-          <div style="margin-top:14px">
-            <button class="btn-primary" style="width:100%" onclick="openSubmitModal()">✍ Skicka in en artikel</button>
-          </div>
+          <div style="margin-top:12px"><button class="btn-primary" style="width:100%" onclick="openSubmitModal()">✍ Skicka in en artikel</button></div>
         </div>
       </div>
     </div>
@@ -482,7 +746,7 @@ footer{background:var(--navy);border-top:1px solid rgba(201,168,76,.2);padding:4
   <div class="footer-inner">
     <div class="footer-brand">
       <h2>Faktabasen</h2>
-      <p>Grundad av Moltaz &amp; Vilgot. Ett oberoende kunskapsnav med fokus på vetenskap, historia och samhälle. Granskade artiklar skrivna av experter.</p>
+      <p>Grundad av Moltaz &amp; Vilgot. Ett oberoende kunskapsnav med fokus på vetenskap, historia och samhälle.</p>
     </div>
     <div class="footer-col">
       <h4>Sidor</h4>
@@ -490,13 +754,19 @@ footer{background:var(--navy);border-top:1px solid rgba(201,168,76,.2);padding:4
       <a onclick="showPage('vetenskap',document.querySelectorAll('.nav-link')[1])">Vetenskap</a>
       <a onclick="showPage('historia',document.querySelectorAll('.nav-link')[2])">Historia</a>
       <a onclick="showPage('amnen',document.querySelectorAll('.nav-link')[3])">Ämnen</a>
-      <a onclick="showPage('kontakt',document.querySelectorAll('.nav-link')[4])">Kontakt</a>
+    </div>
+    <div class="footer-col">
+      <h4>Verktyg</h4>
+      <a onclick="showPage('bokmärken',document.querySelectorAll('.nav-link')[4])">Bokmärken</a>
+      <a onclick="openSubmitModal()">Bidra med artikel</a>
+      <a onclick="openSettings()">Inställningar</a>
+      <a onclick="window.print()">Skriv ut</a>
     </div>
     <div class="footer-col">
       <h4>Om oss</h4>
-      <a href="mailto:redaktion.faktabasen@protonmail.com">E-post</a>
-      <a onclick="openSubmitModal()">Bidra med artikel</a>
+      <a href="mailto:redaktion.faktabasen@protonmail.com">ProtonMail</a>
       <a href="#" onclick="return false">Källpolicy</a>
+      <a href="#" onclick="return false">Integritetspolicy</a>
       <a onclick="openPanel()">Ägar-panel</a>
     </div>
   </div>
@@ -508,46 +778,151 @@ footer{background:var(--navy);border-top:1px solid rgba(201,168,76,.2);padding:4
 
 <!-- BACK TO TOP -->
 <div class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</div>
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
-<!-- ════ MODAL: SUBMIT ARTICLE ════ -->
+<!-- ═══════════ SETTINGS PANEL ═══════════ -->
+<div class="settings-overlay" id="settingsPanel">
+  <div class="settings-header">
+    <h3>⚙ Inställningar</h3>
+    <button class="settings-close" onclick="closeSettings()">×</button>
+  </div>
+  <div class="settings-body">
+
+    <div class="settings-section">
+      <div class="settings-section-title">🎨 Utseende</div>
+      <div class="setting-row">
+        <div><div class="setting-label">Mörkt läge</div><div class="setting-desc">Skona dina ögon i mörker</div></div>
+        <label class="toggle-wrap"><input type="checkbox" id="darkToggle" onchange="toggleDark()"><span class="toggle-slider"></span></label>
+      </div>
+      <div class="setting-row">
+        <div><div class="setting-label">Accentfärg</div><div class="setting-desc">Välj din favoritfärg</div></div>
+        <div class="color-swatches">
+          <div class="swatch active" style="background:#c9a84c" onclick="setAccent('#c9a84c','#e8c97a','#9a7835',this)" title="Guld"></div>
+          <div class="swatch" style="background:#4f8ef7" onclick="setAccent('#4f8ef7','#7fb3ff','#2a5cb8',this)" title="Blå"></div>
+          <div class="swatch" style="background:#e05c5c" onclick="setAccent('#e05c5c','#f08080','#b03030',this)" title="Röd"></div>
+          <div class="swatch" style="background:#4caf84" onclick="setAccent('#4caf84','#7dd4b2','#2e7a58',this)" title="Grön"></div>
+          <div class="swatch" style="background:#9b59b6" onclick="setAccent('#9b59b6','#bf8fe0','#6c3483',this)" title="Lila"></div>
+        </div>
+      </div>
+      <div class="setting-row">
+        <div><div class="setting-label">Avrundade hörn</div><div class="setting-desc">Mjuka eller kantiga kort</div></div>
+        <div class="btn-group">
+          <button class="btn-opt active" onclick="setRadius('4px',this)">Lite</button>
+          <button class="btn-opt" onclick="setRadius('12px',this)">Mer</button>
+          <button class="btn-opt" onclick="setRadius('0px',this)">Inga</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-section-title">🔤 Typografi</div>
+      <div class="setting-row">
+        <div><div class="setting-label">Textstorlek</div><div class="setting-desc">Justera läsbarhet</div></div>
+        <div class="range-wrap">
+          <input type="range" min="1" max="4" value="2" id="fontRange" oninput="setFontSize(this.value)">
+          <span class="range-val" id="fontRangeVal">M</span>
+        </div>
+      </div>
+      <div class="setting-row">
+        <div><div class="setting-label">Typsnitt</div><div class="setting-desc">Välj lässtil</div></div>
+        <div class="btn-group">
+          <button class="btn-opt active" onclick="setFontFamily('serif',this)">Serif</button>
+          <button class="btn-opt" onclick="setFontFamily('sans',this)">Sans</button>
+          <button class="btn-opt" onclick="setFontFamily('crimson',this)">Klassisk</button>
+        </div>
+      </div>
+      <div class="setting-row">
+        <div><div class="setting-label">Radavstånd</div><div class="setting-desc">Täthet på text</div></div>
+        <div class="btn-group">
+          <button class="btn-opt" onclick="setLineHeight('1.5',this)">Tätt</button>
+          <button class="btn-opt active" onclick="setLineHeight('1.75',this)">Normal</button>
+          <button class="btn-opt" onclick="setLineHeight('2.1',this)">Luftigt</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-section-title">⚡ Funktioner</div>
+      <div class="setting-row">
+        <div><div class="setting-label">Läsframsteg-bar</div><div class="setting-desc">Visa hur långt du läst</div></div>
+        <label class="toggle-wrap"><input type="checkbox" id="progressToggle" checked onchange="toggleProgress()"><span class="toggle-slider"></span></label>
+      </div>
+      <div class="setting-row">
+        <div><div class="setting-label">Animationer</div><div class="setting-desc">Mjuka övergångar</div></div>
+        <label class="toggle-wrap"><input type="checkbox" id="animToggle" checked onchange="toggleAnimations()"><span class="toggle-slider"></span></label>
+      </div>
+      <div class="setting-row">
+        <div><div class="setting-label">Sökhistorik</div><div class="setting-desc">Kom ihåg dina sökningar</div></div>
+        <label class="toggle-wrap"><input type="checkbox" id="historyToggle" checked><span class="toggle-slider"></span></label>
+      </div>
+      <div class="setting-row">
+        <div><div class="setting-label">Live-klocka</div><div class="setting-desc">Visa tid i header</div></div>
+        <label class="toggle-wrap"><input type="checkbox" id="clockToggle" checked onchange="toggleClock()"><span class="toggle-slider"></span></label>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-section-title">🌐 Språk</div>
+      <div class="setting-row">
+        <div><div class="setting-label">Gränssnittsspråk</div><div class="setting-desc">Mer alternativ kommer</div></div>
+        <div class="btn-group">
+          <button class="btn-opt active">Svenska</button>
+          <button class="btn-opt" onclick="showToast('Engelska kommer snart!')">English</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-section-title">🗑 Data</div>
+      <div class="setting-row">
+        <div><div class="setting-label">Rensa bokmärken</div><div class="setting-desc">Ta bort alla sparade artiklar</div></div>
+        <button class="btn-opt" style="color:#ef4444;border-color:rgba(239,68,68,.3)" onclick="clearBookmarks()">Rensa</button>
+      </div>
+      <div class="setting-row">
+        <div><div class="setting-label">Rensa sökhistorik</div><div class="setting-desc">Ta bort senaste sökningar</div></div>
+        <button class="btn-opt" style="color:#ef4444;border-color:rgba(239,68,68,.3)" onclick="clearHistory()">Rensa</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div id="settingsBg" style="position:fixed;inset:0;z-index:399;display:none;background:rgba(0,0,0,.3);backdrop-filter:blur(2px)" onclick="closeSettings()"></div>
+
+<!-- ═══════════ SUBMIT MODAL ═══════════ -->
 <div class="modal-overlay" id="submitModal" onclick="closeModalOnBg(event,'submitModal')">
   <div class="modal">
     <button class="modal-close" onclick="closeModal('submitModal')">×</button>
     <h3>Skicka in en artikel</h3>
-    <p class="sub">Din artikel granskas av redaktionen (Moltaz &amp; Vilgot) innan den publiceras. Du får besked via e-post.</p>
+    <p class="sub">Din artikel granskas av redaktionen (Moltaz &amp; Vilgot) innan publicering. Du får besked via e-post.</p>
     <div class="form-group"><label>Ditt namn</label><input type="text" id="subName" placeholder="Anna Svensson"></div>
     <div class="form-group"><label>Din e-post</label><input type="email" id="subEmail" placeholder="anna@exempel.se"></div>
     <div class="form-group"><label>Artikelns rubrik</label><input type="text" id="subTitle" placeholder="T.ex. Kvantfysik för nybörjare"></div>
-    <div class="form-group">
-      <label>Kategori</label>
-      <select id="subCategory">
-        <option value="">Välj kategori…</option>
-        <option>Vetenskap</option><option>Historia</option><option>Teknik</option><option>Samhälle</option><option>Annat</option>
-      </select>
+    <div class="form-group"><label>Kategori</label>
+      <select id="subCategory"><option value="">Välj kategori…</option><option>Vetenskap</option><option>Historia</option><option>Teknik</option><option>Samhälle</option><option>Annat</option></select>
     </div>
-    <div class="form-group"><label>Artikeltext</label><textarea id="subContent" style="min-height:180px" placeholder="Skriv din artikel här. Inkludera gärna källhänvisningar."></textarea></div>
+    <div class="form-group"><label>Artikeltext</label><textarea id="subContent" style="min-height:160px" placeholder="Skriv din artikel här. Inkludera gärna källhänvisningar."></textarea></div>
     <button class="btn-primary" onclick="submitArticle()">Skicka för granskning</button>
   </div>
 </div>
 
-<!-- ════ MODAL: EDIT REQUEST ════ -->
+<!-- ═══════════ EDIT MODAL ═══════════ -->
 <div class="modal-overlay" id="editModal" onclick="closeModalOnBg(event,'editModal')">
   <div class="modal">
     <button class="modal-close" onclick="closeModal('editModal')">×</button>
     <h3>Föreslå en rättelse</h3>
-    <p class="sub">Din rättelse granskas av redaktionen innan den godkänns. Du får besked via e-post.</p>
+    <p class="sub">Din rättelse granskas av redaktionen och du får besked via e-post.</p>
     <div class="form-group"><label>Ditt namn</label><input type="text" id="editName" placeholder="Anna Svensson"></div>
     <div class="form-group"><label>Din e-post</label><input type="email" id="editEmail" placeholder="anna@exempel.se"></div>
-    <div class="form-group"><label>Artikel</label><input type="text" id="editArticle" readonly style="opacity:.7;cursor:default"></div>
-    <div class="form-group"><label>Vad ska rättas?</label><textarea id="editWhat" placeholder="Beskriv vad som är fel och vad som bör stå istället…"></textarea></div>
-    <div class="form-group"><label>Källhänvisning (valfri)</label><input type="text" id="editSource" placeholder="T.ex. Nationalencyklopedin, Wikipedia…"></div>
+    <div class="form-group"><label>Artikel</label><input type="text" id="editArticle" readonly style="opacity:.65;cursor:default"></div>
+    <div class="form-group"><label>Vad ska rättas?</label><textarea id="editWhat" placeholder="Beskriv felet och vad som bör stå istället…"></textarea></div>
+    <div class="form-group"><label>Källhänvisning (valfri)</label><input type="text" id="editSource" placeholder="T.ex. Nationalencyklopedin…"></div>
     <button class="btn-primary" onclick="submitEdit()">Skicka rättelse</button>
   </div>
 </div>
 
-<!-- ════ OWNER PANEL ════ -->
+<!-- ═══════════ OWNER PANEL ═══════════ -->
 <div class="panel-overlay" id="ownerPanel">
-  <!-- LOGIN -->
   <div class="panel-login" id="panelLogin">
     <h2>Ägar-panel</h2>
     <p class="sub">Faktabasen · Moltaz &amp; Vilgot</p>
@@ -556,328 +931,515 @@ footer{background:var(--navy);border-top:1px solid rgba(201,168,76,.2);padding:4
     <p class="login-error" id="loginError">Fel kod – försök igen.</p>
     <button class="cancel-btn" onclick="closePanel()">Avbryt</button>
   </div>
-  <!-- MAIN -->
   <div class="panel-main" id="panelMain">
     <div class="panel-header">
-      <div>
-        <h2>Ägar-panel</h2>
-        <span class="owner-tag">Inloggad som Moltaz &amp; Vilgot</span>
-      </div>
+      <div><h2>Ägar-panel</h2><span class="owner-tag">Inloggad som Moltaz &amp; Vilgot</span></div>
       <button class="panel-close-btn" onclick="closePanel()">✕ Stäng</button>
     </div>
+    <div class="panel-tabs">
+      <div class="panel-tab active" onclick="switchTab('overview',this)">Översikt</div>
+      <div class="panel-tab" onclick="switchTab('articles',this)">Artiklar <span class="badge-count" id="countArticles">0</span></div>
+      <div class="panel-tab" onclick="switchTab('edits',this)">Rättelser <span class="badge-count" id="countEdits">0</span></div>
+      <div class="panel-tab" onclick="switchTab('contacts',this)">Kontakt <span class="badge-count" id="countContacts">0</span></div>
+    </div>
     <div class="panel-body">
-      <div class="panel-note">
-        <strong>Obs:</strong> Godkänn / Neka markerar posten som hanterad i panelen. Eftersom detta är en fristående HTML-fil utan server skickas ingen automatisk e-post – kontakta skribenten direkt på den e-post som visas i kortet.
+      <!-- OVERVIEW TAB -->
+      <div class="panel-tab-content active" id="tab-overview">
+        <div class="panel-stats">
+          <div class="ps-card"><div class="ps-num" id="ps-articles">0</div><div class="ps-label">Inskickade artiklar</div></div>
+          <div class="ps-card"><div class="ps-num" id="ps-edits">0</div><div class="ps-label">Rättelseförslag</div></div>
+          <div class="ps-card"><div class="ps-num" id="ps-contacts">0</div><div class="ps-label">Meddelanden</div></div>
+        </div>
+        <div class="panel-note"><strong>Info:</strong> Godkänn/Neka markerar poster som hanterade. Använd ✉ Svara-knappen för att kontakta avsändaren direkt via ProtonMail.</div>
+        <div class="panel-section-title">Senaste aktivitet</div>
+        <div id="recentActivity"><div class="panel-empty">Ingen aktivitet ännu.</div></div>
       </div>
-      <div class="panel-section">
-        <div class="panel-section-title">📄 Inskickade artiklar <span class="badge-count" id="countArticles">0</span></div>
+      <!-- ARTICLES TAB -->
+      <div class="panel-tab-content" id="tab-articles">
         <div id="panelArticles"><div class="panel-empty">Inga inskickade artiklar ännu.</div></div>
       </div>
-      <div class="panel-section">
-        <div class="panel-section-title">✏ Rättelseförslag <span class="badge-count" id="countEdits">0</span></div>
+      <!-- EDITS TAB -->
+      <div class="panel-tab-content" id="tab-edits">
         <div id="panelEdits"><div class="panel-empty">Inga rättelseförslag ännu.</div></div>
       </div>
-      <div class="panel-section">
-        <div class="panel-section-title">✉ Kontaktmeddelanden <span class="badge-count" id="countContacts">0</span></div>
+      <!-- CONTACTS TAB -->
+      <div class="panel-tab-content" id="tab-contacts">
         <div id="panelContacts"><div class="panel-empty">Inga kontaktmeddelanden ännu.</div></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
-
+<!-- ═══════════════════════════════════════
+     ÄMNEN CONFIG – LÄGG TILL NYA HÄR
+════════════════════════════════════════ -->
 <script>
-/* ══════════════════════════════════════════════════════════
-   ▼▼▼  LÄGG TILL NYA ÄMNEN HÄR – bara kopiera ett block  ▼▼▼
-   ══════════════════════════════════════════════════════════ */
+/* ╔══════════════════════════════════════════════╗
+   ║  ÄMNEN – Lägg till nya ämnen i listan nedan ║
+   ║  Kopiera ett block, ändra värdena, klart!   ║
+   ╚══════════════════════════════════════════════╝ */
 const AMNEN = [
-  {
-    icon: '🔬',
-    title: 'Artificiell Intelligens',
-    desc: 'Hur maskiner lär sig tänka och lösa problem som liknar mänsklig intelligens.',
-    tags: ['AI', 'Teknik', 'Maskininlärning'],
-    page: 'vetenskap'
-  },
-  {
-    icon: '📜',
-    title: 'Sveriges Historia',
-    desc: 'Från vikingatid och stormaktstid till modern demokrati och välfärdsstat.',
-    tags: ['Historia', 'Sverige', 'Vikingar'],
-    page: 'historia'
-  },
-  {
-    icon: '⚗️',
-    title: 'Kemi & Materia',
-    desc: 'Grundämnena, kemiska reaktioner och materians byggstenar.',
-    tags: ['Kemi', 'Vetenskap', 'Fysik'],
-    page: null
-  },
-  {
-    icon: '🌍',
-    title: 'Klimat & Miljö',
-    desc: 'Klimatförändringar, ekosystem och hållbar utveckling.',
-    tags: ['Klimat', 'Miljö', 'Hållbarhet'],
-    page: null
-  },
-  {
-    icon: '🧬',
-    title: 'Biologi & Genetik',
-    desc: 'DNA, evolution och hur livet på jorden fungerar.',
-    tags: ['Biologi', 'DNA', 'Evolution'],
-    page: null
-  },
-  {
-    icon: '🏛️',
-    title: 'Demokrati & Politik',
-    desc: 'Hur demokratiska system fungerar och Sveriges politiska historia.',
-    tags: ['Demokrati', 'Politik', 'Samhälle'],
-    page: null
-  },
-  {
-    icon: '🚀',
-    title: 'Rymden & Astronomi',
-    desc: 'Planeter, stjärnor, svarta hål och universums ursprung.',
-    tags: ['Rymden', 'Astronomi', 'Vetenskap'],
-    page: null
-  },
-  {
-    icon: '💡',
-    title: 'Uppfinningar & Innovation',
-    desc: 'Historiska och moderna uppfinningar som förändrade världen.',
-    tags: ['Innovation', 'Teknik', 'Historia'],
-    page: null
-  },
-  /* ── Lägg till fler ämnen här, kopiera blocket nedan:
-  {
-    icon: '🎨',
-    title: 'Konst & Kultur',
-    desc: 'Beskrivning av ämnet.',
-    tags: ['Tagg1', 'Tagg2'],
-    page: null   // eller 'vetenskap' / 'historia' för att länka till en sida
-  },
-  */
+  { icon:'🔬', title:'Artificiell Intelligens', desc:'Hur maskiner lär sig tänka och lösa problem.', tags:['AI','Teknik','Maskininlärning'], page:'vetenskap' },
+  { icon:'📜', title:'Sveriges Historia', desc:'Från vikingatid och stormaktstid till modernt välfärdssamhälle.', tags:['Historia','Sverige','Vikingar'], page:'historia' },
+  { icon:'⚗️', title:'Kemi & Materia', desc:'Grundämnena, kemiska reaktioner och materians byggstenar.', tags:['Kemi','Vetenskap','Fysik'], page:null },
+  { icon:'🌍', title:'Klimat & Miljö', desc:'Klimatförändringar, ekosystem och hållbar utveckling.', tags:['Klimat','Miljö','Hållbarhet'], page:null },
+  { icon:'🧬', title:'Biologi & Genetik', desc:'DNA, evolution och hur livet på jorden fungerar.', tags:['Biologi','DNA','Evolution'], page:null },
+  { icon:'🏛️', title:'Demokrati & Politik', desc:'Hur demokratiska system fungerar och Sveriges politiska historia.', tags:['Demokrati','Politik','Samhälle'], page:null },
+  { icon:'🚀', title:'Rymden & Astronomi', desc:'Planeter, stjärnor, svarta hål och universums ursprung.', tags:['Rymden','Astronomi','Vetenskap'], page:null },
+  { icon:'💡', title:'Uppfinningar & Innovation', desc:'Historiska och moderna uppfinningar som förändrade världen.', tags:['Innovation','Teknik','Historia'], page:null },
+  // ── Lägg till fler ämnen här:
+  // { icon:'🎨', title:'Konst & Kultur', desc:'Beskrivning.', tags:['Konst','Kultur'], page:null },
 ];
-/* ══════════════════════════════════════════════════════════
-   ▲▲▲  SLUT PÅ ÄMNES-KONFIGURATION                       ▲▲▲
-   ══════════════════════════════════════════════════════════ */
 
+/* ╔══════════════════════════════════════════════╗
+   ║  PANEL-KOD – ändra koden nedan              ║
+   ╚══════════════════════════════════════════════╝ */
 const PANEL_CODE = 'mZb6RdhHUQlyhmWUnQsJZHYwuzmntj';
-const PROTON_EMAIL = 'redaktion.faktabasen@protonmail.com';
-const state = { articles: [], edits: [], contacts: [] };
+const PROTON = 'redaktion.faktabasen@protonmail.com';
 
-// ── RENDER ÄMNEN
-function renderAmnen() {
-  const grid = document.getElementById('amnenGrid');
-  grid.innerHTML = AMNEN.map(a => `
-    <div class="amne-card" ${a.page ? `onclick="showPage('${a.page}',document.querySelectorAll('.nav-link')[${a.page==='vetenskap'?1:a.page==='historia'?2:3}])"` : ''} style="${a.page?'cursor:pointer':'cursor:default'}">
-      <div class="amne-icon">${a.icon}</div>
-      <h3>${a.title}</h3>
-      <p>${a.desc}</p>
-      <div class="amne-tags">${a.tags.map(t=>`<span class="amne-tag">${t}</span>`).join('')}</div>
-      ${a.page ? '<p style="margin-top:12px;font-size:.8rem;font-weight:600;color:var(--gold);letter-spacing:.05em;text-transform:uppercase">Läs artikel →</p>' : '<p style="margin-top:12px;font-size:.78rem;color:var(--muted);font-style:italic">Artikel kommer snart</p>'}
-    </div>`).join('');
+/* ═══ STATE ═══ */
+const state = { articles:[], edits:[], contacts:[], bookmarks:[], searchHistory:[], ratings:{} };
+let clockInterval = null;
+
+/* ═══════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════ */
+function init() {
+  renderAmnen();
+  startClock();
+  updateBackVisits();
+  renderBookmarks();
+  updateStatArticles();
 }
 
-// ── NAV
+/* ═══════════════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════════════ */
 function showPage(id, linkEl) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-link').forEach(a => a.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   if (linkEl) linkEl.classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  window.scrollTo({ top:0, behavior:'smooth' });
+  if (id === 'bokmärken') renderBookmarks();
 }
 
-// ── TOAST
-function showToast(msg) {
+/* ═══════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════ */
+function showToast(msg, color) {
   const t = document.getElementById('toast');
   t.textContent = msg;
+  t.style.borderLeftColor = color || 'var(--gold)';
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 4200);
+  setTimeout(() => t.classList.remove('show'), 4000);
 }
 
-// ── BACK TO TOP
+/* ═══════════════════════════════════════════════
+   READING PROGRESS BAR
+═══════════════════════════════════════════════ */
+let progressEnabled = true;
 window.addEventListener('scroll', () => {
+  // Back to top
   document.getElementById('backTop').classList.toggle('visible', window.scrollY > 300);
+  // Progress
+  if (!progressEnabled) return;
+  const doc = document.documentElement;
+  const pct = (window.scrollY / (doc.scrollHeight - doc.clientHeight)) * 100;
+  document.getElementById('progressBar').style.width = Math.min(pct,100) + '%';
 });
+function toggleProgress() {
+  progressEnabled = document.getElementById('progressToggle').checked;
+  if (!progressEnabled) document.getElementById('progressBar').style.width = '0';
+}
 
-// ── SEARCH
+/* ═══════════════════════════════════════════════
+   LIVE CLOCK
+═══════════════════════════════════════════════ */
+function startClock() {
+  const days = ['Söndag','Måndag','Tisdag','Onsdag','Torsdag','Fredag','Lördag'];
+  const months = ['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
+  function tick() {
+    const n = new Date();
+    const h = String(n.getHours()).padStart(2,'0');
+    const m = String(n.getMinutes()).padStart(2,'0');
+    const s = String(n.getSeconds()).padStart(2,'0');
+    const el = document.getElementById('liveClock');
+    if (el) el.textContent = `${h}:${m}:${s}`;
+    const de = document.getElementById('liveDate');
+    if (de) de.textContent = `${days[n.getDay()]} ${n.getDate()} ${months[n.getMonth()]} ${n.getFullYear()}`;
+  }
+  tick();
+  clockInterval = setInterval(tick, 1000);
+}
+function toggleClock() {
+  const on = document.getElementById('clockToggle').checked;
+  const el = document.getElementById('liveClock');
+  const de = document.getElementById('liveDate');
+  if (!on) { clearInterval(clockInterval); if(el)el.textContent=''; if(de)de.textContent=''; }
+  else { startClock(); }
+}
+
+/* ═══════════════════════════════════════════════
+   VISITS COUNTER
+═══════════════════════════════════════════════ */
+function updateBackVisits() {
+  let v = parseInt(sessionStorage.getItem('fb_visits')||'0') + 1;
+  sessionStorage.setItem('fb_visits', v);
+  const el = document.getElementById('statVisits');
+  if (el) el.textContent = v;
+}
+function updateStatArticles() {
+  const el = document.getElementById('statArticles');
+  if (el) el.textContent = 2 + state.articles.filter(a=>a.status==='accepted').length;
+}
+
+/* ═══════════════════════════════════════════════
+   SEARCH
+═══════════════════════════════════════════════ */
 function doSearch() {
   const q = document.getElementById('searchInput').value.trim();
   if (!q) { showToast('Ange ett sökord.'); return; }
   const l = q.toLowerCase();
-  // Check against AMNEN titles/tags first
-  const match = AMNEN.find(a =>
-    a.title.toLowerCase().includes(l) ||
-    a.tags.some(t => t.toLowerCase().includes(l))
-  );
-  if (match && match.page) {
+
+  // Save history
+  if (document.getElementById('historyToggle').checked) {
+    if (!state.searchHistory.includes(q)) { state.searchHistory.unshift(q); if(state.searchHistory.length>6) state.searchHistory.pop(); }
+    renderSearchHistory();
+  }
+
+  const match = AMNEN.find(a => a.title.toLowerCase().includes(l) || a.tags.some(t=>t.toLowerCase().includes(l)));
+  if (l.includes('ai')||l.includes('intelligens')||l.includes('maskin')) {
+    showPage('vetenskap',document.querySelectorAll('.nav-link')[1]);
+  } else if (l.includes('historia')||l.includes('viking')||l.includes('stormakt')||l.includes('folkhemmet')) {
+    showPage('historia',document.querySelectorAll('.nav-link')[2]);
+  } else if (match && match.page) {
     const idx = match.page==='vetenskap'?1:match.page==='historia'?2:3;
-    showPage(match.page, document.querySelectorAll('.nav-link')[idx]);
-  } else if (l.includes('ämne') || l.includes('alla')) {
-    showPage('amnen', document.querySelectorAll('.nav-link')[3]);
+    showPage(match.page,document.querySelectorAll('.nav-link')[idx]);
   } else if (match) {
-    showPage('amnen', document.querySelectorAll('.nav-link')[3]);
-    showToast(`Visar ämnen – "${match.title}" har ingen artikel ännu.`);
+    showPage('amnen',document.querySelectorAll('.nav-link')[3]);
+    showToast(`"${match.title}" har ingen artikel ännu.`);
   } else {
-    showToast(`Inga träffar för "${q}". Prova "AI", "historia" eller "klimat".`);
+    showToast(`Inga träffar för "${q}". Prova AI, vikingar eller klimat.`);
   }
   document.getElementById('searchInput').value = '';
 }
-function handleSearch(e) { if (e.key === 'Enter') doSearch(); }
+function handleSearch(e) { if(e.key==='Enter') doSearch(); }
 
-// ── MODALS
+function renderSearchHistory() {
+  const h = state.searchHistory;
+  const el = document.getElementById('searchHistory');
+  if (!h.length) { el.style.display='none'; return; }
+  el.style.display='flex';
+  el.innerHTML = '<span class="search-history-label">Senaste sökningar:</span>' +
+    h.map((q,i) => `<span class="search-chip" onclick="quickSearch('${esc(q)}')">${esc(q)} <span class="chip-x" onclick="removeHistory(event,${i})">×</span></span>`).join('');
+}
+function quickSearch(q) {
+  document.getElementById('searchInput').value = q;
+  doSearch();
+}
+function removeHistory(e, i) {
+  e.stopPropagation();
+  state.searchHistory.splice(i,1);
+  renderSearchHistory();
+}
+function clearHistory() { state.searchHistory=[]; renderSearchHistory(); showToast('Sökhistorik rensad.'); }
+
+/* ═══════════════════════════════════════════════
+   BOOKMARKS
+═══════════════════════════════════════════════ */
+function toggleBookmark(id, title, category) {
+  const existing = state.bookmarks.findIndex(b=>b.id===id);
+  if (existing >= 0) {
+    state.bookmarks.splice(existing,1);
+    showToast('Bokmärke borttaget.','#ef4444');
+  } else {
+    state.bookmarks.push({ id, title, category, time: now() });
+    showToast(`"${title}" bokmärkt! 🔖`);
+  }
+  updateBookmarkBtn(id);
+  renderBookmarks();
+}
+function updateBookmarkBtn(id) {
+  const btn = document.getElementById(`bm-${id}`);
+  if (!btn) return;
+  const bookmarked = state.bookmarks.some(b=>b.id===id);
+  btn.classList.toggle('bookmarked', bookmarked);
+  btn.textContent = bookmarked ? '🔖 Bokmärkt' : '🔖 Bokmärk';
+}
+function renderBookmarks() {
+  const el = document.getElementById('bookmarkContent');
+  if (!el) return;
+  if (!state.bookmarks.length) {
+    el.innerHTML = '<div class="bookmarks-empty"><div class="empty-icon">🔖</div><p>Inga bokmärken ännu.<br>Klicka på 🔖 i en artikel för att spara den.</p></div>';
+    return;
+  }
+  el.innerHTML = '<div class="bookmark-list">' +
+    state.bookmarks.map(b => `
+    <div class="bm-card" onclick="showPage('${b.id}',document.querySelectorAll('.nav-link')[${b.id==='vetenskap'?1:b.id==='historia'?2:3}])">
+      <div class="bm-info">
+        <h4>${esc(b.title)}</h4>
+        <p>${esc(b.category)} · Sparad ${b.time}</p>
+      </div>
+      <button class="bm-remove" onclick="event.stopPropagation();removeBookmark('${b.id}')">✕</button>
+    </div>`).join('') + '</div>';
+}
+function removeBookmark(id) {
+  state.bookmarks = state.bookmarks.filter(b=>b.id!==id);
+  updateBookmarkBtn(id);
+  renderBookmarks();
+  showToast('Bokmärke borttaget.');
+}
+function clearBookmarks() { state.bookmarks=[]; ['vetenskap','historia'].forEach(updateBookmarkBtn); renderBookmarks(); showToast('Alla bokmärken rensade.'); }
+
+/* ═══════════════════════════════════════════════
+   STAR RATING
+═══════════════════════════════════════════════ */
+function rateArticle(articleId, rating) {
+  state.ratings[articleId] = rating;
+  const stars = document.querySelectorAll(`#stars-${articleId} .star`);
+  stars.forEach((s,i) => s.classList.toggle('lit', i < rating));
+  const labels = ['','Dålig','Okej','Bra','Mycket bra','Utmärkt'];
+  const lbl = document.getElementById(`rating-label-${articleId}`);
+  if (lbl) lbl.textContent = `${labels[rating]} (${rating}/5)`;
+  showToast(`Tack för ditt betyg: ${rating}/5 ⭐`);
+}
+
+/* ═══════════════════════════════════════════════
+   SHARE
+═══════════════════════════════════════════════ */
+function shareArticle(title) {
+  const url = window.location.href;
+  if (navigator.share) {
+    navigator.share({ title, url }).catch(()=>{});
+  } else {
+    navigator.clipboard.writeText(url).then(()=>showToast('Länk kopierad till urklipp! ✓')).catch(()=>showToast('Kopiera länken: '+url));
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   DARK MODE
+═══════════════════════════════════════════════ */
+function toggleDark() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('darkToggle').checked = !isDark;
+  document.getElementById('darkBtn').textContent = isDark ? '🌙' : '☀️';
+}
+
+/* ═══════════════════════════════════════════════
+   SETTINGS
+═══════════════════════════════════════════════ */
+function openSettings()  { document.getElementById('settingsPanel').classList.add('open'); document.getElementById('settingsBg').style.display='block'; }
+function closeSettings() { document.getElementById('settingsPanel').classList.remove('open'); document.getElementById('settingsBg').style.display='none'; }
+
+function setFontSize(val) {
+  const sizes = ['small','medium','large','xl'];
+  const labels = ['S','M','L','XL'];
+  document.documentElement.setAttribute('data-font', sizes[val-1]);
+  document.getElementById('fontRangeVal').textContent = labels[val-1];
+}
+function setFontFamily(val, btn) {
+  document.documentElement.setAttribute('data-font-family', val);
+  document.querySelectorAll('.settings-body .btn-opt').forEach(b => { if ([...document.querySelectorAll('#tab-articles,#tab-edits,#tab-contacts')].some(el=>el.contains(b))) return; });
+  btn.closest('.btn-group').querySelectorAll('.btn-opt').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function setLineHeight(val, btn) {
+  document.body.style.lineHeight = val;
+  btn.closest('.btn-group').querySelectorAll('.btn-opt').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function setRadius(val, btn) {
+  document.documentElement.style.setProperty('--radius', val);
+  btn.closest('.btn-group').querySelectorAll('.btn-opt').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function setAccent(gold, goldLight, goldDim, swatch) {
+  document.documentElement.style.setProperty('--gold', gold);
+  document.documentElement.style.setProperty('--gold-light', goldLight);
+  document.documentElement.style.setProperty('--gold-dim', goldDim);
+  document.querySelectorAll('.swatch').forEach(s=>s.classList.remove('active'));
+  swatch.classList.add('active');
+  showToast('Accentfärg ändrad!');
+}
+function toggleAnimations() {
+  const on = document.getElementById('animToggle').checked;
+  document.documentElement.style.setProperty('--transition', on ? '.22s ease' : '0s');
+}
+
+/* ═══════════════════════════════════════════════
+   MODALS
+═══════════════════════════════════════════════ */
 function openModal(id)  { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-function closeModalOnBg(e, id) { if (e.target.id === id) closeModal(id); }
+function closeModalOnBg(e, id) { if(e.target.id===id) closeModal(id); }
 function openSubmitModal() { openModal('submitModal'); }
-function openEditModal(title) {
-  document.getElementById('editArticle').value = title;
-  openModal('editModal');
-}
+function openEditModal(title) { document.getElementById('editArticle').value=title; openModal('editModal'); }
 
-// ── SUBMIT ARTICLE
+/* ═══════════════════════════════════════════════
+   SUBMIT ARTICLE
+═══════════════════════════════════════════════ */
 function submitArticle() {
-  const name = v('subName'), email = v('subEmail'), title = v('subTitle'),
-        category = v('subCategory'), content = v('subContent');
-  if (!name || !email || !title || !category || !content) { showToast('Fyll i alla fält.'); return; }
-  if (!email.includes('@')) { showToast('Ogiltig e-postadress.'); return; }
-  state.articles.push({ id: uid(), name, email, title, category, content, time: now(), status: 'pending' });
+  const name=v('subName'),email=v('subEmail'),title=v('subTitle'),category=v('subCategory'),content=v('subContent');
+  if(!name||!email||!title||!category||!content){showToast('Fyll i alla fält.');return;}
+  if(!email.includes('@')){showToast('Ogiltig e-post.');return;}
+  state.articles.push({id:uid(),name,email,title,category,content,time:now(),status:'pending'});
   closeModal('submitModal');
   clearFields(['subName','subEmail','subTitle','subContent']);
-  document.getElementById('subCategory').value = '';
+  document.getElementById('subCategory').value='';
   showToast(`Tack ${name}! Din artikel väntar på granskning.`);
+  updateStatArticles();
 }
 
-// ── SUBMIT EDIT
+/* ═══════════════════════════════════════════════
+   SUBMIT EDIT
+═══════════════════════════════════════════════ */
 function submitEdit() {
-  const name = v('editName'), email = v('editEmail'), article = v('editArticle'),
-        what = v('editWhat'), source = v('editSource');
-  if (!name || !email || !what) { showToast('Fyll i namn, e-post och rättelse.'); return; }
-  if (!email.includes('@')) { showToast('Ogiltig e-postadress.'); return; }
-  state.edits.push({ id: uid(), name, email, article, what, source, time: now(), status: 'pending' });
+  const name=v('editName'),email=v('editEmail'),article=v('editArticle'),what=v('editWhat'),source=v('editSource');
+  if(!name||!email||!what){showToast('Fyll i namn, e-post och rättelse.');return;}
+  if(!email.includes('@')){showToast('Ogiltig e-post.');return;}
+  state.edits.push({id:uid(),name,email,article,what,source,time:now(),status:'pending'});
   closeModal('editModal');
   clearFields(['editName','editEmail','editWhat','editSource']);
-  showToast(`Tack ${name}! Ditt rättelseförslag har skickats.`);
+  showToast(`Tack ${name}! Rättelseförslag skickat.`);
 }
 
-// ── CONTACT — opens ProtonMail via mailto
+/* ═══════════════════════════════════════════════
+   CONTACT
+═══════════════════════════════════════════════ */
 function sendContact() {
-  const name = v('contactName'), email = v('contactEmail'),
-        subject = v('contactSubject'), message = v('contactMessage');
-  if (!name || !email || !subject || !message) { showToast('Fyll i alla fält.'); return; }
-  if (!email.includes('@')) { showToast('Ogiltig e-postadress.'); return; }
-
-  state.contacts.push({ id: uid(), name, email, subject, message, time: now(), status: 'pending' });
-
-  // Build mailto – opens default email client (ProtonMail web if set as default)
-  const subj = encodeURIComponent('[Faktabasen] ' + subject);
-  const body = encodeURIComponent(`Från: ${name}\nSvarsa till: ${email}\nÄmne: ${subject}\n\n${message}`);
-  const link = document.createElement('a');
-  link.href = `mailto:${PROTON_EMAIL}?subject=${subj}&body=${body}`;
-  link.click();
-
-  showToast(`Tack ${name}! Ditt meddelande öppnades i din e-postklient.`);
+  const name=v('contactName'),email=v('contactEmail'),subject=v('contactSubject'),message=v('contactMessage');
+  if(!name||!email||!subject||!message){showToast('Fyll i alla fält.');return;}
+  if(!email.includes('@')){showToast('Ogiltig e-post.');return;}
+  state.contacts.push({id:uid(),name,email,subject,message,time:now(),status:'pending'});
+  const s=encodeURIComponent('[Faktabasen] '+subject);
+  const b=encodeURIComponent(`Från: ${name}\nSvarsa till: ${email}\nÄmne: ${subject}\n\n${message}`);
+  const a=document.createElement('a');a.href=`mailto:${PROTON}?subject=${s}&body=${b}`;a.click();
+  showToast(`Tack ${name}! Din e-postklient har öppnats.`);
   clearFields(['contactName','contactEmail','contactMessage']);
-  document.getElementById('contactSubject').value = '';
+  document.getElementById('contactSubject').value='';
 }
 
-// ── PANEL
+/* ═══════════════════════════════════════════════
+   OWNER PANEL
+═══════════════════════════════════════════════ */
 function openPanel() {
   clearFields(['panelCodeInput']);
-  document.getElementById('loginError').style.display = 'none';
-  document.getElementById('panelLogin').style.display = 'flex';
+  document.getElementById('loginError').style.display='none';
+  document.getElementById('panelLogin').style.display='flex';
   document.getElementById('panelMain').classList.remove('visible');
   document.getElementById('ownerPanel').classList.add('open');
-  setTimeout(() => document.getElementById('panelCodeInput').focus(), 250);
+  setTimeout(()=>document.getElementById('panelCodeInput').focus(),250);
 }
 function closePanel() { document.getElementById('ownerPanel').classList.remove('open'); }
 function checkPanelCode() {
-  if (document.getElementById('panelCodeInput').value === PANEL_CODE) {
-    document.getElementById('panelLogin').style.display = 'none';
+  if(document.getElementById('panelCodeInput').value===PANEL_CODE){
+    document.getElementById('panelLogin').style.display='none';
     document.getElementById('panelMain').classList.add('visible');
     renderPanel();
   } else {
-    document.getElementById('loginError').style.display = 'block';
-    document.getElementById('panelCodeInput').value = '';
+    document.getElementById('loginError').style.display='block';
+    document.getElementById('panelCodeInput').value='';
     document.getElementById('panelCodeInput').focus();
   }
 }
-
-// ── RENDER PANEL
+function switchTab(name, el) {
+  document.querySelectorAll('.panel-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel-tab-content').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+}
 function renderPanel() {
-  renderSection('panelArticles', state.articles, 'article');
-  renderSection('panelEdits',    state.edits,    'edit');
-  renderSection('panelContacts', state.contacts, 'contact');
-  document.getElementById('countArticles').textContent = countPending(state.articles);
-  document.getElementById('countEdits').textContent    = countPending(state.edits);
-  document.getElementById('countContacts').textContent = countPending(state.contacts);
+  // badges
+  document.getElementById('countArticles').textContent=countPending(state.articles);
+  document.getElementById('countEdits').textContent=countPending(state.edits);
+  document.getElementById('countContacts').textContent=countPending(state.contacts);
+  // stats
+  document.getElementById('ps-articles').textContent=state.articles.length;
+  document.getElementById('ps-edits').textContent=state.edits.length;
+  document.getElementById('ps-contacts').textContent=state.contacts.length;
+  // sections
+  renderSection('panelArticles',state.articles,'article');
+  renderSection('panelEdits',state.edits,'edit');
+  renderSection('panelContacts',state.contacts,'contact');
+  // recent activity
+  const all=[...state.articles,...state.edits,...state.contacts].sort((a,b)=>b.id-a.id).slice(0,5);
+  const ra=document.getElementById('recentActivity');
+  if(!all.length){ra.innerHTML='<div class="panel-empty">Ingen aktivitet ännu.</div>';return;}
+  ra.innerHTML=all.map(item=>{
+    const type=state.articles.includes(item)?'article':state.edits.includes(item)?'edit':'contact';
+    const icons={article:'📄',edit:'✏',contact:'✉'};
+    const labels={article:'Artikel',edit:'Rättelse',contact:'Kontakt'};
+    return `<div style="display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06)">
+      <span style="font-size:1.1rem">${icons[type]}</span>
+      <div><div style="color:#fff;font-size:.88rem">${esc(item.name)} · ${esc(type==='article'?item.title:type==='edit'?item.article:item.subject)}</div>
+      <div style="font-size:.75rem;color:rgba(255,255,255,.28);font-family:'DM Sans',sans-serif">${item.time} · ${labels[type]}</div></div>
+      <span style="margin-left:auto;font-size:.7rem;padding:2px 8px;border-radius:20px;background:${item.status==='pending'?'rgba(201,168,76,.15)':'rgba(255,255,255,.05)'};color:${item.status==='pending'?'var(--gold)':'rgba(255,255,255,.3)'};font-family:'DM Sans',sans-serif">${item.status==='pending'?'Väntar':item.status==='accepted'?'Godkänd':'Nekad'}</span>
+    </div>`;
+  }).join('');
 }
-function countPending(arr) { return arr.filter(r => r.status === 'pending').length; }
-
-function renderSection(id, items, type) {
-  const el = document.getElementById(id);
-  if (!items.length) { el.innerHTML = '<div class="panel-empty">Inga poster ännu.</div>'; return; }
-  const sorted = [...items].sort((a,b) => (a.status==='pending'?0:1)-(b.status==='pending'?0:1));
-  el.innerHTML = sorted.map(item => buildCard(item, type)).join('');
+function countPending(arr){return arr.filter(r=>r.status==='pending').length}
+function renderSection(id,items,type){
+  const el=document.getElementById(id);
+  if(!items.length){el.innerHTML='<div class="panel-empty">Inga poster ännu.</div>';return;}
+  const sorted=[...items].sort((a,b)=>(a.status==='pending'?0:1)-(b.status==='pending'?0:1));
+  el.innerHTML=sorted.map(item=>buildCard(item,type)).join('');
 }
-
-function buildCard(item, type) {
-  const resolved = item.status !== 'pending';
-  let badge='', title='', preview='';
-  if (type==='article') {
-    badge   = '<span class="req-badge badge-article">Ny artikel</span>';
-    title   = item.title;
-    preview = `Kategori: ${item.category}\n\n${item.content}`;
-  } else if (type==='edit') {
-    badge   = '<span class="req-badge badge-edit">Rättelse</span>';
-    title   = `Rättelse: ${item.article}`;
-    preview = item.what + (item.source ? `\n\nKälla: ${item.source}` : '');
-  } else {
-    badge   = '<span class="req-badge badge-contact">Kontakt</span>';
-    title   = item.subject;
-    preview = item.message;
-  }
-  const replyLink = `mailto:${esc(item.email)}?subject=${encodeURIComponent('[Faktabasen] Svar på din ' + (type==='article'?'artikel':type==='edit'?'rättelse':'fråga'))}`;
-  const actions = resolved
-    ? `<span class="resolved-label">${item.status==='accepted'?'✓ Godkänd':'✗ Nekad'}</span>`
-    : `<button class="btn-accept" onclick="resolve('${type}',${item.id},'accepted')">✓ Godkänn</button>
-       <button class="btn-deny"   onclick="resolve('${type}',${item.id},'denied')">✗ Neka</button>
-       <a href="${replyLink}" style="display:inline-flex;align-items:center;padding:8px 14px;background:transparent;color:rgba(255,255,255,.35);border:1px solid rgba(255,255,255,.1);border-radius:3px;font-size:.78rem;text-decoration:none;transition:all .2s" onmouseover="this.style.color='#fff';this.style.borderColor='rgba(255,255,255,.3)'" onmouseout="this.style.color='rgba(255,255,255,.35)';this.style.borderColor='rgba(255,255,255,.1)'">✉ Svara</a>`;
-  return `
-  <div class="req-card${resolved?' resolved':''}" id="rc-${type}-${item.id}">
+function buildCard(item,type){
+  const resolved=item.status!=='pending';
+  let badge='',title='',preview='';
+  if(type==='article'){badge='<span class="req-badge badge-article">Ny artikel</span>';title=item.title;preview=`Kategori: ${item.category}\n\n${item.content}`;}
+  else if(type==='edit'){badge='<span class="req-badge badge-edit">Rättelse</span>';title=`Rättelse: ${item.article}`;preview=item.what+(item.source?`\n\nKälla: ${item.source}`:'');}
+  else{badge='<span class="req-badge badge-contact">Kontakt</span>';title=item.subject;preview=item.message;}
+  const replySubj=encodeURIComponent('[Faktabasen] Svar på din '+(type==='article'?'artikel':type==='edit'?'rättelse':'fråga'));
+  const actions=resolved
+    ?`<span class="resolved-label">${item.status==='accepted'?'✓ Godkänd':'✗ Nekad'}</span>`
+    :`<button class="btn-accept" onclick="resolve('${type}',${item.id},'accepted')">✓ Godkänn</button>
+      <button class="btn-deny" onclick="resolve('${type}',${item.id},'denied')">✗ Neka</button>
+      <a href="mailto:${esc(item.email)}?subject=${replySubj}" style="display:inline-flex;align-items:center;padding:7px 12px;background:transparent;color:rgba(255,255,255,.32);border:1px solid rgba(255,255,255,.09);border-radius:3px;font-size:.75rem;text-decoration:none;font-family:'DM Sans',sans-serif;transition:all .2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.32)'">✉ Svara</a>`;
+  return `<div class="req-card${resolved?' resolved':''}" id="rc-${type}-${item.id}">
     <div class="req-card-meta">${badge}<span class="req-name">👤 ${esc(item.name)} · ${esc(item.email)}</span><span class="req-time">${item.time}</span></div>
     <div class="req-title">${esc(title)}</div>
     <div class="req-preview" id="rp-${type}-${item.id}">${esc(preview)}</div>
-    <div class="req-actions">
-      ${actions}
-      <button class="btn-expand" onclick="toggleExp('${type}',${item.id})">↕ Visa mer</button>
-    </div>
+    <div class="req-actions">${actions}<button class="btn-expand" onclick="toggleExp('${type}',${item.id})">↕ Mer</button></div>
   </div>`;
 }
-
-function resolve(type, id, decision) {
-  const list = type==='article'?state.articles:type==='edit'?state.edits:state.contacts;
-  const item = list.find(r=>r.id===id);
-  if (item) { item.status = decision; renderPanel(); }
-  showToast(decision==='accepted' ? '✓ Markerad som godkänd.' : '✗ Markerad som nekad.');
+function resolve(type,id,decision){
+  const list=type==='article'?state.articles:type==='edit'?state.edits:state.contacts;
+  const item=list.find(r=>r.id===id);
+  if(item){item.status=decision;renderPanel();}
+  showToast(decision==='accepted'?'✓ Markerad som godkänd.':'✗ Markerad som nekad.');
+}
+function toggleExp(type,id){
+  const el=document.getElementById(`rp-${type}-${id}`);
+  if(el)el.classList.toggle('expanded');
 }
 
-function toggleExp(type, id) {
-  const el = document.getElementById(`rp-${type}-${id}`);
-  if (el) el.classList.toggle('expanded');
+/* ═══════════════════════════════════════════════
+   RENDER ÄMNEN
+═══════════════════════════════════════════════ */
+function renderAmnen(){
+  document.getElementById('amnenGrid').innerHTML=AMNEN.map(a=>`
+    <div class="amne-card" ${a.page?`onclick="showPage('${a.page}',document.querySelectorAll('.nav-link')[${a.page==='vetenskap'?1:2}])"`:''} style="${a.page?'cursor:pointer':''}">
+      <span class="amne-icon">${a.icon}</span>
+      <h3>${a.title}</h3>
+      <p>${a.desc}</p>
+      <div class="amne-tags">${a.tags.map(t=>`<span class="amne-tag">${t}</span>`).join('')}</div>
+      <p class="amne-status ${a.page?'status-live':'status-soon'}">${a.page?'→ Läs artikel':'Artikel kommer snart'}</p>
+    </div>`).join('');
 }
 
-// ── HELPERS
-function v(id)  { return (document.getElementById(id)||{}).value?.trim() ?? ''; }
-function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function uid()  { return Date.now() + Math.floor(Math.random()*9999); }
-function now()  { return new Date().toLocaleString('sv-SE'); }
-function clearFields(ids) { ids.forEach(id => { const el=document.getElementById(id); if(el) el.value=''; }); }
+/* ═══════════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════════ */
+function v(id){return(document.getElementById(id)||{}).value?.trim()??'';}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function uid(){return Date.now()+Math.floor(Math.random()*9999);}
+function now(){return new Date().toLocaleString('sv-SE');}
+function clearFields(ids){ids.forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});}
 
-// ── INIT
-renderAmnen();
+init();
 </script>
 </body>
 </html>
